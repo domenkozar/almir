@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="load: base.pt">
+    <tal:block metal:fill-slot="main-content-title">
+      <h1>Pool <small>${ object.name }</small></h1>
+    </tal:block>
+    <tal:block metal:fill-slot="main-content">
+    </tal:block>
+
+    <tal:block metal:fill-slot="main-sidebar-title">
+      <h1>Details</h1>
+    </tal:block>
+    <tal:block metal:fill-slot="main-sidebar">
+        <h2>Details</h2>
+        <table class="bordered-table zebra-striped">
+         <tbody>
+           <tr>
+               <td>Name:</td>
+               <td>${ object.name }</td>
+           </tr>
+         </tbody>
+        </table>
+    </tal:block>
+</html>

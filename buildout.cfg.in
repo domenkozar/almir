@@ -1,0 +1,5 @@
+[buildout]
+extends = base.cfg
+
+[development.ini]
+sqla_engine_url = postgresql://user:password@localhost:5432/

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html
+ xmlns="http://www.w3.org/1999/xhtml"
+ xml:lang="en"
+ xmlns:metal="http://xml.zope.org/namespaces/metal"
+ xmlns:tal="http://xml.zope.org/namespaces/tal">
+<head>
+  <title>The Pyramid Web Application Development Framework</title>
+  <meta name="keywords" content="python web application" />
+  <meta name="description" content="pyramid web application" />
+  <link rel="shortcut icon" href="${request.static_url('almir:static/images/favicon.ico')}" />
+  <link rel="stylesheet/less" href="${request.static_url('almir:static/css/main.less')}" type="text/css" media="screen" />
+  <link rel="stylesheet" href="${request.static_url('deform:static/css/form.css')}" type="text/css" />
+  <script src="${request.static_url('almir:static/js/less-1.1.5.min.js')}"></script>
+  <script src="${request.static_url('almir:static/js/html5.js')}"></script>
+  <script src="${request.static_url('almir:static/js/jquery-1.7.1.min.js')}"></script>
+  <script src="${request.static_url('deform:static/scripts/deform.js')}"></script>
+  <script src="${request.static_url('deform:static/scripts/jquery.form.js')}"></script>
+  <script src="${request.static_url('almir:static/js/main.js')}"></script>
+  <script type="text/javascript">
+   var submit_delay_miliseconds = 2000;
+
+   function submitForm () {
+    console.log('submitted form');
+    $('form').submit();
+   }
+
+   $(function () {
+     deform.load();
+     $('form')
+       .data('timeout', null)
+       .keyup(function(){
+         clearTimeout($(this).data('timeout'));
+         jQuery(this).data('timeout', setTimeout(submitForm, submit_delay_miliseconds));
+       });
+     });
+  </script>
+</head>
+<body>
+  <div class="topbar">
+    <div class="fill">
+      <div class="container">
+        <a class="brand" href="${request.route_url('about')}">Almir</a>
+        <ul class="nav" tal:repeat="item navigation_tree">
+          <li class="${ item.active_class }"><a href="${ item.url }">${ item.name }</a></li>
+        </ul>
+        <!-- TODO: v0.3
+        <form action="" class="pull-right">
+          <input class="input-small" type="text" placeholder="Username">
+          <input class="input-small" type="password" placeholder="Password">
+          <button class="btn" type="submit">Sign in</button>
+        </form>
+        -->
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="sidebar">
+      <div class="page-header">
+        <metal:content define-slot="main-sidebar-title" />
+      </div>
+      <metal:content define-slot="main-sidebar" />
+    </div>
+
+    <div class="content">
+      <div class="page-header">
+        <metal:content define-slot="main-content-title" />
+      </div>
+      <metal:content define-slot="main-content" />
+    </div>
+
+    <footer>
+      <p>&copy; Domen Kožar 2011</p>
+    </footer>
+  </div>
+</body>
+</html>

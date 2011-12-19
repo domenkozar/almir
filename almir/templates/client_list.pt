@@ -1,0 +1,35 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="load: base.pt">
+    <tal:block metal:fill-slot="main-content-title">
+      <h1>Clients <small>view</small></h1>
+    </tal:block>
+    <tal:block metal:fill-slot="main-content">
+        <h2>Clients</h2>
+        <table class="bordered-table">
+         <thead>
+          <tr>
+            <th>Name</th>
+            <th>Last successful backup</th>
+            <th>Total backup size</th>
+          </tr>
+         </thead>
+         <tbody>
+           <tr tal:repeat="client objects"
+               tal:attributes="class 'clickable-row'; data-link request.route_url('client_detail', id=client[0].clientid)">
+           <td>${ client[0].name }</td>
+           <td>${ distance_of_time_in_words(client[2]) } ago</td>
+           <td>${ format_byte_size(float(client[1])) }</td>
+          </tr>
+         </tbody>
+        </table>
+    </tal:block>
+
+    <tal:block metal:fill-slot="main-sidebar-title">
+      <h1>Filter</h1>
+    </tal:block>
+    <tal:block metal:fill-slot="main-sidebar">
+      ${ structure: form.render() }
+    </tal:block>
+</html>

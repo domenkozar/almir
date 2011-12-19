@@ -1,0 +1,61 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="load: base.pt">
+    <tal:block metal:fill-slot="main-content-title">
+      <h1>Dashboard <small>Overview</small></h1>
+    </tal:block>
+    <tal:block metal:fill-slot="main-content">
+        <h2>Latests Jobs</h2>
+        <table class="bordered-table">
+         <thead>
+          <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Type</th>
+            <th>Level</th>
+            <th>Client</th>
+            <th>Started</th>
+          </tr>
+         </thead>
+         <tbody>
+           <tr tal:repeat="job jobs"
+               tal:attributes="class job.status_color + ' clickable-row'; data-link request.route_url('job_detail', id=job.jobid)">
+           <!--<td><a href="{request.route_url('get_job', id=job.jobid)}">${ job.jobid }</a></td>-->
+           <td>${ job.name }</td>
+           <td>${ job.status_name }</td>
+           <td>${ job.type_name }</td>
+           <td>${ job.level_name }</td>
+           <td>${ job.client.name }</td>
+           <td>${ distance_of_time_in_words(job.starttime, now) } ago</td>
+          </tr>
+         </tbody>
+        </table>
+    </tal:block>
+    <tal:block metal:fill-slot="main-sidebar-title">
+      <h1>Statistics</h1>
+    </tal:block>
+    <tal:block metal:fill-slot="main-sidebar">
+        <table class="bordered-table zebra-striped">
+         <tbody>
+           <tr>
+               <td>Clients:</td>
+               <td>${ num_clients }</td>
+           </tr>
+           <tr>
+               <td>Jobs:</td>
+               <td>${ num_jobs }</td>
+           </tr>
+           <tr>
+               <td>Volumes:</td>
+               <td>${ num_media }</td>
+           </tr>
+           <tr>
+               <td>Total backup size:</td>
+               <td>${ format_byte_size(float(sum_volumes)) }</td>
+           </tr>
+            <!-- total bytes, database size, number of files, df -h -->
+         </tbody>
+        </table>
+    </tal:block>
+</html>

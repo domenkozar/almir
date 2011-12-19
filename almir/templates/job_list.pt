@@ -1,0 +1,46 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="load: base.pt">
+    <tal:block metal:fill-slot="main-content-title">
+      <h1>Job <small>List</small></h1>
+    </tal:block>
+    <tal:block metal:fill-slot="main-content">
+        <h2>Jobs</h2>
+        <table class="bordered-table">
+         <thead>
+          <tr>
+            <th>Name</th>
+            <th>Status</th>
+            <th>Type</th>
+            <th>Level</th>
+            <th>Size</th>
+            <th>Files</th>
+            <th>Client</th>
+            <th>Started</th>
+          </tr>
+         </thead>
+         <tbody>
+           <tr
+             tal:repeat="job objects"
+             tal:attributes="class job.status_color + ' clickable-row'; data-link request.route_url('job_detail', id=job.jobid)">
+           <td>${ job.name }</td>
+           <td>${ job.status_name }</td>
+           <td>${ job.type_name }</td>
+           <td>${ job.level_name }</td>
+           <td>${ format_byte_size(float(job.jobbytes)) }</td>
+           <td>${ job.jobfiles }</td>
+           <td>${ job.client.name }</td>
+           <td>${ distance_of_time_in_words(job.starttime, now) } ago</td>
+          </tr>
+         </tbody>
+        </table>
+    </tal:block>
+
+    <tal:block metal:fill-slot="main-sidebar-title">
+      <h1>Filter</h1>
+    </tal:block>
+    <tal:block metal:fill-slot="main-sidebar">
+      ${ structure: form.render() }
+    </tal:block>
+</html>

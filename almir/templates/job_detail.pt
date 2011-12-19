@@ -1,0 +1,99 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="load: base.pt">
+    <tal:block metal:fill-slot="main-content-title">
+      <h1>Job <small>${ object.name }</small></h1>
+    </tal:block>
+    <tal:block metal:fill-slot="main-content">
+        <h2>Files <small>${ object.jobfiles } total</small></h2>
+        <table class="zebra-striped">
+         <thead>
+          <tr>
+            <th>Filename</th>
+            <th>Size</th>
+          </tr>
+         </thead>
+         <tbody>
+          <tr tal:repeat="file files">
+            <td>${ file.path.path }${ file.filename.name }</td>
+            <td>{ file.lstat }</td>
+          </tr>
+         </tbody>
+        </table>
+
+        <h2>Log</h2>
+        <table class="zebra-striped">
+         <thead>
+          <tr>
+            <th>Time</th>
+            <th>Message</th>
+          </tr>
+         </thead>
+         <tbody>
+          <tr tal:repeat="log logs">
+           <td>${ log.time }</td>
+           <td>${ structure: nl2br(escape_html(log.logtext)) }</td>
+          </tr>
+         </tbody>
+        </table>
+    </tal:block>
+
+    <tal:block metal:fill-slot="main-sidebar-title">
+      <h1>Details</h1>
+    </tal:block>
+    <tal:block metal:fill-slot="main-sidebar">
+        <table class="bordered-table zebra-striped">
+         <tbody>
+           <tr>
+               <td>Client:</td>
+               <td>${ object.client.name }</td>
+           </tr>
+           <tr>
+               <td>Volume:</td>
+               <td>${ object.media.volumename }</td>
+           </tr>
+           <tr>
+               <td>Pool:</td>
+               <td>${ object.pool.name }</td>
+           </tr>
+           <tr>
+               <td>Status:</td>
+               <td>${ object.status_name }</td>
+           </tr>
+           <tr>
+               <td>Type:</td>
+               <td>${ object.type_name }</td>
+           </tr>
+           <tr>
+               <td>Level:</td>
+               <td>${ object.level_name }</td>
+           </tr>
+           <tr>
+               <td>Size:</td>
+               <td>${ format_byte_size(float(object.jobbytes)) }</td>
+           </tr>
+           <tr>
+               <td>Number of files:</td>
+               <td>${ object.jobfiles }</td>
+           </tr>
+           <tr>
+               <td>Scheduled:</td>
+               <td>${ object.schedtime }</td>
+           </tr>
+           <tr>
+               <td>Started:</td>
+               <td>${ object.starttime }</td>
+           </tr>
+           <tr>
+               <td>Ended:</td>
+               <td>${ object.endtime }</td>
+           </tr>
+           <tr>
+               <td>Duration:</td>
+               <td>${ distance_of_time_in_words(object.starttime, object.endtime) }</td>
+           </tr>
+         </tbody>
+        </table>
+    </tal:block>
+</html>

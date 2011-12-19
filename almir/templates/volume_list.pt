@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="load: base.pt">
+    <tal:block metal:fill-slot="main-content-title">
+      <h1>Volumes <small>List</small></h1>
+    </tal:block>
+    <tal:block metal:fill-slot="main-content">
+        <table class="bordered-table">
+         <thead>
+          <tr>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Last written</th>
+            <th>Storage</th>
+            <th>Pool</th>
+          </tr>
+         </thead>
+         <tbody>
+           <tr tal:repeat="media objects"
+               tal:attributes="class ' clickable-row'; data-link request.route_url('volume_detail', id=media.mediaid)">
+           <td>${ media.volumename }</td>
+           <td>${ format_byte_size(media.volbytes) }</td>
+           <td>${ media.lastwritten }</td>
+           <td>${ media.storage.name }</td>
+           <td>${ media.pool.name }</td>
+          </tr>
+         </tbody>
+        </table>
+    </tal:block>
+
+    <tal:block metal:fill-slot="main-sidebar-title">
+      <h1>Filter</h1>
+    </tal:block>
+    <tal:block metal:fill-slot="main-sidebar">
+      ${ structure: form.render() }
+    </tal:block>
+</html>

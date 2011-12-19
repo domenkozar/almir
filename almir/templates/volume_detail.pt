@@ -1,0 +1,85 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="load: base.pt">
+    <tal:block metal:fill-slot="main-content-title">
+      <h1>Volume <small>${ object.volumename }</small></h1>
+    </tal:block>
+    <tal:block metal:fill-slot="main-content">
+    </tal:block>
+
+    <tal:block metal:fill-slot="main-sidebar-title">
+      <h1>Details</h1>
+      <!-- jobs -->
+    </tal:block>
+    <tal:block metal:fill-slot="main-sidebar">
+        <table class="bordered-table zebra-striped">
+         <tbody>
+           <tr>
+               <td>Status:</td>
+               <td>${ object.volstatus }</td>
+           </tr>
+           <tr>
+               <td>Jobs:</td>
+               <td>${ object.voljobs }</td>
+           </tr>
+           <tr>
+               <td>Num of errors:</td>
+               <td>${ object.volerrors }</td>
+           </tr>
+           <tr>
+               <td>Num of files:</td>
+               <td>${ object.volfiles }</td>
+           </tr>
+           <tr>
+               <td>Size:</td>
+               <td>${ format_byte_size(float(object.volbytes)) }</td>
+           </tr>
+           <tr>
+               <td>Enabled:</td>
+               <td>${ object.enabled and 'Yes' or 'No' }</td>
+           </tr>
+           <tr>
+               <td>Recycle:</td>
+               <td>${ object.recycle and 'Yes' or 'No' }</td>
+           </tr>
+           <tr>
+               <td>Capacity:</td>
+               <td>${ format_byte_size(float(object.volcapacitybytes)) }</td>
+           </tr>
+           <tr>
+               <td>Pool:</td>
+               <td>${ object.pool.name }</td>
+           </tr>
+           <tr>
+               <td>Storage:</td>
+               <td>${ object.storage.name }</td>
+           </tr>
+           <tr>
+               <td>Max jobs:</td>
+               <td>${ object.maxvoljobs }</td>
+           </tr>
+           <tr>
+               <td>Max files:</td>
+               <td>${ object.maxvolfiles }</td>
+           </tr>
+           <tr>
+               <td>Max bytes:</td>
+               <td>${ object.maxvolbytes }</td>
+           </tr>
+           <tr>
+               <td>Retention:</td>
+               <td>${ object.maxvolbytes }</td>
+           </tr>
+           <tr>
+               <td>First written:</td>
+               <td>${ object.firstwritten }</td>
+           </tr>
+           <tr>
+               <td>Last written:</td>
+               <td>${ object.lastwritten }</td>
+           </tr>
+         </tbody>
+        </table>
+    </tal:block>
+</html>
