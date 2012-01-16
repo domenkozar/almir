@@ -141,15 +141,12 @@ class Job(ModelMixin, Base):
         lazy="joined",
         primaryjoin="Job.jobstatus==Status.jobstatus",
         foreign_keys="Job.jobstatus",
-        innerjoin=True,
     )
-
     client = relationship(
         "Client",
         lazy="joined",
         primaryjoin="Job.clientid==Client.clientid",
         foreign_keys="Job.clientid",
-        innerjoin=True,
         backref='jobs',
     )
     pool = relationship(
@@ -157,14 +154,12 @@ class Job(ModelMixin, Base):
         lazy="joined",
         primaryjoin="Job.poolid==Pool.poolid",
         foreign_keys="Job.poolid",
-        innerjoin=True,
     )
     media = relationship(
         "Media",
         lazy="joined",
         primaryjoin="Job.volsessionid==Media.mediaid",
         foreign_keys="Job.volsessionid",
-        innerjoin=True,
     )
 
     @classmethod
