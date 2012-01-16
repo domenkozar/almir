@@ -1,3 +1,7 @@
+import os.path
+import pickle
+import logging
+
 from pyramid.httpexceptions import exception_response
 from psycogreen.gevent.psyco_gevent import make_psycopg_green
 from sqlalchemy.ext.declarative import declarative_base
@@ -6,6 +10,9 @@ from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 
 from zope.sqlalchemy import ZopeTransactionExtension
+
+
+log = logging.getLogger(__name__)
 
 
 def readonly_flush(*a, **kw):
@@ -40,4 +47,16 @@ def initialize_sql(engine):
     # TODO: move to post_fork of gunicorn hook
     make_psycopg_green()
     DBSession.configure(bind=engine)
-    Base.metadata.reflect(engine)
+
+    # cache (pickle) metadata
+    # TODO: configure with .ini
+    cachefile = os.path.join(os.path.dirname(__name__), 'metadata.cache')
+    if os.path.isfile(cachefile):
+        with open(cachefile, 'r') as cache:
+            Base.metadata = pickle.load(cache)
+            log.info('Loading database schema from cache file: %s', cachefile)
+    else:
+        with open(cachefile, 'w') as cache:
+            Base.metadata.reflect(engine)
+            pickle.dump(Base.metadata, cache)
+            log.info('Generating database schema cache file: %s', cachefile)
