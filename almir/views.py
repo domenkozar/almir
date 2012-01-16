@@ -45,8 +45,6 @@ def console_ajax(request):
 def log(request):
     dbsession = DBSession()
     logs = dbsession.query(Log).order_by(desc(Log.time)).limit(50)
-    # TODO: ajaxify results
-    # TODO: remember form value (validate)
     form = Form(
         LogFilterSchema(),
         buttons=[],
@@ -59,6 +57,8 @@ def log(request):
         }
         """,
     )
+    # TODO: ajaxify results
+    # TODO: remember form value (validate)
     form.render(form.validate(request.POST.items()))
     # TODO: job id should be clickable
     # TODO: strip message begining

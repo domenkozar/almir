@@ -31,6 +31,7 @@
            <td>${ format_byte_size(float(job.jobbytes)) }</td>
            <td>${ job.jobfiles }</td>
            <td>${ job.client.name }</td>
+           <!-- TODO: starttime not available when job is running -->
            <td>${ distance_of_time_in_words(job.starttime, now) } ago</td>
           </tr>
          </tbody>
