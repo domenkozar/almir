@@ -5,9 +5,9 @@ Setup development environment
 * git clone https://github.com/iElectric/almir.git almir
 * cd almir
 * python2.7 bootstrap.py
-* cp buildout.cfg.in buildout.cfg # specify correct parameter to connect to bacula SQL DB (use tunnels to servers)
+* cp buildout.d/templates/buildout.cfg.in buildout.cfg  # specify correct parameter to connect to bacula SQL DB (use tunnels to servers)
 * bin/buildout
-* bin/paster server development.ini
+* bin/pserve --reload development.ini
 
 Deliverables
 ============
