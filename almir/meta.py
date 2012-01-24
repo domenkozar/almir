@@ -45,7 +45,7 @@ class ModelMixin(object):
 
 def initialize_sql(engine):
     # TODO: move to post_fork of gunicorn hook
-    make_psycopg_green()
+    #make_psycopg_green()
     DBSession.configure(bind=engine)
 
     # cache (pickle) metadata
