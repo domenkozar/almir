@@ -52,11 +52,11 @@ def initialize_sql(engine):
     # TODO: configure with .ini
     cachefile = os.path.join(os.path.dirname(__name__), 'metadata.cache')
     if os.path.isfile(cachefile):
+        log.info('Loading database schema from cache file: %s', cachefile)
         with open(cachefile, 'r') as cache:
             Base.metadata = pickle.load(cache)
-            log.info('Loading database schema from cache file: %s', cachefile)
     else:
+        Base.metadata.reflect(engine)
+        log.info('Generating database schema cache file: %s', cachefile)
         with open(cachefile, 'w') as cache:
-            Base.metadata.reflect(engine)
             pickle.dump(Base.metadata, cache)
-            log.info('Generating database schema cache file: %s', cachefile)
