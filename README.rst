@@ -4,8 +4,8 @@ Setup development environment
 * sudo aptitude install libevent-dev
 * git clone https://github.com/iElectric/almir.git almir
 * cd almir
-* python2.7 bootstrap.py
 * cp buildout.d/templates/buildout.cfg.in buildout.cfg  # specify correct parameter to connect to bacula SQL DB (use tunnels to servers)
+* python2.7 bootstrap.py
 * bin/buildout
 * bin/pserve --reload development.ini
 
