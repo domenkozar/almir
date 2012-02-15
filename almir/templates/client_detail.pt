@@ -26,7 +26,7 @@
       <h1>Details</h1>
     </tal:block>
     <tal:block metal:fill-slot="main-sidebar">
-        <table class="bordered-table zebra-striped">
+        <table class="bordered-table zebra-striped word-wrapped">
          <tbody>
            <tr>
                <td>Platform:</td>
