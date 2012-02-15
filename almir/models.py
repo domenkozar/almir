@@ -1,3 +1,4 @@
+"""Models generated from bacula-dir-postgresql 5.0.2"""
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import desc
 from sqlalchemy.sql import functions as func

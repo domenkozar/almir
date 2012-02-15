@@ -4,6 +4,7 @@ import logging
 
 from pyramid.httpexceptions import exception_response
 from psycogreen.gevent.psyco_gevent import make_psycopg_green
+from sqlalchemy import engine_from_config
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import scoped_session
@@ -43,13 +44,16 @@ class ModelMixin(object):
             return {'object': obj}
 
 
-def initialize_sql(engine):
+def initialize_sql(settings):
     # TODO: move to post_fork of gunicorn hook
     #make_psycopg_green()
+    kw = {'client_encoding': 'utf8'} if 'postgres' in settings.get('sqlalchemy.url', '') else {}
+    engine = engine_from_config(settings, prefix='sqlalchemy.', **kw)
     DBSession.configure(bind=engine)
 
     # cache (pickle) metadata
     # TODO: configure with .ini
+    # TODO: using different engine, different metadata is generated (hash)
     cachefile = os.path.join(os.path.dirname(__name__), 'metadata.cache')
     if os.path.isfile(cachefile):
         log.info('Loading database schema from cache file: %s', cachefile)

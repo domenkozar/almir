@@ -2,7 +2,6 @@ from pyramid.config import Configurator
 from pyramid.events import BeforeRender
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import append_slash_notfound_view
-from sqlalchemy import engine_from_config
 
 from almir.meta import initialize_sql
 from almir.lib.filters import filters
@@ -33,8 +32,7 @@ def navigation_tree(event):
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application. """
-    engine = engine_from_config(settings, prefix='sqlalchemy.', client_encoding='utf8')
-    initialize_sql(engine)
+    initialize_sql(settings)
     config = Configurator(settings=settings)
 
     # events

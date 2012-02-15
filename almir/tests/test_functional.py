@@ -8,7 +8,7 @@ from almir import main
 
 
 here = os.path.dirname(__file__)
-settings = appconfig('config:' + os.path.join(here, '../', 'development.ini'))
+settings = appconfig('config:' + os.path.join(here, '../../', 'development.ini'))
 
 
 #class TestMyView(unittest.TestCase):
