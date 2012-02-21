@@ -1,3 +1,2 @@
 include *.txt *.cfg *.rst *.in
 graft almir
-prune almir/tests
