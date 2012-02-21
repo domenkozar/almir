@@ -3,11 +3,11 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="load: base.pt">
     <tal:block metal:fill-slot="main-content-title">
-      <h1>Client <small>${ object.name }</small></h1>
+      <h1 class="view">Client <small>${ object.name }</small></h1>
     </tal:block>
     <tal:block metal:fill-slot="main-content">
         <h2>Jobs</h2>
-        <table class="bordered-table">
+        <table class="table table-striped table-bordered datatables">
          <thead>
           <tr>
             <th>Name</th>
@@ -23,10 +23,10 @@
     </tal:block>
 
     <tal:block metal:fill-slot="main-sidebar-title">
-      <h1>Details</h1>
+      <h1 class="view">Details</h1>
     </tal:block>
     <tal:block metal:fill-slot="main-sidebar">
-        <table class="bordered-table zebra-striped word-wrapped">
+        <table class="table table-striped table-bordered table-condensed word-wrapped">
          <tbody>
            <tr>
                <td>Platform:</td>

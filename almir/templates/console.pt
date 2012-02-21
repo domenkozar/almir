@@ -3,195 +3,173 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="load: base.pt">
     <tal:block metal:fill-slot="main-content-title">
-      <h1>Console <small>Interactive candies</small></h1>
+      <h1 class="view">Console <small>Interactive candies</small></h1>
       <script type="text/javascript">
-        function send_command (e) {
-            var console = $('#console'),
-                command = $('#command'),
-                bconsole_text = command.text();
-
-            if (!(e.which == 1 || e.which == 13)) {
-                return null;
-            }
-
-            $.ajax({
-              url: '${ request.route_url('console_ajax') }',
-              dataType: 'json',
-              type: 'POST',
-              data: {
-                bconsole_command: bconsole_text
-              },
-              success: function (data, textStatus, jqXHR) {
-                console.append('<span class="stdout">' + data.stdout + '</span>');
-                console.append('<span class="stderr">'+ data.stderr + '</span>');
-                console.scrollTop(
-                  console[0].scrollHeight - console.height()
-                );
-              },
-              error: function (jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR, textStatus);
-              }
-            });
-
-        }
-        $(function () {
-          $('#command_btn').bind('click', send_command);
-          $('#command').bind('keyup', send_command);
-        });
+          var bconsole_url = '${ request.route_url('console_ajax') }';
       </script>
     </tal:block>
     <tal:block metal:fill-slot="main-content">
       <div tal:condition="permission_problem" class="alert-message block-message warning">
         <p>sudo bconsole must be executable</p>
-        <div class="alert-actions">
-            <a class="btn small" href="">I fixed the problem, retry</a>
+        <div class="alert alert-actions">
+           <a class="btn small" href="">I fixed the problem, retry</a>
         </div>
       </div>
       <tal:block tal:condition="not permission_problem">
-        <div id="console" class="alert-message block-message info">
+        <div id="console" class="alert alert-info block-message">
         </div>
-        <p>
-          <input id="command" value="" />
-          <button id="command_btn" class="btn small">Send</button>
-        </p>
+        <div class="row-fluid">
+          <div class="span11">
+            <input id="command" value="" class="span12" />
+          </div>
+          <div class="span1">
+            <button id="command-btn" class="btn btn-primary">Send</button>
+          </div>
+        </div>
       </tal:block>
     </tal:block>
 
     <tal:block metal:fill-slot="main-sidebar-title">
-      <h1>Commands</h1>
+      <h1 class="view">Commands</h1>
     </tal:block>
     <tal:block metal:fill-slot="main-sidebar">
     <!-- TODO: search through commands -->
     <!-- TODO: full description on hover -->
-        <table class="bordered-table zebra-striped">
-         <tbody>
-    <tr>
-        <td>add</td>           <td>Add media to a pool</td>
-    </tr>
-    <tr>
-        <td>autodisplay</td>   <td>Autodisplay console messages</td>
-    </tr>
-    <tr>
-        <td>automount</td>     <td>Automount after label</td>
-    </tr>
-    <tr>
-        <td>cancel</td>        <td>Cancel a job</td>
-    </tr>
-    <tr>
-        <td>create</td>        <td>Create DB Pool from resource</td>
-    </tr>
-    <tr>
-        <td>delete</td>        <td>Delete volume, pool or job</td>
-    </tr>
-    <tr>
-        <td>disable</td>       <td>Disable a job</td>
-    </tr>
-    <tr>
-        <td>enable</td>        <td>Enable a job</td>
-    </tr>
-    <tr>
-        <td>estimate</td>      <td>Performs FileSet estimate, listing gives full listing</td>
-    </tr>
-    <tr>
-        <td>exit</td>          <td>Terminate Bconsole session</td>
-    </tr>
-    <tr>
-        <td>gui</td>           <td>Non-interactive gui mode</td>
-    </tr>
-    <tr>
-        <td>help</td>          <td>Print help on specific command</td>
-    </tr>
-    <tr>
-        <td>label</td>         <td>Label a tape</td>
-    </tr>
-    <tr>
-        <td>list</td>          <td>List objects from catalog</td>
-    </tr>
-    <tr>
-        <td>llist</td>         <td>Full or long list like list command</td>
-    </tr>
-    <tr>
-        <td>messages</td>      <td>Display pending messages</td>
-    </tr>
-    <tr>
-        <td>memory</td>        <td>Print current memory usage</td>
-    </tr>
-    <tr>
-        <td>mount</td>         <td>Mount storage</td>
-    </tr>
-    <tr>
-        <td>prune</td>         <td>Prune expired records from catalog</td>
-    </tr>
-    <tr>
-        <td>purge</td>         <td>Purge records from catalog</td>
-    </tr>
-    <tr>
-        <td>python</td>        <td>Python control commands</td>
-    </tr>
-    <tr>
-        <td>quit</td>          <td>Terminate Bconsole session</td>
-    </tr>
-    <tr>
-        <td>query</td>         <td>Query catalog</td>
-    </tr>
-    <tr>
-        <td>restore</td>       <td>Restore files</td>
-    </tr>
-    <tr>
-        <td>relabel</td>       <td>Relabel a tape</td>
-    </tr>
-    <tr>
-        <td>release</td>       <td>Release storage</td>
-    </tr>
-    <tr>
-        <td>reload</td>        <td>Reload conf file</td>
-    </tr>
-    <tr>
-        <td>run</td>           <td>Run a job</td>
-    </tr>
-    <tr>
-        <td>status</td>        <td>Report status</td>
-    </tr>
-    <tr>
-        <td>setdebug</td>      <td>Sets debug level</td>
-    </tr>
-    <tr>
-        <td>setip</td>         <td>Sets new client address -- if authorized</td>
-    </tr>
-    <tr>
-        <td>show</td>          <td>Show resource records</td>
-    </tr>
-    <tr>
-        <td>sqlquery</td>      <td>Use SQL to query catalog</td>
-    </tr>
-    <tr>
-        <td>time</td>          <td>Print current time</td>
-    </tr>
-    <tr>
-        <td>trace</td>         <td>Turn on/off trace to file</td>
-    </tr>
-    <tr>
-        <td>unmount</td>       <td>Unmount storage</td>
-    </tr>
-    <tr>
-        <td>umount</td>        <td>Umount - for old-time Unix guys, see unmount</td>
-    </tr>
-    <tr>
-        <td>update</td>        <td>Update volume, pool or stats</td>
-    </tr>
-    <tr>
-        <td>use</td>           <td>Use catalog xxx</td>
-    </tr>
-    <tr>
-        <td>var</td>           <td>Does variable expansion</td>
-    </tr>
-    <tr>
-        <td>version</td>       <td>Print Director version</td>
-    </tr>
-    <tr>
-        <td>wait</td>          <td>Wait until no jobs are running</td>
-    </tr>
-         </tbody>
-        </table>
-        </tal:block>
+    <table class="table table-striped table-bordered table-condensed word-wrapped">
+     <thead>
+        <tr>
+          <th>command</th>
+          <th>help</th>
+        </tr>
+     </thead>
+     <tbody>
+        <tr>
+            <td>add</td>           <td>Add media to a pool</td>
+        </tr>
+        <tr>
+            <td>autodisplay</td>   <td>Autodisplay console messages</td>
+        </tr>
+        <tr>
+            <td>automount</td>     <td>Automount after label</td>
+        </tr>
+        <tr>
+            <td>cancel</td>        <td>Cancel a job</td>
+        </tr>
+        <tr>
+            <td>create</td>        <td>Create DB Pool from resource</td>
+        </tr>
+        <tr>
+            <td>delete</td>        <td>Delete volume, pool or job</td>
+        </tr>
+        <tr>
+            <td>disable</td>       <td>Disable a job</td>
+        </tr>
+        <tr>
+            <td>enable</td>        <td>Enable a job</td>
+        </tr>
+        <tr>
+            <td>estimate</td>      <td>Performs FileSet estimate, listing gives full listing</td>
+        </tr>
+        <tr>
+            <td>exit</td>          <td>Terminate Bconsole session</td>
+        </tr>
+        <tr>
+            <td>gui</td>           <td>Non-interactive gui mode</td>
+        </tr>
+        <tr>
+            <td>help</td>          <td>Print help on specific command</td>
+        </tr>
+        <tr>
+            <td>label</td>         <td>Label a tape</td>
+        </tr>
+        <tr>
+            <td>list</td>          <td>List objects from catalog</td>
+        </tr>
+        <tr>
+            <td>llist</td>         <td>Full or long list like list command</td>
+        </tr>
+        <tr>
+            <td>messages</td>      <td>Display pending messages</td>
+        </tr>
+        <tr>
+            <td>memory</td>        <td>Print current memory usage</td>
+        </tr>
+        <tr>
+            <td>mount</td>         <td>Mount storage</td>
+        </tr>
+        <tr>
+            <td>prune</td>         <td>Prune expired records from catalog</td>
+        </tr>
+        <tr>
+            <td>purge</td>         <td>Purge records from catalog</td>
+        </tr>
+        <tr>
+            <td>python</td>        <td>Python control commands</td>
+        </tr>
+        <tr>
+            <td>quit</td>          <td>Terminate Bconsole session</td>
+        </tr>
+        <tr>
+            <td>query</td>         <td>Query catalog</td>
+        </tr>
+        <tr>
+            <td>restore</td>       <td>Restore files</td>
+        </tr>
+        <tr>
+            <td>relabel</td>       <td>Relabel a tape</td>
+        </tr>
+        <tr>
+            <td>release</td>       <td>Release storage</td>
+        </tr>
+        <tr>
+            <td>reload</td>        <td>Reload conf file</td>
+        </tr>
+        <tr>
+            <td>run</td>           <td>Run a job</td>
+        </tr>
+        <tr>
+            <td>status</td>        <td>Report status</td>
+        </tr>
+        <tr>
+            <td>setdebug</td>      <td>Sets debug level</td>
+        </tr>
+        <tr>
+            <td>setip</td>         <td>Sets new client address -- if authorized</td>
+        </tr>
+        <tr>
+            <td>show</td>          <td>Show resource records</td>
+        </tr>
+        <tr>
+            <td>sqlquery</td>      <td>Use SQL to query catalog</td>
+        </tr>
+        <tr>
+            <td>time</td>          <td>Print current time</td>
+        </tr>
+        <tr>
+            <td>trace</td>         <td>Turn on/off trace to file</td>
+        </tr>
+        <tr>
+            <td>unmount</td>       <td>Unmount storage</td>
+        </tr>
+        <tr>
+            <td>umount</td>        <td>Umount - for old-time Unix guys, see unmount</td>
+        </tr>
+        <tr>
+            <td>update</td>        <td>Update volume, pool or stats</td>
+        </tr>
+        <tr>
+            <td>use</td>           <td>Use catalog xxx</td>
+        </tr>
+        <tr>
+            <td>var</td>           <td>Does variable expansion</td>
+        </tr>
+        <tr>
+            <td>version</td>       <td>Print Director version</td>
+        </tr>
+        <tr>
+            <td>wait</td>          <td>Wait until no jobs are running</td>
+        </tr>
+      </tbody>
+    </table>
+    </tal:block>
 </html>

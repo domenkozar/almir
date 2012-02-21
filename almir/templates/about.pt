@@ -3,27 +3,26 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="load: base.pt">
     <tal:block metal:fill-slot="main-content-title">
-      <h1>About <small>The story goes ...</small></h1>
     </tal:block>
     <tal:block metal:fill-slot="main-content">
-      <div class="span10">
+      <div class="hero-unit span10">
         <p><strong>Almir</strong> is a <a href="http://www.bacula.org">bacula</a> web interface for administrators. It is designed with simplicity in mind, although backup management is never simple.</p>
 
-        <p>It is named by <strong>Almir Karič</strong>, a fellow developer from <strong>Slovenia</strong>, whose dream was to live in San Francisco. Two years after he moved, he died in a car crash. This is his gift for ethernity.</p>
+        <p>It is named by <strong>Almir Karič</strong>, a fellow developer from <strong>Slovenia</strong>, whose dream was to live in San Francisco. Two years after he moved, he died in a car crash. This is his gift for eternity.</p>
 
         <p><strong>Almir</strong> is thus open source software licensed under <strong>GPL v3</strong>, developed by <a href="http://www.domenkozar.com">Domen Kožar</a>.</p>
       </div>
     </tal:block>
 
     <tal:block metal:fill-slot="main-sidebar-title">
-      <h1>Links</h1>
     </tal:block>
     <tal:block metal:fill-slot="main-sidebar">
-      <ul>
-        <li>Homepage</li>
-        <li>Issue tracker</li>
-        <li>Mailing list</li>
-        <li>IRC</li>
+      <ul class="nav nav-list">
+        <li class="nav-header">Links</li>
+        <li><a href="#">Homepage</a></li>
+        <li><a href="#">Issue tracker</a></li>
+        <li><a href="#">Mailing list</a></li>
+        <li><a href="#">IRC</a></li>
       </ul>
     </tal:block>
 </html>

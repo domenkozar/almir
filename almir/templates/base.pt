@@ -9,14 +9,28 @@
   <meta name="keywords" content="python web application" />
   <meta name="description" content="pyramid web application" />
   <link rel="shortcut icon" href="${request.static_url('almir:static/images/favicon.ico')}" />
-  <link rel="stylesheet/less" href="${request.static_url('almir:static/css/main.less')}" type="text/css" media="screen" />
-  <link rel="stylesheet" href="${request.static_url('deform:static/css/form.css')}" type="text/css" />
-  <script src="${request.static_url('almir:static/js/less-1.1.5.min.js')}"></script>
-  <script src="${request.static_url('almir:static/js/html5.js')}"></script>
   <script src="${request.static_url('almir:static/js/jquery-1.7.1.min.js')}"></script>
+  <script src="${request.static_url('almir:static/js/html5.js')}"></script>
+
+  <!-- bootstrap -->
+  <link href="${request.static_url('almir:static/bootstrap/bootstrap.min.css')}" rel="stylesheet" type="text/css" media="screen" />
+  <script src="${request.static_url('almir:static/bootstrap/bootstrap.min.js')}"></script>
+
+  <!-- datatables -->
+  <link href="${request.static_url('almir:static/datatables/bootstrap.css')}" rel="stylesheet" type="text/css" />
+  <script src="${request.static_url('almir:static/datatables/jquery.dataTables.min.js')}"></script>
+  <script src="${request.static_url('almir:static/datatables/bootstrap.js')}"></script>
+
+  <!-- deform -->
+  <link rel="stylesheet" href="${request.static_url('deform:static/css/form.css')}" type="text/css" />
   <script src="${request.static_url('deform:static/scripts/deform.js')}"></script>
   <script src="${request.static_url('deform:static/scripts/jquery.form.js')}"></script>
+
+  <!-- main -->
+  <link rel="stylesheet/less" href="${request.static_url('almir:static/css/main.less')}" type="text/css" media="screen" />
+  <script src="${request.static_url('almir:static/js/less-1.1.5.min.js')}"></script>
   <script src="${request.static_url('almir:static/js/main.js')}"></script>
+
   <script type="text/javascript">
    var submit_delay_miliseconds = 2000;
 
@@ -37,8 +51,8 @@
   </script>
 </head>
 <body>
-  <div class="topbar">
-    <div class="fill">
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
       <div class="container">
         <a class="brand" href="${request.route_url('about')}">Almir</a>
         <ul class="nav" tal:repeat="item navigation_tree">
@@ -56,20 +70,21 @@
   </div>
 
   <div class="container-fluid">
-    <div class="sidebar">
-      <div class="page-header">
-        <metal:content define-slot="main-sidebar-title" />
-      </div>
+   <div class="row-fluid">
+    <div class="span3">
+     <div class="well">
+      <metal:content define-slot="main-sidebar-title" />
       <metal:content define-slot="main-sidebar" />
+     </div>
     </div>
 
-    <div class="content">
-      <div class="page-header">
-        <metal:content define-slot="main-content-title" />
-      </div>
+    <div class="span9">
+      <metal:content define-slot="main-content-title" />
       <metal:content define-slot="main-content" />
     </div>
 
+   </div>
+   <hr />
     <footer>
       <p>&copy; Domen Kožar 2011</p>
     </footer>

@@ -3,11 +3,11 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="load: base.pt">
     <tal:block metal:fill-slot="main-content-title">
-      <h1>Storage <small>List</small></h1>
+      <h1 class="view">Storage <small>List</small></h1>
     </tal:block>
     <tal:block metal:fill-slot="main-content">
         <h2>By name</h2>
-        <table class="bordered-table">
+        <table class="table table-striped table-bordered datatables">
          <thead>
           <tr>
             <th>Name</th>
@@ -18,12 +18,13 @@
                tal:repeat="storage objects"
                tal:attributes="class ' clickable-row'; data-link request.route_url('storage_detail', id=storage.storageid)">
            <td>${ storage.name }</td>
+           <!-- TODO: add total backup size, clients, etc... -->
           </tr>
          </tbody>
         </table>
     </tal:block>
     <tal:block metal:fill-slot="main-sidebar-title">
-      <h1>Filter</h1>
+      <h1 class="view">Filter</h1>
     </tal:block>
     <tal:block metal:fill-slot="main-sidebar">
       ${ structure: form.render() }

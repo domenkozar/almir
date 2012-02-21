@@ -3,10 +3,10 @@
       xmlns:metal="http://xml.zope.org/namespaces/metal"
       metal:use-macro="load: base.pt">
     <tal:block metal:fill-slot="main-content-title">
-      <h1>Log <small>view</small></h1>
+      <h1 class="view">Log <small>view</small></h1>
     </tal:block>
     <tal:block metal:fill-slot="main-content">
-        <table class="zebra-striped">
+        <table class="table table-striped table-bordered datatables">
          <thead>
           <tr>
             <th>Job</th>
@@ -24,7 +24,7 @@
         </table>
     </tal:block>
     <tal:block metal:fill-slot="main-sidebar-title">
-      <h1>Filter</h1>
+      <h1 class="view">Filter</h1>
     </tal:block>
     <tal:block metal:fill-slot="main-sidebar">
       ${ structure: form }
