@@ -1,6 +1,7 @@
 import os.path
 import pickle
 import logging
+import hashlib
 
 from pyramid.httpexceptions import exception_response
 from psycogreen.gevent.psyco_gevent import make_psycopg_green
@@ -49,12 +50,13 @@ def initialize_sql(settings):
     #make_psycopg_green()
     kw = {'client_encoding': 'utf8'} if 'postgres' in settings.get('sqlalchemy.url', '') else {}
     engine = engine_from_config(settings, prefix='sqlalchemy.', **kw)
+    engine_hash = hashlib.md5(str(engine.url)).hexdigest()
     DBSession.configure(bind=engine)
 
     # cache (pickle) metadata
     # TODO: configure with .ini
     # TODO: using different engine, different metadata is generated (hash)
-    cachefile = os.path.join(os.path.dirname(__name__), 'metadata.cache')
+    cachefile = os.path.join(os.path.dirname(__name__), 'db.metada.cache.%s' % engine_hash)
     if os.path.isfile(cachefile):
         log.info('Loading database schema from cache file: %s', cachefile)
         with open(cachefile, 'r') as cache:
