@@ -1,0 +1,18 @@
+Tickets are somewhat prioritized starting with most important:
+
+FEATURE: setup jenkins
+FEATURE: nosexcover tests
+FEATURE: sphinx documentation
+FEATURE: model attributes as self.render_<name>: use defaults and formatting there
+FEATURE: implement stateful console sessions (gevent greenlets)
+BUG: sort jobs by started date by default
+BUG: sort size correctly (MB, GB...)
+BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
+BUG: timezones: if I start a job on dreamy, almir will says it started on hour ago
+FEATURE: use https://github.com/mozilla-services/cornice
+FEATURE: migrate to delcarative configuration (scan)
+FEATURE: pyramid_exclog + sentry
+FEATURE: community links, donate button
+FEATURE: feedback/report a problem
+IDEAS: CSRF?
+IDEAS: switch to AFFERO licence (from GPL?)
