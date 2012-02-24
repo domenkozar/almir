@@ -48,6 +48,7 @@ class Client(ModelMixin, Base):
         "client_name_idx" UNIQUE, btree (name)
 
     """
+
     @classmethod
     def object_detail(cls, id_):
         d = super(Client, cls).object_detail(id_)
