@@ -59,7 +59,7 @@ def log(request):
     )
     # TODO: ajaxify results
     # TODO: remember form value (validate)
-    form.render(form.validate(request.POST.items()))
+    # form.render(form.validate(request.POST.items()))
     # TODO: job id should be clickable
     # TODO: strip message begining
     # TODO: display daemon name column
