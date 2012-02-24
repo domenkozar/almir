@@ -14,8 +14,8 @@ class BConsole(object):
         p = Popen(shlex.split(self.bconsole_command), stdout=PIPE, stdin=PIPE, stderr=PIPE)
         return p.communicate(cmd)
 
-    def get_director_version(self):
-        stdout, stderr = self.run_command('version')
+    #def get_director_version(self):
+    #    stdout, stderr = self.run_command('version')
 
-    def get_bconsole_version(self):
-        stdout, stderr = self.run_command('@version')
+    #def get_bconsole_version(self):
+    #    stdout, stderr = self.run_command('@version')

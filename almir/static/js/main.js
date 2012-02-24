@@ -1,14 +1,13 @@
 $(function () {
+  // global
   var linkable_rows = $('tr[data-link]');
 
-  // make rows clikable by provided link
+  // make datatables rows clickable by provided link
   linkable_rows.click(function (e) {
     window.location = $(e.target).parent('tr').attr('data-link');
   });
-});
 
-// console.pt
-$(function () {
+  // console.pt
   function send_command (e) {
       var console = $('#console'),
           command = $('#command'),

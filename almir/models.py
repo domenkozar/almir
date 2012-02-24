@@ -61,7 +61,11 @@ class Client(ModelMixin, Base):
 
     @classmethod
     def objects_list(cls):
-        # SELECT client.clientid, job_bytes, max_job FROM client LEFT JOIN (SELECT job.clientid, SUM(job.jobbytes) AS job_bytes FROM job GROUP BY job.clientid) AS vsota ON vsota.clientid = client.clientid LEFT JOIN (SELECT job.clientid, MAX(job.schedtime) AS max_job FROM job GROUP BY job.clientid) AS last_job ON last_job.clientid = client.clientid;
+        # SELECT client.clientid, job_bytes, max_job FROM client
+        # LEFT JOIN (SELECT job.clientid, SUM(job.jobbytes) AS job_bytes FROM job
+        # GROUP BY job.clientid) AS vsota ON vsota.clientid = client.clientid
+        # LEFT JOIN (SELECT job.clientid, MAX(job.schedtime) AS max_job FROM job
+        # GROUP BY job.clientid) AS last_job ON last_job.clientid = client.clientid;
         sum_stmt = Job.query\
             .with_entities(Job.clientid, func.sum(Job.jobbytes).label('job_sumvolbytes'))\
             .group_by(Job.clientid)\
@@ -252,7 +256,6 @@ class Media(ModelMixin, Base):
 
 
 class JobMedia(ModelMixin, Base):
-    __table__ = Base.metadata.tables['jobmedia']
     """
        Column   |  Type   |                           Modifiers
     ------------+---------+---------------------------------------------------------------
@@ -414,5 +417,4 @@ class File(ModelMixin, Base):
         innerjoin=True,
     )
 
-
-# pathvisibility, pathhierarchy
+    # TODO: pathvisibility, pathhierarchy
