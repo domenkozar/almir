@@ -9,6 +9,7 @@ from almir.models import Job, Client, Log, Media, Storage, Pool
 from almir.forms import *
 from almir.lib.bconsole import BConsole
 from almir.lib.filters import nl2br
+from almir.lib.console_commands import CONSOLE_COMMANDS
 
 
 def dashboard(request):
@@ -30,6 +31,8 @@ def about(request):
 
 def console(request):
     permission_problem = False
+    command_array = ','.join(['"%s"' % name for name in CONSOLE_COMMANDS.keys()])
+    console_commands = CONSOLE_COMMANDS
     return locals()
 
 

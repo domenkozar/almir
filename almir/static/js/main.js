@@ -37,6 +37,24 @@ $(function () {
       });
   }
 
+  $('#command_help tr').popover();
+  $('#command').popover({
+    placement: 'left',
+    trigger: 'manual',
+  });
+
+  $('#command').change(function (e) {
+    var title = $('#command_help tr').filter(function () {
+        var rgp = new RegExp($('#command').val())
+        return rgp.test($(this).text())
+    }).attr('data-original-title');
+    if (title) {
+      $(this).attr('data-original-title', title);
+      $(this).popover('show');
+    }
+  });
+
+  // TODO: we will have to reimplement this with comet technology (gevent), does not work currently
   $('#command_btn').bind('click', send_command);
   $('#command').bind('keyup', send_command);
 });
