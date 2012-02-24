@@ -17,10 +17,10 @@ def dashboard(request):
     jobs = dbsession.query(Job).order_by(desc(Job.schedtime)).limit(5)
 
     # statistics
-    num_clients = dbsession.query(Client).count()
-    num_jobs = dbsession.query(Job).count()
-    num_media = dbsession.query(Media).count()
-    sum_volumes = dbsession.query(sum(Media.volbytes)).scalar()
+    num_clients = dbsession.query(Client).count() or 0
+    num_jobs = dbsession.query(Job).count() or 0
+    num_media = dbsession.query(Media).count() or 0
+    sum_volumes = dbsession.query(sum(Media.volbytes)).scalar() or 0
     now = datetime.now()
     return locals()
 

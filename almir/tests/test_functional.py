@@ -59,7 +59,7 @@ class FunctionalTests(unittest.TestCase):
         self.failUnless('Jobs' in res.body)
 
     def test_job(self):
-        res = self.testapp.get('/job/923', status=200)
+        res = self.testapp.get('/job/8', status=200)
         self.failUnless('Log' in res.body)
 
     def test_clients(self):
@@ -83,7 +83,7 @@ class FunctionalTests(unittest.TestCase):
         self.failUnless('Volumes' in res.body)
 
     def test_volume(self):
-        res = self.testapp.get('/volume/4', status=200)
+        res = self.testapp.get('/volume/1', status=200)
         self.failUnless('Volume' in res.body)
 
     def test_pools(self):

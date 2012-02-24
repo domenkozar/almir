@@ -6,6 +6,7 @@ from sqlalchemy.sql.expression import desc
 from sqlalchemy.sql import functions as func
 
 from almir.meta import Base, ModelMixin, DBSession
+from almir.lib.sqlalchemy_custom_types import BaculaDateTime
 
 # TODO: explicitly define datetime type columns for sqlite
 
@@ -132,6 +133,11 @@ class Job(ModelMixin, Base):
         "job_name_idx" btree (name)
     """
 
+    schedtime = BaculaDateTime()
+    starttime = BaculaDateTime()
+    endtime = BaculaDateTime()
+    realendtime = BaculaDateTime()
+
     @property
     def level_name(self):
         return LEVELS[self.level]
@@ -248,6 +254,10 @@ class Media(ModelMixin, Base):
         "media_volstatus_check" CHECK (volstatus = ANY (ARRAY['Full'::text, 'Archive'::text, 'Append'::text, 'Recycle'::text, 'Purged'::text, 'Read-Only'::text, 'Disabled'::text, 'Error'::text, 'Busy'::text, 'Used'::text, 'Cleaning'::text, 'Scratch'::text]))
 
     """
+    firsttime = BaculaDateTime()
+    lasttime = BaculaDateTime()
+    labeldate = BaculaDateTime()
+    initialwrite = BaculaDateTime()
 
     storage = relationship(
         "Storage",
@@ -315,6 +325,7 @@ class Log(ModelMixin, Base):
         "log_name_idx" btree (jobid)
 
     """
+    time = BaculaDateTime()
 
 
 class Pool(ModelMixin, Base):
@@ -368,6 +379,7 @@ class FileSet(ModelMixin, Base):
         "fileset_pkey" PRIMARY KEY, btree (filesetid)
         "fileset_name_idx" btree (fileset)
     """
+    createtime = BaculaDateTime()
 
 
 class Filename(ModelMixin, Base):

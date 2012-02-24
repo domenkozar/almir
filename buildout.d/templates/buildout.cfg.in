@@ -2,4 +2,4 @@
 extends = buildout.d/development.cfg
 
 [development.ini]
-sqla_engine_url = postgresql://user:password@localhost:5432/
+sqla_engine_url = sqlite:///%(here)s/bacula_kaki.db
