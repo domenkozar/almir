@@ -17,9 +17,9 @@
          <tbody>
            <tr tal:repeat="client objects"
                tal:attributes="class 'clickable-row'; data-link request.route_url('client_detail', id=client[0].clientid)">
-           <td>${ client[0].name }</td>
-           <td>${ distance_of_time_in_words(client[2]) } ago</td>
-           <td>${ format_byte_size(float(client[1])) }</td>
+           <td>${ client.Client.name }</td>
+           <td>${ distance_of_time_in_words(client.job_maxschedtime) } ago</td>
+           <td>${ format_byte_size(float(client.job_sumvolbytes)) }</td>
           </tr>
          </tbody>
         </table>

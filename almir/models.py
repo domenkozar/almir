@@ -1,9 +1,13 @@
 """Models generated from bacula-dir-postgresql 5.0.2"""
+import datetime
+
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import desc
 from sqlalchemy.sql import functions as func
 
-from almir.meta import Base, ModelMixin
+from almir.meta import Base, ModelMixin, DBSession
+
+# TODO: explicitly define datetime type columns for sqlite
 
 
 # defined in bacula/src/plugins/fd/fd_common.h
@@ -80,6 +84,14 @@ class Client(ModelMixin, Base):
             .join(sum_stmt, sum_stmt.c.clientid == Client.clientid)\
             .join(last_stmt, last_stmt.c.clientid == Client.clientid)\
             .all()
+
+        # ugly hack since sqlite returns strings for job_maxschedtime
+        # TODO: report upstream
+        if DBSession.bind.dialect.name == 'sqlite':
+            def convert_datetime(l):
+                l.job_maxschedtime = datetime.datetime.strptime(l.job_maxschedtime, '%Y-%m-%d %H:%M:%S')
+                return l
+            d['objects'] = map(convert_datetime, d['objects'])
         return d
 
 
