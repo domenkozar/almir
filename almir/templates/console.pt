@@ -45,8 +45,9 @@
           <th>description</th>
         </tr>
      </thead>
-     <tbody>
-         <tr tal:repeat="data console_commands.items()" data-original-title="Parameters" data-content="${ data[1].help }">
+     <tbody tal:define="escapee import: cgi.escape">
+         <!-- escape help of commands because .html() with unescape html entities so we have to double escape our help text. -->
+         <tr tal:repeat="data console_commands.items()" data-original-title="Parameters" data-content="${ escapee(data[1].help) }">
             <td>${ data[0] }</td> <td>${ data[1].desc }</td>
         </tr>
       </tbody>

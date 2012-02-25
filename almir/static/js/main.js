@@ -40,19 +40,34 @@ $(function () {
   $('#command_help tr').popover();
   $('#command').popover({
     placement: 'left',
-    trigger: 'manual',
-  });
+    trigger: 'manual'
+  })
 
-  $('#command').change(function (e) {
-    var title = $('#command_help tr').filter(function () {
-        var rgp = new RegExp($('#command').val())
-        return rgp.test($(this).text())
-    }).attr('data-original-title');
-    if (title) {
-      $(this).attr('data-original-title', title);
-      $(this).popover('show');
+  setInterval(function () {
+    var command = $('#command').val(),
+        title;
+
+    if (!command) {
+       $('#command').popover('hide').data('last-command', "");
+       return
     }
-  });
+
+    // only change popup if we have new command
+    if ($('#command').data('last-command') == command) { return; }
+
+  
+    title = $('#command_help tr').filter(function () {
+      var current_command = $(this).find('td:first').text(),
+          rgp = new RegExp('^' + command + '$');
+      return rgp.test(current_command)
+    }).attr('data-content');
+
+    if (title) {
+        $('#command').attr('data-content', title)
+          .attr('data-original-title', "Parameters for " + command)
+          .popover('show').data('last-command', command);
+    }
+  }, 100);
 
   // TODO: we will have to reimplement this with comet technology (gevent), does not work currently
   $('#command_btn').bind('click', send_command);
