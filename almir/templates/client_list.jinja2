@@ -11,11 +11,11 @@
             </tr>
         </thead>
         <tbody>
-            {% for client in objects %}
-                <tr class="clickable-row" data-link="{{ request.route_url('client_detail', id=client[0].clientid) }}">
-                    <td>{{ client.Client.name }}</td>
-                    <td>{{ distance_of_time_in_words(client.job_maxschedtime) }} ago</td>
-                    <td>{{ format_byte_size(float(client.job_sumvolbytes)) }}</td>
+            {% for object in objects %}
+                <tr class="clickable-row" data-link="{{ request.route_url('client_detail', id=object.Client.clientid) }}">
+                    <td>{{ object.Client.name }}</td>
+                    <td>{{ distance_of_time_in_words(object.job_maxschedtime) }} ago</td>
+                    <td>{{ format_byte_size(object.job_sumvolbytes) }}</td>
                 </tr>
             {% endfor %}
         </tbody>

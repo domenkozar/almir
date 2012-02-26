@@ -12,11 +12,10 @@
         </thead>
         <tbody>
             {% for log in logs %}
-                <tr class="clickable-row" data-link="request.route_url('job_detail', id=log.jobid)">
+                <tr class="clickable-row" data-link="{{ request.route_url('job_detail', id=log.jobid) }}">
                     <td>{{ log.jobid }}</td>
                     <td>{{ log.time }}</td>
-                    <!-- TODO: FIX! -->
-                    <td>{{ escape_html(nl2br(log.logtext))|safe }}</td>
+                    <td>{{ macros.link(log.render_logtext(request)) }}</td>
                 </tr>
             {% endfor %}
         </tbody>

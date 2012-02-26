@@ -43,7 +43,7 @@
         <tbody>
             {% for data in console_commands.items() %}
                 <!-- escape help of commands because .html() with unescape html entities so we have to double escape our help text. -->
-                <tr data-original-title="Parameters" data-content="{{ data[1].help|e }}">
+                <tr data-original-title="Parameters" data-content="{{ data[1].help|forceescape|forceescape }}">
                     <td>{{ data[0]  }}</td> <td>{{ data[1].desc }}</td>
                 </tr>
             {% endfor %}

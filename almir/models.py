@@ -1,17 +1,21 @@
 """Models generated from bacula-dir-postgresql 5.0.2"""
 import datetime
 
+from jinja2 import Markup
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import desc
 from sqlalchemy.sql import functions as func
 
 from almir.meta import Base, ModelMixin, DBSession
 from almir.lib.sqlalchemy_custom_types import BaculaDateTime
+from almir.lib.filters import nl2br, distance_of_time_in_words, time_ago_in_words, format_byte_size, yesno
+
 
 # TODO: explicitly define datetime type columns for sqlite
-
+RENDER_DEFAULT = '/'
 
 # defined in bacula/src/plugins/fd/fd_common.h
+# TODO: parse with script
 LEVELS = {
     'F': 'Full',
     'I': 'Incremental',  # since last backup
@@ -61,7 +65,7 @@ class Client(ModelMixin, Base):
             'jobs': Job.query.filter(Job.clientid == id_).order_by(desc(Job.schedtime)).limit(50),
             # TODO: catch jobs that actually transfered something?
             'last_successful_job': Job.query.filter(Job.clientid == id_).order_by(desc(Job.schedtime)).filter(Status.jobstatus == 'T').first(),
-            'total_size_backups': Job.query.with_entities(func.sum(Job.jobbytes)).filter(Job.clientid == id_).scalar()
+            'total_size_backups': format_byte_size(Job.query.with_entities(func.sum(Job.jobbytes)).filter(Job.clientid == id_).scalar()),
         })
         return d
 
@@ -87,13 +91,28 @@ class Client(ModelMixin, Base):
             .all()
 
         # ugly hack since sqlite returns strings for job_maxschedtime
-        # TODO: report upstream
+        # TODO: report upstream to sqlalchemy
         if DBSession.bind.dialect.name == 'sqlite':
             def convert_datetime(l):
                 l.job_maxschedtime = datetime.datetime.strptime(l.job_maxschedtime, '%Y-%m-%d %H:%M:%S')
                 return l
             d['objects'] = map(convert_datetime, d['objects'])
         return d
+
+    def url(self, request):
+        return request.route_url('client_detail', id=self.clientid)
+
+    def render_name(self, request):
+        return {'text': self.name, 'href': self.url(request)}
+
+    def render_jobretention(self, request):
+        return {'text': distance_of_time_in_words(self.jobretention)}
+
+    def render_fileretention(self, request):
+        return {'text': distance_of_time_in_words(self.fileretention)}
+
+    def render_autoprune(self, request):
+        return {'text': yesno(self.autoprune)}
 
 
 class Job(ModelMixin, Base):
@@ -199,53 +218,80 @@ class Job(ModelMixin, Base):
         d['files'] = File.query.filter(File.jobid == id_).all()
         return d
 
+    def url(self, request):
+        return request.route_url('job_detail', id=self.jobid)
+
+    def render_client_name(self, request):
+        if self.client:
+            return self.client.render_name(request)
+
+    def render_volume_name(self, request):
+        if self.media:
+            return self.media.render_volumename(request)
+
+    def render_pool_name(self, request):
+        if self.pool:
+            return self.pool.render_name(request)
+
+    def render_duration(self, request):
+        # TODO: if no end time?
+        return {'text': distance_of_time_in_words(self.starttime, self.endtime)}
+
+    def render_jobbytes(self, request):
+        return {'text': format_byte_size(float(self.jobbytes))}
+
+    def render_starttime(self, request):
+        if self.starttime:
+            now = datetime.datetime.now()
+            return {'text': distance_of_time_in_words(self.starttime, now) + ' ago', 'href': self.url(request)}
+
 
 class Media(ModelMixin, Base):
     """
           Column      |            Type             |                        Modifiers
     ------------------+-----------------------------+---------------------------------------------------------
-     mediaid          | integer                     | not null default nextval('media_mediaid_seq'::regclass)
-     volumename       | text                        | not null
-     slot             | integer                     | default 0
-     poolid           | integer                     | default 0
-     mediatype        | text                        | not null
-     mediatypeid      | integer                     | default 0
-     labeltype        | integer                     | default 0
-     firstwritten     | timestamp without time zone |
-     lastwritten      | timestamp without time zone |
-     labeldate        | timestamp without time zone |
-     voljobs          | integer                     | default 0
-     volfiles         | integer                     | default 0
-     volblocks        | integer                     | default 0
-     volmounts        | integer                     | default 0
-     volbytes         | bigint                      | default 0
-     volparts         | integer                     | default 0
-     volerrors        | integer                     | default 0
-     volwrites        | integer                     | default 0
-     volcapacitybytes | bigint                      | default 0
-     volstatus        | text                        | not null
-     enabled          | smallint                    | default 1
-     recycle          | smallint                    | default 0
      actiononpurge    | smallint                    | default 0
-     volretention     | bigint                      | default 0
-     voluseduration   | bigint                      | default 0
-     maxvoljobs       | integer                     | default 0
-     maxvolfiles      | integer                     | default 0
-     maxvolbytes      | bigint                      | default 0
-     inchanger        | smallint                    | default 0
-     storageid        | integer                     | default 0
-     deviceid         | integer                     | default 0
-     mediaaddressing  | smallint                    | default 0
-     volreadtime      | bigint                      | default 0
-     volwritetime     | bigint                      | default 0
-     endfile          | integer                     | default 0
-     endblock         | bigint                      | default 0
-     locationid       | integer                     | default 0
-     recyclecount     | integer                     | default 0
-     initialwrite     | timestamp without time zone |
-     scratchpoolid    | integer                     | default 0
-     recyclepoolid    | integer                     | default 0
      comment          | text                        |
+     deviceid         | integer                     | default 0
+     enabled          | smallint                    | default 1
+     endblock         | bigint                      | default 0
+     endfile          | integer                     | default 0
+     firstwritten     | timestamp without time zone |
+     inchanger        | smallint                    | default 0
+     initialwrite     | timestamp without time zone |
+     labeldate        | timestamp without time zone |
+     labeltype        | integer                     | default 0
+     lastwritten      | timestamp without time zone |
+     locationid       | integer                     | default 0
+     maxvolbytes      | bigint                      | default 0
+     maxvolfiles      | integer                     | default 0
+     maxvoljobs       | integer                     | default 0
+     mediaaddressing  | smallint                    | default 0
+     mediaid          | integer                     | not null default nextval('media_mediaid_seq'::regclass)
+     mediatypeid      | integer                     | default 0
+     mediatype        | text                        | not null
+     poolid           | integer                     | default 0
+     recyclecount     | integer                     | default 0
+     recyclepoolid    | integer                     | default 0
+     recycle          | smallint                    | default 0
+     scratchpoolid    | integer                     | default 0
+     slot             | integer                     | default 0
+     storageid        | integer                     | default 0
+     volblocks        | integer                     | default 0
+     volbytes         | bigint                      | default 0
+     volcapacitybytes | bigint                      | default 0
+     volerrors        | integer                     | default 0
+     volfiles         | integer                     | default 0
+     voljobs          | integer                     | default 0
+     volmounts        | integer                     | default 0
+     volparts         | integer                     | default 0
+     volreadtime      | bigint                      | default 0
+     volretention     | bigint                      | default 0
+     volstatus        | text                        | not null
+     volumename       | text                        | not null
+     voluseduration   | bigint                      | default 0
+     volwrites        | integer                     | default 0
+     volwritetime     | bigint                      | default 0
 
     Indexes:
         "media_pkey" PRIMARY KEY, btree (mediaid)
@@ -276,6 +322,38 @@ class Media(ModelMixin, Base):
     )
 
     # TODO: mediatype
+
+    def url(self, request):
+        return request.route_url('volume_detail', id=self.mediaid)
+
+    def render_volumename(self, request):
+        return {'text': self.volumename, 'href': self.url(request)}
+
+    def render_volcapacitybytes(self, request):
+        return {'text': format_byte_size(self.volcapacitybytes)}
+
+    def render_volbytes(self, request):
+        return {'text': format_byte_size(self.volbytes)}
+
+    def render_maxvolbytes(self, request):
+        return {'text': format_byte_size(self.maxvolbytes)}
+
+    def render_volretention(self, request):
+        return {'text': format_byte_size(self.volretention)}
+
+    def render_storage_name(self, request):
+        if self.storage:
+            return self.storage.render_name(request)
+
+    def render_pool_name(self, request):
+        if self.pool:
+            return self.pool.render_name(request)
+
+    def render_enabled(self, request):
+        return {'text': yesno(self.enabled)}
+
+    def render_recycled(self, request):
+        return {'text': yesno(self.enabled)}
 
 
 class JobMedia(ModelMixin, Base):
@@ -311,6 +389,12 @@ class Storage(ModelMixin, Base):
         "storage_pkey" PRIMARY KEY, btree (storageid)
     """
 
+    def url(self, request):
+        return request.route_url('storage_detail', id=self.storageid)
+
+    def render_name(self, request):
+        return {'text': self.name, 'href': self.url(request)}
+
 
 class Log(ModelMixin, Base):
     """
@@ -326,6 +410,9 @@ class Log(ModelMixin, Base):
 
     """
     time = BaculaDateTime()
+
+    def render_logtext(self, request):
+        return {'text': Markup(nl2br(self.logtext))}
 
 
 class Pool(ModelMixin, Base):
@@ -364,6 +451,12 @@ class Pool(ModelMixin, Base):
     Check constraints:
         "pool_pooltype_check" CHECK (pooltype = ANY (ARRAY['Backup'::text, 'Copy'::text, 'Cloned'::text, 'Archive'::text, 'Migration'::text, 'Scratch'::text]))
     """
+
+    def url(self, request):
+        return request.route_url('pool_detail', id=self.poolid)
+
+    def render_name(self, request):
+        return {'text': self.name, 'href': self.url(request)}
 
 
 class FileSet(ModelMixin, Base):

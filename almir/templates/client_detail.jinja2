@@ -1,7 +1,7 @@
 {% extends "templates/base.jinja2" %}
 
 {% block content %}
-    <h1 class="view">Client <small>{{  object.name  }}</small></h1>
+    <h1 class="view">Client <small>{{ object.name }}</small></h1>
     <h2>Jobs</h2>
     <table class="table table-striped table-bordered datatables">
         <thead>
@@ -29,25 +29,27 @@
            </tr>
            <tr>
                <td>Total size of backups:</td>
-               <td>{{ format_byte_size(float(total_size_backups)) }}</td>
+               <td>{{ total_size_backups }}</td>
            </tr>
            <tr>
                <td>Last successful backup:</td>
                {% if last_successful_job %}
-                   <td><a href="{{ request.route_url('job_detail', id=last_successful_job.jobid)  }}">{{  time_ago_in_words(last_successful_job.schedtime) }}</a></td>
+                   <td>{{ macros.link(last_successful_job.render_starttime(request)) }}</td>
+               {% else %}
+                   <td></td>
                {% endif %}
            </tr>
            <tr>
                <td>File retention:</td>
-               <td>{{ distance_of_time_in_words(int(object.fileretention)) }}</td>
+               <td>{{ macros.link(object.render_fileretention(request)) }}</td>
            </tr>
            <tr>
                <td>Job retention:</td>
-               <td>{{ distance_of_time_in_words(int(object.jobretention)) }}</td>
+               <td>{{ macros.link(object.render_jobretention(request)) }}</td>
            </tr>
            <tr>
                <td>Auto prune:</td>
-               <td>{{ bool(object.autoprune) and 'Yes' or 'No' }}</td>
+               <td>{{ macros.link(object.render_autoprune(request)) }}</td>
            </tr>
         </tbody>
     </table>

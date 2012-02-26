@@ -27,27 +27,27 @@
             </tr>
             <tr>
                 <td>Size:</td>
-                <td>{{ format_byte_size(float(object.volbytes)) }}</td>
+                <td>{{ macros.link(object.render_volbytes(request)) }}</td>
             </tr>
             <tr>
                 <td>Enabled:</td>
-                <td>{{ object.enabled and 'Yes' or 'No' }}</td>
+                <td>{{ macros.link(object.render_enabled(request)) }}</td>
             </tr>
             <tr>
                 <td>Recycle:</td>
-                <td>{{ object.recycle and 'Yes' or 'No' }}</td>
+                <td>{{ macros.link(object.render_recycled(request)) }}</td>
             </tr>
             <tr>
                 <td>Capacity:</td>
-                <td>{{ format_byte_size(float(object.volcapacitybytes)) }}</td>
+                <td>{{ macros.link(object.render_volcapacitybytes(request)) }}</td>
             </tr>
             <tr>
                 <td>Pool:</td>
-                <td>{{ object.pool.name }}</td>
+                <td>{{ macros.link(object.render_pool_name(request)) }}</td>
             </tr>
             <tr>
                 <td>Storage:</td>
-                <td>{{ object.storage.name }}</td>
+                <td>{{ macros.link(object.render_storage_name(request)) }}</td>
             </tr>
             <tr>
                 <td>Max jobs:</td>
@@ -59,11 +59,12 @@
             </tr>
             <tr>
                 <td>Max bytes:</td>
-                <td>{{ object.maxvolbytes }}</td>
+                <td>{{ macros.link(object.render_maxvolbytes(request)) }}</td>
             </tr>
             <tr>
                 <td>Retention:</td>
-                <td>{{ object.maxvolbytes }}</td>
+                <!-- TODO: wtf is this? -->
+                <td>{{ macros.link(object.render_volretention(request)) }}</td>
             </tr>
             <tr>
                 <td>First written:</td>

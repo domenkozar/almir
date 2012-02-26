@@ -32,7 +32,7 @@
             {% for log in logs %}
                 <tr>
                     <td>{{ log.time }}</td>
-                    <td>{{ log.logtext|e|replace('<br />', '\n')|safe }}</td>
+                    <td>{{ macros.link(log.render_logtext(request)) }}</td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -45,15 +45,15 @@
       <tbody>
        <tr>
            <td>Client:</td>
-           <td>{{ object.client.name }}</td>
+           <td>{{ macros.link(object.render_client_name(request)) }}</td>
        </tr>
        <tr>
            <td>Volume:</td>
-           <!-- TODO: error if there is no media <td>{ object.media.volumename }</td>-->
+           <td>{{ macros.link(object.render_volume_name(request)) }}</td>
        </tr>
        <tr>
            <td>Pool:</td>
-           <td>{{ object.pool.name }}</td>
+           <td>{{ macros.link(object.render_pool_name(request)) }}</td>
        </tr>
        <tr>
            <td>Status:</td>
@@ -69,7 +69,7 @@
        </tr>
        <tr>
            <td>Size:</td>
-           <td>{{ format_byte_size(float(object.jobbytes)) }}</td>
+           <td>{{ macros.link(object.render_jobbytes(request)) }}</td>
        </tr>
        <tr>
            <td>Number of files:</td>
@@ -81,7 +81,7 @@
        </tr>
        <tr>
            <td>Started:</td>
-           <td>{{ object.starttime }}</td>
+           <td>{{ macros.link(object.render_starttime(request)) }}</td>
        </tr>
        <tr>
            <td>Ended:</td>
@@ -89,7 +89,7 @@
        </tr>
        <tr>
            <td>Duration:</td>
-           <td>{{ distance_of_time_in_words(object.starttime, object.endtime) }}</td>
+           <td>{{ macros.link(object.render_duration(request)) }}</td>
        </tr>
       </tbody>
     </table>
