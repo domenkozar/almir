@@ -19,6 +19,7 @@ requires = [
     'zope.sqlalchemy',
     'gevent',  # http://michael.merickel.org/2011/6/21/tictactoe-and-long-polling-with-pyramid/
     'gunicorn',
+    'waitress',
     # postgres
     'psycopg2',
     'psycogreen',  # TODO: mysql+gevent?
