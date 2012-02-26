@@ -51,6 +51,9 @@ setup(name='almir',
       entry_points="""
       [paste.app_factory]
       main = almir:main
+
+      [console_scripts]
+      parse_console_commands = almir.scripts.parse_console_commands:main
       """,
       paster_plugins=['pyramid'],
       extras_require={
