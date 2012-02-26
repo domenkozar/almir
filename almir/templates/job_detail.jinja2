@@ -1,0 +1,96 @@
+{% extends "templates/base.jinja2" %}
+
+{% block content %}
+    <h1 class="view">Job <small>{{ object.name }}</small></h1>
+    <h2 class="view">Files <small>{{ object.jobfiles }} total</small></h2>
+    <table class="table table-striped table-bordered datatables">
+        <thead>
+            <tr>
+                <th>Filename</th>
+                <th>Size</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for file in files %}
+                <tr>
+                    <td>{{ file.path.path }}{{ file.filename.name }}</td>
+                    <td>{ file.lstat }</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2 class="view">Log</h2>
+    <table class="table table-striped table-bordered datatables">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+                <tr>
+                    <td>{{ log.time }}</td>
+                    <td>{{ log.logtext|e|replace('<br />', '\n')|safe }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block sidebar %}
+    <h1 class="view">Details</h1>
+    <table class="table table-striped table-bordered table-condensed word-wrapped">
+      <tbody>
+       <tr>
+           <td>Client:</td>
+           <td>{{ object.client.name }}</td>
+       </tr>
+       <tr>
+           <td>Volume:</td>
+           <!-- TODO: error if there is no media <td>{ object.media.volumename }</td>-->
+       </tr>
+       <tr>
+           <td>Pool:</td>
+           <td>{{ object.pool.name }}</td>
+       </tr>
+       <tr>
+           <td>Status:</td>
+           <td>{{ object.status_name }}</td>
+       </tr>
+       <tr>
+           <td>Type:</td>
+           <td>{{ object.type_name }}</td>
+       </tr>
+       <tr>
+           <td>Level:</td>
+           <td>{{ object.level_name }}</td>
+       </tr>
+       <tr>
+           <td>Size:</td>
+           <td>{{ format_byte_size(float(object.jobbytes)) }}</td>
+       </tr>
+       <tr>
+           <td>Number of files:</td>
+           <td>{{ object.jobfiles }}</td>
+       </tr>
+       <tr>
+           <td>Scheduled:</td>
+           <td>{{ object.schedtime }}</td>
+       </tr>
+       <tr>
+           <td>Started:</td>
+           <td>{{ object.starttime }}</td>
+       </tr>
+       <tr>
+           <td>Ended:</td>
+           <td>{{ object.endtime }}</td>
+       </tr>
+       <tr>
+           <td>Duration:</td>
+           <td>{{ distance_of_time_in_words(object.starttime, object.endtime) }}</td>
+       </tr>
+      </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>The Pyramid Web Application Development Framework</title>
+  <meta name="keywords" content="python web application" />
+  <meta name="description" content="pyramid web application" />
+  <link rel="shortcut icon" href="{{ request.static_url('almir:static/images/favicon.ico') }}" />
+
+  <!-- basic javascript -->
+  <script src="{{ request.static_url('almir:static/js/jquery-1.7.1.min.js') }}"></script>
+  <script src="{{ request.static_url('almir:static/js/html5.js') }}"></script>
+
+  <!-- bootstrap -->
+  <link href="{{ request.static_url('almir:static/bootstrap/bootstrap.min.css') }}" rel="stylesheet" type="text/css" media="screen" />
+  <script src="{{ request.static_url('almir:static/bootstrap/bootstrap.min.js') }}"></script>
+
+  <!-- datatables -->
+  <link href="{{ request.static_url('almir:static/datatables/bootstrap.css') }}" rel="stylesheet" type="text/css" />
+  <script src="{{ request.static_url('almir:static/datatables/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ request.static_url('almir:static/datatables/bootstrap.js') }}"></script>
+
+  <!-- deform -->
+  <link rel="stylesheet" href="{{ request.static_url('deform:static/css/form.css') }}" type="text/css" />
+  <script src="{{ request.static_url('deform:static/scripts/deform.js') }}"></script>
+  <script src="{{ request.static_url('deform:static/scripts/jquery.form.js') }}"></script>
+
+  <!-- main -->
+  <link rel="stylesheet/less" href="{{ request.static_url('almir:static/css/main.less') }}" type="text/css" media="screen" />
+  <script src="{{ request.static_url('almir:static/js/less-1.1.5.min.js') }}"></script>
+  <script src="{{ request.static_url('almir:static/js/main.js') }}"></script>
+
+  <script type="text/javascript">
+   var submit_delay_miliseconds = 2000;
+
+   function submitForm () {
+    console.log('submitted form');
+    $('form').submit();
+   }
+
+   $(function () {
+     deform.load();
+     $('form')
+       .data('timeout', null)
+       .keyup(function(){
+         clearTimeout($(this).data('timeout'));
+         jQuery(this).data('timeout', setTimeout(submitForm, submit_delay_miliseconds));
+       });
+     });
+  </script>
+</head>
+<body>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+       <a class="brand" href="{{ request.route_url('about') }}">Almir</a>
+       {% for item in navigation_tree %}
+        <ul class="nav">
+         <li class="{{ item.active_class }}"><a href="{{ item.url }}">{{  item.name  }}</a></li>
+        </ul>
+       {% endfor %}
+        <!-- TODO: v0.3
+        <form action="" class="pull-right">
+          <input class="input-small" type="text" placeholder="Username">
+          <input class="input-small" type="password" placeholder="Password">
+          <button class="btn" type="submit">Sign in</button>
+        </form>
+        -->
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+   <div class="row-fluid">
+    <div class="span3">
+     <div class="well">
+      {% block sidebar %}
+      {% endblock  %}
+     </div>
+    </div>
+
+    <div class="span9">
+      {% block content %}
+      {% endblock  %}
+    </div>
+
+   </div>
+   <hr />
+    <footer>
+      <p>&copy; Domen Kožar 2011</p>
+    </footer>
+  </div>
+</body>
+</html>

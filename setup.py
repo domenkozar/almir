@@ -11,6 +11,7 @@ requires = [
     'pyramid',
     'pyramid_tm',
     'pyramid_debugtoolbar',
+    'pyramid_jinja2',
     'colander',
     'deform',
     'WebHelpers',

@@ -34,6 +34,7 @@ def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application. """
     initialize_sql(settings)
     config = Configurator(settings=settings)
+    config.include('pyramid_jinja2')
 
     # events
     config.add_subscriber(filters, BeforeRender)
@@ -47,19 +48,19 @@ def main(global_config, **settings):
     config.add_route('dashboard', '/')
     config.add_view('almir.views.dashboard',
                     route_name='dashboard',
-                    renderer='templates/dashboard.pt')
+                    renderer='templates/dashboard.jinja2')
     config.add_route('about', '/about')
     config.add_view('almir.views.about',
                     route_name='about',
-                    renderer='templates/about.pt')
+                    renderer='templates/about.jinja2')
     config.add_route('log', '/log')
     config.add_view('almir.views.log',
                     route_name='log',
-                    renderer='templates/log.pt')
+                    renderer='templates/log.jinja2')
     config.add_route('console', '/console')
     config.add_view('almir.views.console',
                     route_name='console',
-                    renderer='templates/console.pt')
+                    renderer='templates/console.jinja2')
     config.add_route('console_ajax', '/console/ajax')
     config.add_view('almir.views.console_ajax',
                     route_name='console_ajax',
@@ -74,7 +75,7 @@ def main(global_config, **settings):
                 'almir.views.%sView' % name.title(),
                 route_name='%s_%s' % (name, action),
                 attr=action,
-                renderer='templates/%s_%s.pt' % (name, action),
+                renderer='templates/%s_%s.jinja2' % (name, action),
             )
 
     config.add_view(append_slash_notfound_view, context=HTTPNotFound)

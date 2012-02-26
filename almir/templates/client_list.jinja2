@@ -1,0 +1,28 @@
+{% extends "templates/base.jinja2" %}
+
+{% block content %}
+    <h1 class="view">Clients <small>view</small></h1>
+    <table class="table table-striped table-bordered datatables">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Last successful backup</th>
+                <th>Total backup size</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in objects %}
+                <tr class="clickable-row" data-link="{{ request.route_url('client_detail', id=client[0].clientid) }}">
+                    <td>{{ client.Client.name }}</td>
+                    <td>{{ distance_of_time_in_words(client.job_maxschedtime) }} ago</td>
+                    <td>{{ format_byte_size(float(client.job_sumvolbytes)) }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block sidebar %}
+    <h1>Filter</h1>
+    {{  form.render()|safe }}
+{% endblock %}

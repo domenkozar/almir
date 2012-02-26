@@ -1,0 +1,54 @@
+{% extends "templates/base.jinja2" %}
+
+{% block content %}
+    <h1 class="view">Client <small>{{  object.name  }}</small></h1>
+    <h2>Jobs</h2>
+    <table class="table table-striped table-bordered datatables">
+        <thead>
+            <tr>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+                <tr class="{{ class }} clickable-row" data-link="{{ request.route_url('job_detail', id=job.jobid) }}">
+                    <td>{{ job.name }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block sidebar %}
+    <h1 class="view">Details</h1>
+    <table class="table table-striped table-bordered table-condensed word-wrapped">
+        <tbody>
+            <tr>
+               <td>Platform:</td>
+               <td>{{ object.uname }}</td>
+           </tr>
+           <tr>
+               <td>Total size of backups:</td>
+               <td>{{ format_byte_size(float(total_size_backups)) }}</td>
+           </tr>
+           <tr>
+               <td>Last successful backup:</td>
+               {% if last_successful_job %}
+                   <td><a href="{{ request.route_url('job_detail', id=last_successful_job.jobid)  }}">{{  time_ago_in_words(last_successful_job.schedtime) }}</a></td>
+               {% endif %}
+           </tr>
+           <tr>
+               <td>File retention:</td>
+               <td>{{ distance_of_time_in_words(int(object.fileretention)) }}</td>
+           </tr>
+           <tr>
+               <td>Job retention:</td>
+               <td>{{ distance_of_time_in_words(int(object.jobretention)) }}</td>
+           </tr>
+           <tr>
+               <td>Auto prune:</td>
+               <td>{{ bool(object.autoprune) and 'Yes' or 'No' }}</td>
+           </tr>
+        </tbody>
+    </table>
+{% endblock %}
