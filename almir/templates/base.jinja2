@@ -72,6 +72,7 @@
 
   <div class="container-fluid">
    <div class="row-fluid">
+    {% block container %}
     <div class="span3">
      <div class="well">
       {% block sidebar %}
@@ -84,6 +85,7 @@
       {% endblock  %}
     </div>
 
+    {% endblock container %}
    </div>
    <hr />
     <footer>

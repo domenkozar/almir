@@ -2,7 +2,36 @@
 
 {% block content %}
     <h1 class="view">Volume <small>{{ object.volumename }}</small></h1>
-    <!-- jobs, etc -->
+    <!-- TODO: inherit from job details -->
+    <h2 class="view">Jobs <small>list</small></h2>
+    <table class="table table-bordered datatables">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Type</th>
+                <th>Level</th>
+                <th>Size</th>
+                <th>Files</th>
+                <th>Client</th>
+                <th>Started</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in object.jobs %}
+                <tr class="clickable-row {{ job.status_color }}" data-link="{{ request.route_url('job_detail', id=job.jobid) }}">
+                   <td>{{ job.name }}</td>
+                   <td>{{ job.status_name }}</td>
+                   <td>{{ job.type_name }}</td>
+                   <td>{{ job.level_name }}</td>
+                   <td>{{ macros.link(job.render_jobbytes(request)) }}</td>
+                   <td>{{ job.jobfiles }}</td>
+                   <td>{{ macros.link(job.render_client_name(request)) }}</td>
+                   <td>{{ macros.link(job.render_starttime(request)) }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
 
 {% block sidebar %}

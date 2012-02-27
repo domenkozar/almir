@@ -201,6 +201,7 @@ class Job(ModelMixin, Base):
         lazy="joined",
         primaryjoin="Job.volsessionid==Media.mediaid",
         foreign_keys="Job.volsessionid",
+        backref="jobs",
     )
 
     @classmethod
@@ -318,6 +319,7 @@ class Media(ModelMixin, Base):
         primaryjoin="Media.poolid==Pool.poolid",
         foreign_keys="Media.poolid",
         innerjoin=True,
+        backref="medias",
     )
 
     # TODO: mediatype
@@ -457,6 +459,24 @@ class Pool(ModelMixin, Base):
 
     def render_name(self, request):
         return {'text': self.name, 'href': self.url(request)}
+
+    def render_enabled(self, request):
+        return {'text': yesno(self.enabled)}
+
+    def render_usecatalog(self, request):
+        return {'text': yesno(self.usecatalog)}
+
+    def render_useonce(self, request):
+        return {'text': yesno(self.useonce)}
+
+    def render_recycle(self, request):
+        return {'text': yesno(self.recycle)}
+
+    def render_autoprune(self, request):
+        return {'text': yesno(self.autoprune)}
+
+    def render_acceptanyvolume(self, request):
+        return {'text': yesno(self.acceptanyvolume)}
 
 
 class FileSet(ModelMixin, Base):

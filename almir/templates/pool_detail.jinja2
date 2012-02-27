@@ -1,7 +1,32 @@
 {% extends "templates/base.jinja2" %}
 
 {% block content %}
-    <h1 class="view">Pool <small>{{  object.name  }}</small></h1>
+    <h1 class="view">Pool <small>{{ object.name }}</small></h1>
+
+    <!-- TODO: inherit this from volume list -->
+    <h2 class="view">Volumes <small>list</small></h2>
+    <table class="table table-striped table-bordered datatables">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Last written</th>
+                <th>Storage</th>
+                <th>Pool</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for media in object.medias %}
+                <tr class="clickable-row" data-link="{{ request.route_url('volume_detail', id=media.mediaid) }}">
+                    <td>{{ macros.link(media.render_volumename(request)) }}</td>
+                    <td>{{ macros.link(media.render_volbytes(request)) }}</td>
+                    <td>{{ media.lastwritten }}</td>
+                    <td>{{ macros.link(media.render_storage_name(request)) }}</td>
+                    <td>{{ macros.link(media.render_pool_name(request)) }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
 
 {% block sidebar %}
@@ -11,6 +36,62 @@
             <tr>
                 <td>Name:</td>
                 <td>{{ object.name }}</td>
+            </tr>
+            <tr>
+                <td>Enabled:</td>
+                <td>{{ macros.link(object.render_enabled(request)) }}</td>
+            </tr>
+            <tr>
+                <td>Type:</td>
+                <td>{{ object.pooltype }}</td>
+            </tr>
+            <tr>
+                <td>Use catalog:</td>
+                <td>{{ macros.link(object.render_usecatalog(request)) }}</td>
+            </tr>
+            <tr>
+                <td>Use once:</td>
+                <td>{{ macros.link(object.render_useonce(request)) }}</td>
+            </tr>
+            <tr>
+                <td>Recycle:</td>
+                <td>{{ macros.link(object.render_recycle(request)) }}</td>
+            </tr>
+            <tr>
+                <td>Auto prune:</td>
+                <td>{{ macros.link(object.render_autoprune(request)) }}</td>
+            </tr>
+            <tr>
+                <td>Accepts any volume:</td>
+                <td>{{ macros.link(object.render_acceptanyvolume(request)) }}</td>
+            </tr>
+            <tr>
+                <td>Number of volumes:</td>
+                <td>{{ object.numvols }}</td>
+            </tr>
+            <tr>
+                <td>Maximum volumes:</td>
+                <td>{{ object.maxvols }}</td>
+            </tr>
+            <tr>
+                <td>Maximum volume jobs:</td>
+                <td>{{ object.maxvoljobs }}</td>
+            </tr>
+            <tr>
+                <td>Maximum volume files:</td>
+                <td>{{ object.maxvolfiles }}</td>
+            </tr>
+            <tr>
+                <td>Maximum volume size:</td>
+                <td>{{ object.maxvolbytes }}</td>
+            </tr>
+            <tr>
+                <td>Volume retention:</td>
+                <td>{{ object.volretention }}</td>
+            </tr>
+            <tr>
+                <td>Volume use duration:</td>
+                <td>{{ object.voluseduration }}</td>
             </tr>
         </tbody>
     </table>
