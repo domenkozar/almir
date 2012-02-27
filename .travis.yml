@@ -7,7 +7,7 @@ install:
   - cp buildout.d/templates/buildout.cfg.in buildout.cfg
   - python bootstrap.py
   - bin/buildout
-script: nosetests
+script: bin/nosetests
 
 notifications:
   irc:
