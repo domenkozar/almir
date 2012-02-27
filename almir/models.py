@@ -419,31 +419,31 @@ class Pool(ModelMixin, Base):
     """
            Column       |   Type   |                       Modifiers
     --------------------+----------+-------------------------------------------------------
-     poolid             | integer  | not null default nextval('pool_poolid_seq'::regclass)
-     name               | text     | not null
-     numvols            | integer  | default 0
-     maxvols            | integer  | default 0
-     useonce            | smallint | default 0
-     usecatalog         | smallint | default 0
      acceptanyvolume    | smallint | default 0
-     volretention       | bigint   | default 0
-     voluseduration     | bigint   | default 0
-     maxvoljobs         | integer  | default 0
-     maxvolfiles        | integer  | default 0
-     maxvolbytes        | bigint   | default 0
-     autoprune          | smallint | default 0
-     recycle            | smallint | default 0
      actiononpurge      | smallint | default 0
-     pooltype           | text     |
-     labeltype          | integer  | default 0
-     labelformat        | text     | not null
+     autoprune          | smallint | default 0
      enabled            | smallint | default 1
-     scratchpoolid      | integer  | default 0
-     recyclepoolid      | integer  | default 0
-     nextpoolid         | integer  | default 0
+     labelformat        | text     | not null
+     labeltype          | integer  | default 0
+     maxvolbytes        | bigint   | default 0
+     maxvolfiles        | integer  | default 0
+     maxvoljobs         | integer  | default 0
+     maxvols            | integer  | default 0
      migrationhighbytes | bigint   | default 0
      migrationlowbytes  | bigint   | default 0
      migrationtime      | bigint   | default 0
+     name               | text     | not null
+     nextpoolid         | integer  | default 0
+     numvols            | integer  | default 0
+     poolid             | integer  | not null default nextval('pool_poolid_seq'::regclass)
+     pooltype           | text     |
+     recyclepoolid      | integer  | default 0
+     recycle            | smallint | default 0
+     scratchpoolid      | integer  | default 0
+     usecatalog         | smallint | default 0
+     useonce            | smallint | default 0
+     volretention       | bigint   | default 0
+     voluseduration     | bigint   | default 0
 
     Indexes:
         "pool_pkey" PRIMARY KEY, btree (poolid)
@@ -535,4 +535,5 @@ class File(ModelMixin, Base):
         innerjoin=True,
     )
 
-    # TODO: pathvisibility, pathhierarchy
+    # TODO: pathvisibility: size and number of files in directory
+    # TODO: pathhierarchy: parent-child relationship with paths
