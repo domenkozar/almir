@@ -1,19 +1,25 @@
 Tickets are somewhat prioritized starting with most important:
 
-FEATURE: setup jenkins
-FEATURE: nosexcover tests
-FEATURE: sphinx documentation
-FEATURE: model attributes as self.render_<name>: use defaults and formatting there
-FEATURE: implement stateful console sessions (gevent greenlets)
-BUG: use datatime format for sqlite http://docs.sqlalchemy.org/en/latest/dialects/sqlite.html#sqlalchemy.dialects.sqlite.DATETIME
 BUG: sort jobs by started date by default
 BUG: sort size correctly (MB, GB...)
 BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
 BUG: timezones: if I start a job on dreamy, almir will says it started on hour ago
+BUG: get forms working
+FEATURE: implement stateful console sessions (gevent greenlets)
+FEATURE: setup jenkins
+FEATURE: nosexcover tests
+FEATURE: sphinx documentation:
+    * overview
+    * screenshots
+    * design goals
+    * installation
+    * quickstart
+FEATURE: deform_bootstrap
 FEATURE: use https://github.com/mozilla-services/cornice
 FEATURE: migrate to delcarative configuration (scan)
 FEATURE: pyramid_exclog + sentry
 FEATURE: community links, donate button
 FEATURE: feedback/report a problem
+FEATURE: robot framework (console)
 IDEAS: CSRF?
 IDEAS: switch to AFFERO licence (from GPL?)
