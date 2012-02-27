@@ -23,7 +23,7 @@ requires = [
     'waitress',
     # postgres
     'pg8000',
-    'psycogreen',  # TODO: mysql+gevent?
+#    'psycogreen',  # TODO: mysql+gevent?
 ]
 
 if sys.version_info[:3] < (2, 5, 0):
