@@ -15,11 +15,11 @@
         <tbody>
             {% for media in objects %}
                 <tr class="clickable-row" data-link="{{ request.route_url('volume_detail', id=media.mediaid) }}">
-                    <td>{{ media.volumename }}</td>
-                    <td>{{ format_byte_size(media.volbytes) }}</td>
+                    <td>{{ macros.link(media.render_volumename(request)) }}</td>
+                    <td>{{ macros.link(media.render_volbytes(request)) }}</td>
                     <td>{{ media.lastwritten }}</td>
-                    <td>{{ media.storage.name }}</td>
-                    <td>{{ media.pool.name }}</td>
+                    <td>{{ macros.link(media.render_storage_name(request)) }}</td>
+                    <td>{{ macros.link(media.render_pool_name(request)) }}</td>
                 </tr>
             {% endfor %}
         </tbody>

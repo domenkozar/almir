@@ -8,11 +8,8 @@ from sqlalchemy.sql import functions as func
 
 from almir.meta import Base, ModelMixin, DBSession
 from almir.lib.sqlalchemy_custom_types import BaculaDateTime
-from almir.lib.filters import nl2br, distance_of_time_in_words, time_ago_in_words, format_byte_size, yesno
+from almir.lib.filters import nl2br, distance_of_time_in_words, time_ago_in_words, yesno
 
-
-# TODO: explicitly define datetime type columns for sqlite
-RENDER_DEFAULT = '/'
 
 # defined in bacula/src/plugins/fd/fd_common.h
 # TODO: parse with script
@@ -60,12 +57,13 @@ class Client(ModelMixin, Base):
 
     @classmethod
     def object_detail(cls, id_):
+        id_ = int(id_)
         d = super(Client, cls).object_detail(id_)
         d.update({
             'jobs': Job.query.filter(Job.clientid == id_).order_by(desc(Job.schedtime)).limit(50),
             # TODO: catch jobs that actually transfered something?
             'last_successful_job': Job.query.filter(Job.clientid == id_).order_by(desc(Job.schedtime)).filter(Status.jobstatus == 'T').first(),
-            'total_size_backups': format_byte_size(Job.query.with_entities(func.sum(Job.jobbytes)).filter(Job.clientid == id_).scalar()),
+            'total_size_backups': cls.format_byte_size(Job.query.with_entities(func.sum(Job.jobbytes)).filter(Job.clientid == id_).scalar()),
         })
         return d
 
@@ -213,6 +211,7 @@ class Job(ModelMixin, Base):
 
     @classmethod
     def object_detail(cls, id_):
+        id_ = int(id_)
         d = super(Job, cls).object_detail(id_)
         d['logs'] = Log.query.filter(Log.jobid == id_).order_by(desc(Log.time)).all()
         d['files'] = File.query.filter(File.jobid == id_).all()
@@ -238,7 +237,7 @@ class Job(ModelMixin, Base):
         return {'text': distance_of_time_in_words(self.starttime, self.endtime)}
 
     def render_jobbytes(self, request):
-        return {'text': format_byte_size(float(self.jobbytes))}
+        return {'text': self.format_byte_size(self.jobbytes)}
 
     def render_starttime(self, request):
         if self.starttime:
@@ -330,16 +329,16 @@ class Media(ModelMixin, Base):
         return {'text': self.volumename, 'href': self.url(request)}
 
     def render_volcapacitybytes(self, request):
-        return {'text': format_byte_size(self.volcapacitybytes)}
+        return {'text': self.format_byte_size(self.volcapacitybytes)}
 
     def render_volbytes(self, request):
-        return {'text': format_byte_size(self.volbytes)}
+        return {'text': self.format_byte_size(self.volbytes)}
 
     def render_maxvolbytes(self, request):
-        return {'text': format_byte_size(self.maxvolbytes)}
+        return {'text': self.format_byte_size(self.maxvolbytes)}
 
     def render_volretention(self, request):
-        return {'text': format_byte_size(self.volretention)}
+        return {'text': self.format_byte_size(self.volretention)}
 
     def render_storage_name(self, request):
         if self.storage:
@@ -404,6 +403,7 @@ class Log(ModelMixin, Base):
      jobid   | integer                     | not null
      time    | timestamp without time zone |
      logtext | text                        | not null
+
     Indexes:
         "log_pkey" PRIMARY KEY, btree (logid)
         "log_name_idx" btree (jobid)

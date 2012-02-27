@@ -15,6 +15,7 @@ from zope.sqlalchemy import ZopeTransactionExtension
 
 from almir.lib.sqlalchemy_declarative_reflection import DeclarativeReflectedBase
 from almir.lib.sqlalchemy_lowercase_inspector import LowerCaseInspector
+from almir.lib.filters import format_byte_size
 
 
 log = logging.getLogger(__name__)
@@ -41,11 +42,16 @@ class ModelMixin(object):
 
     @classmethod
     def object_detail(cls, id_):
-        obj = cls.query.get(id_)
+        obj = cls.query.get(int(id_))
         if obj == None:
             raise exception_response(404)
         else:
             return {'object': obj}
+
+    @staticmethod
+    def format_byte_size(size):
+        # we use float since postgres driver will return decimal
+        return format_byte_size(float(size))
 
 
 def initialize_sql(settings):
@@ -53,10 +59,7 @@ def initialize_sql(settings):
     # TODO: move to post_fork of gunicorn hook
     #make_psycopg_green()
 
-    kw = {}
-    if 'postgres' in settings.get('sqlalchemy.url', ''):
-        kw['client_encoding'] = 'utf8'
-    engine = engine_from_config(settings, prefix='sqlalchemy.', **kw)
+    engine = engine_from_config(settings, prefix='sqlalchemy.')
 
     # monkey patch inspector to reflect lowercase tables/columns since sqlite has mixed case
     # while postgres has lowercase tables/columns

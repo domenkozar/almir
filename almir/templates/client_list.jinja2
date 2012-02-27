@@ -15,7 +15,7 @@
                 <tr class="clickable-row" data-link="{{ request.route_url('client_detail', id=object.Client.clientid) }}">
                     <td>{{ object.Client.name }}</td>
                     <td>{{ distance_of_time_in_words(object.job_maxschedtime) }} ago</td>
-                    <td>{{ format_byte_size(object.job_sumvolbytes) }}</td>
+                    <td>{{ object.Client.format_byte_size(object.job_sumvolbytes) }}</td>
                 </tr>
             {% endfor %}
         </tbody>

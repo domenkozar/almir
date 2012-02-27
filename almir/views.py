@@ -20,7 +20,7 @@ def dashboard(request):
     num_clients = dbsession.query(Client).count() or 0
     num_jobs = dbsession.query(Job).count() or 0
     num_media = dbsession.query(Media).count() or 0
-    sum_volumes = dbsession.query(sum(Media.volbytes)).scalar() or 0
+    sum_volumes = Media.format_byte_size(dbsession.query(sum(Media.volbytes)).scalar() or 0)
     now = datetime.now()
     return locals()
 

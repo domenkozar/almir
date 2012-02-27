@@ -22,7 +22,7 @@ requires = [
     'gunicorn',
     'waitress',
     # postgres
-    'psycopg2',
+    'pg8000',
     'psycogreen',  # TODO: mysql+gevent?
 ]
 
