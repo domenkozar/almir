@@ -53,7 +53,7 @@ setup(name='almir',
       main = almir:main
 
       [console_scripts]
-      parse_console_commands = almir.scripts.parse_console_commands:main
+      almir_parse_console_commands = almir.scripts.parse_console_commands:main
       """,
       paster_plugins=['pyramid'],
       extras_require={
