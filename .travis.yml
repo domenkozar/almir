@@ -4,6 +4,7 @@ python:
   - 2.7
 install:
   - sudo apt-get install libevent-dev git gcc python-dev
+  - cp buildout.d/templates/buildout.cfg.in buildout.cfg
   - python bootstrap.py
   - bin/buildout
 script: nosetests
