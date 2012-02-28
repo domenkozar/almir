@@ -15,10 +15,10 @@ def navigation_tree(event):
         dict(name="Dashboard", url=request.route_url('dashboard')),
         dict(name="Clients", url=request.route_url('client_list')),
         # TODO: does this make sense? dict(name="FileSets", url=request.route_url('fileset_list')),
-        dict(name="Storages", url=request.route_url('storage_list')),
         dict(name="Jobs", url=request.route_url('job_list')),
         dict(name="Volumes", url=request.route_url('volume_list')),
         dict(name="Pools", url=request.route_url('pool_list')),
+        dict(name="Storages", url=request.route_url('storage_list')),
         dict(name="Logs", url=request.route_url('log')),
         dict(name="Console", url=request.route_url('console')),
     ]
