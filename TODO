@@ -1,5 +1,6 @@
 Tickets are somewhat prioritized starting with most important:
 
+v0.1
 BUG: sort jobs by started date by default
 BUG: sort size correctly (MB, GB...)
 BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
@@ -16,15 +17,22 @@ FEATURE: sphinx documentation:
     * quickstart
 FEATURE: migrate to delcarative configuration (scan)
 FEATURE: use https://github.com/mozilla-services/cornice
-FEATURE: pyramid_exclog + sentry
+FEATURE: pyramid_exclog (+ sentry)
 FEATURE: community links, donate button
-FEATURE: feedback/report a problem
 FEATURE: deform_bootstrap
-FEATURE: robot framework (console)
+FEATURE: robot framework / travis-ci js lib?
+FEATURE: install alternatives and compare
+FEATURE: quickstart landing page
 IDEAS: CSRF?
 IDEAS: switch to AFFERO licence (from GPL?)
+IDEAS: convention volumes vs. medias
 
 
 V0.2
 FEATURE: inline documentation for data from database
-BUG: configurable datetime formatting
+FEATURE: director actions through dropdown menu
+FEATURE: configurable datetime formatting
+
+
+FUTURE: multiple directors
+FUTURE: graph reports
