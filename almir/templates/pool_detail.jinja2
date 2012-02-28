@@ -3,30 +3,8 @@
 {% block content %}
     <h1 class="view">Pool <small>{{ object.name }}</small></h1>
 
-    <!-- TODO: inherit this from volume list -->
     <h2 class="view">Volumes <small>list</small></h2>
-    <table class="table table-striped table-bordered datatables">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Size</th>
-                <th>Last written</th>
-                <th>Storage</th>
-                <th>Pool</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for media in object.medias %}
-                <tr class="clickable-row" data-link="{{ request.route_url('volume_detail', id=media.mediaid) }}">
-                    <td>{{ macros.link(media.render_volumename(request)) }}</td>
-                    <td>{{ macros.link(media.render_volbytes(request)) }}</td>
-                    <td>{{ media.lastwritten }}</td>
-                    <td>{{ macros.link(media.render_storage_name(request)) }}</td>
-                    <td>{{ macros.link(media.render_pool_name(request)) }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {{ macros.volumes_table(request, object.medias) }}
 {% endblock %}
 
 {% block sidebar %}

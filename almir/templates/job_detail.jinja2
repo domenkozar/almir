@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1 class="view">Job <small>{{ object.name }}</small></h1>
+
     <h2 class="view">Files <small>{{ object.jobfiles }} total</small></h2>
     <table class="table table-striped table-bordered datatables">
         <thead>
@@ -21,22 +22,7 @@
     </table>
 
     <h2 class="view">Log</h2>
-    <table class="table table-striped table-bordered datatables">
-        <thead>
-            <tr>
-                <th>Time</th>
-                <th>Message</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for log in logs %}
-                <tr>
-                    <td>{{ log.time }}</td>
-                    <td>{{ macros.link(log.render_logtext(request)) }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {{ macros.logs_table(request, logs, show_jobid=False) }}
 {% endblock %}
 
 {% block sidebar %}

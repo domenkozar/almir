@@ -7,3 +7,80 @@
         /
     {% endif %}
 {%- endmacro %}
+
+{% macro jobs_table(request, jobs) -%}
+    <table class="table table-bordered datatables">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Type</th>
+                <th>Level</th>
+                <th>Client</th>
+                <th>Started</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+                <tr class="clickable-row {{ job.status_color }}" data-link="{{ request.route_url('job_detail', id=job.jobid) }}">
+                    <td>{{ job.name }}</td>
+                    <td>{{ job.status_name }}</td>
+                    <td>{{ job.type_name }}</td>
+                    <td>{{ job.level_name }}</td>
+                    <td>{{ link(job.render_client_name(request)) }}</td>
+                    <td>{{ link(job.render_starttime(request)) }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{%- endmacro %}
+
+{% macro volumes_table(request, volumes) -%}
+    <table class="table table-striped table-bordered datatables">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Last written</th>
+                <th>Storage</th>
+                <th>Pool</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for media in volumes %}
+                <tr class="clickable-row" data-link="{{ request.route_url('volume_detail', id=media.mediaid) }}">
+                    <td>{{ link(media.render_volumename(request)) }}</td>
+                    <td>{{ link(media.render_volbytes(request)) }}</td>
+                    <td>{{ media.lastwritten }}</td>
+                    <td>{{ link(media.render_storage_name(request)) }}</td>
+                    <td>{{ link(media.render_pool_name(request)) }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{%- endmacro %}
+
+{% macro logs_table(request, logs, show_jobid=True) -%}
+    <table class="table table-striped table-bordered datatables">
+        <thead>
+            <tr>
+                {% if show_jobid %}
+                <th>Job</th>
+                {% endif %}
+                <th>Time</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+                <tr class="clickable-row" data-link="{{ request.route_url('job_detail', id=log.jobid) }}">
+                    {% if show_jobid %}
+                    <td>{{ log.jobid }}</td>
+                    {% endif %}
+                    <td>{{ log.time }}</td>
+                    <td>{{ link(log.render_logtext(request)) }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+     </table>
+{%- endmacro %}

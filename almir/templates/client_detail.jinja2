@@ -3,20 +3,7 @@
 {% block content %}
     <h1 class="view">Client <small>{{ object.name }}</small></h1>
     <h2>Jobs</h2>
-    <table class="table table-striped table-bordered datatables">
-        <thead>
-            <tr>
-                <th>Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for job in jobs %}
-                <tr class="{{ class }} clickable-row" data-link="{{ request.route_url('job_detail', id=job.jobid) }}">
-                    <td>{{ job.name }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {{ macros.jobs_table(request,jobs) }}
 {% endblock %}
 
 {% block sidebar %}

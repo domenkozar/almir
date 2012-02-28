@@ -3,23 +3,6 @@
 {% block container %}
     <div class="span12">
         <h1 class="view">Log <small>view</small></h1>
-        <table class="table table-striped table-bordered datatables">
-            <thead>
-                <tr>
-                    <th>Job</th>
-                    <th>Time</th>
-                    <th>Message</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for log in logs %}
-                    <tr class="clickable-row" data-link="{{ request.route_url('job_detail', id=log.jobid) }}">
-                        <td>{{ log.jobid }}</td>
-                        <td>{{ log.time }}</td>
-                        <td>{{ macros.link(log.render_logtext(request)) }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-         </table>
+        {{ macros.logs_table(request, logs) }}
     </div>
 {% endblock %}
