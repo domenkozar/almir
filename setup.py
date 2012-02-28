@@ -18,12 +18,10 @@ requires = [
     'transaction',
     'SQLAlchemy',
     'zope.sqlalchemy',
-    'gevent',  # http://michael.merickel.org/2011/6/21/tictactoe-and-long-polling-with-pyramid/
     'gunicorn',
     'waitress',
-    # postgres
-    'pg8000',
-#    'psycogreen',  # TODO: mysql+gevent?
+    'gevent',  # http://michael.merickel.org/2011/6/21/tictactoe-and-long-polling-with-pyramid/
+    'pg8000',  # postgres
 ]
 
 if sys.version_info[:3] < (2, 5, 0):

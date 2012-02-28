@@ -5,7 +5,6 @@ import hashlib
 import sqlite3
 
 from pyramid.httpexceptions import exception_response
-#from psycogreen.gevent.psyco_gevent import make_psycopg_green
 from sqlalchemy import engine_from_config
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.declarative import declared_attr
@@ -56,8 +55,6 @@ class ModelMixin(object):
 
 def initialize_sql(settings):
     import almir.models
-    # TODO: move to post_fork of gunicorn hook
-    #make_psycopg_green()
 
     engine = engine_from_config(settings, prefix='sqlalchemy.')
 

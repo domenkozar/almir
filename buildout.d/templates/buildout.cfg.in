@@ -3,4 +3,5 @@ extends = buildout.d/development.cfg
 
 [development.ini]
 sqla_engine_url = sqlite:///%(here)s/bacula_kaki.db
-#sqla_engine_url = postgresql+pg8000://username:password@hostname:port/
+#sqla_engine_url = postgresql+pg8000://<user>:<password>@hostname/<database>
+#sqla_engine_url = mysql+mysqlconnector://<user>:<password>@hostname/<database>
