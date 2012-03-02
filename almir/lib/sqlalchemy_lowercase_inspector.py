@@ -17,6 +17,7 @@ class LowerCaseInspector(Inspector):
             column['name'] = column['name'].lower()
             return column
 
+        # TODO: this should be fixed with custom datetime type
         print 'skipping column initialwrite since it gives trouble on sqlite (default as 0 while its datatime type)'
         columns = filter(lambda x: x['name'].lower() != 'initialwrite' ,columns)
         return map(lower_case, columns)

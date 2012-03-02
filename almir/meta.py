@@ -54,6 +54,7 @@ class ModelMixin(object):
 
 
 def initialize_sql(settings):
+    # make sure metadata is populated
     import almir.models
 
     engine = engine_from_config(settings, prefix='sqlalchemy.')

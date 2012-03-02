@@ -95,15 +95,3 @@ $.extend($.fn.dataTableExt.oPagination, {
 		}
 	}
 } );
-
-/* Table initialisation: http://datatables.net/usage/options */
-$(document).ready(function() {
-	$('.datatables').dataTable({
-		"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-		"sPaginationType": "bootstrap",
-		"oLanguage": {
-			"sLengthMenu": "_MENU_ per page"
-		},
-		"iDisplayLength": 50
-	});
-});
