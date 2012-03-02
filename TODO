@@ -6,8 +6,10 @@ BUG: sort size correctly (MB, GB...)
 BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
 BUG: timezones: if I start a job on dreamy, almir will says it started on hour ago
 BUG: get forms working
+BUG: sqlite: datetime with default 0, BIGINT/TINYINT handling
+BUG: get metadata caching to work
 FEATURE: implement size calculation of the file
-FEATURE: implement stateful console sessions (gevent greenlets)
+FEATURE: job needs total size information
 FEATURE: tests for sqlite, postgresql, mysql
 FEATURE: sphinx documentation:
     * overview
@@ -16,9 +18,10 @@ FEATURE: sphinx documentation:
     * installation
     * quickstart
 FEATURE: migrate to delcarative configuration (scan)
+FEATURE: scheduled jobs
 FEATURE: use https://github.com/mozilla-services/cornice
 FEATURE: pyramid_exclog (+ sentry)
-FEATURE: community links, donate button
+FEATURE: community links, donate button+flattr
 FEATURE: deform_bootstrap
 FEATURE: robot framework / travis-ci js lib?
 FEATURE: install alternatives and compare
