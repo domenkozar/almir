@@ -34,6 +34,7 @@ def about(request):
 
 
 def console(request):
+    # TODO: do all checks if console is working
     permission_problem = False
     command_array = ','.join(['"%s"' % name for name in CONSOLE_COMMANDS.keys()])
     console_commands = CONSOLE_COMMANDS
@@ -120,12 +121,12 @@ def ajax_console_input(request):
     # TODO: thread locking
     # TODO: implement session based on cookie
     # TODO: stderr?
+    # TODO: config file could be set with buildout
 
     if not request.POST['bconsole_command'] and bconsole_session is not None:
         return {"commands": list(command_cache)}
 
     if bconsole_session is None:
-        bconsole_command = 'bconsole -n'
         bconsole_session = subprocess.Popen(['bconsole', '-n'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
     if request.POST['bconsole_command']:
