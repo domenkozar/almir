@@ -8,7 +8,6 @@ BUG: timezones: if I start a job on dreamy, almir will says it started on hour a
 BUG: get forms working
 BUG: sqlite: datetime with default 0, BIGINT/TINYINT handling
 BUG: get metadata caching to work
-FEATURE: implement size calculation of the file
 FEATURE: tests for sqlite, postgresql, mysql
 FEATURE: sphinx documentation:
     * overview

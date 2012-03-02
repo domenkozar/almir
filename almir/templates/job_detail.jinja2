@@ -15,7 +15,7 @@
             {% for file in files %}
                 <tr>
                     <td>{{ file.path.path }}{{ file.filename.name }}</td>
-                    <td>{ file.lstat }</td>
+                    <td>{{ macros.link(file.render_size(request)) }}</td>
                 </tr>
             {% endfor %}
         </tbody>

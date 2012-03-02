@@ -9,6 +9,7 @@ from sqlalchemy.sql import functions as func
 from almir.meta import Base, ModelMixin, DBSession
 from almir.lib.sqlalchemy_custom_types import BaculaDateTime
 from almir.lib.filters import nl2br, distance_of_time_in_words, time_ago_in_words, yesno
+from almir.lib.bacula_base64 import decode_base64
 
 
 # defined in bacula/src/plugins/fd/fd_common.h
@@ -554,6 +555,9 @@ class File(ModelMixin, Base):
         foreign_keys="File.pathid",
         innerjoin=True,
     )
+
+    def render_size(self, request):
+        return {'text': self.format_byte_size(decode_base64(self.lstat.split()[7]))}
 
     # TODO: pathvisibility: size and number of files in directory
     # TODO: pathhierarchy: parent-child relationship with paths
