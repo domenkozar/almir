@@ -61,8 +61,8 @@ def main(global_config, **settings):
     config.add_view('almir.views.console',
                     route_name='console',
                     renderer='templates/console.jinja2')
-    config.add_route('console_ajax', '/console/ajax')
-    config.add_view('almir.views.console_ajax',
+    config.add_route('console_ajax', '/console/input/')
+    config.add_view('almir.views.ajax_console_input',
                     route_name='console_ajax',
                     renderer='json',
                     request_method='POST')

@@ -21,7 +21,6 @@ requires = [
     'zope.sqlalchemy',
     'gunicorn',
     'waitress',
-    'gevent',  # http://michael.merickel.org/2011/6/21/tictactoe-and-long-polling-with-pyramid/
     'pg8000',  # postgres
     'mysql-connector',
 ]

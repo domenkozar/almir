@@ -1,75 +1,127 @@
-$(function () {
-  // global
-  var linkable_rows = $('tr[data-link]');
+function send_command (e, force_command) {
+    var $console = $('#console'),
+        $command = $('#command'),
+        lines,
+        bconsole_text = $command.val();
 
-  // make datatables rows clickable by provided link
-  linkable_rows.click(function (e) {
-    window.location = $(e.target).parent('tr').attr('data-link');
-  });
-
-  // console.pt
-  function send_command (e) {
-      var console = $('#console'),
-          command = $('#command'),
-          bconsole_text = command.text();
-
-      if (!(e.which == 1 || e.which == 13)) {
+    if (e.which == 27) {
+        $command.val('');
         return null;
-      }
+    }
 
-      $.ajax({
-        url: bconsole_url,
-        dataType: 'json',
-        type: 'POST',
-        data: {
-          bconsole_command: bconsole_text
-        },
-        success: function (data, textStatus, jqXHR) {
-          console.append('<span class="stdout">' + data.stdout + '</span>');
-          console.append('<span class="stderr">'+ data.stderr + '</span>');
-          console.scrollTop(
-            console[0].scrollHeight - console.height()
-          );
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-          console.log(jqXHR, textStatus);
+    if (!(e.which == 1 || e.which == 13)) {
+        return null;
+    }
+    
+    if (force_command !== true && !bconsole_text) {
+        return null;
+    }
+    // clear command line to mimic console
+    // TODO: does not work since typeahead will repopulate it
+    $command.val('');
+
+    $.ajax({
+      url: '/console/input/',
+      dataType: 'json',
+      type: 'POST',
+      data: {
+        bconsole_command: bconsole_text
+      },
+      success: function (data, textStatus, jqXHR) {
+        console.log(data.commands);
+        if (data.commands) {
+            $.each(data.commands, function(index, value) {
+                // prettyfy first line, which is the command
+                lines = value.split('<br />');
+                lines[0] = '<strong>&gt;&gt;&gt; ' + lines[0] + '</strong>';
+                value = lines.join('<br />');
+                $console.append($('<pre>' + value + '</pre'));
+            });
+
+            // scroll nicely to the bottom of text
+            $console.animate({scrollTop: $console.prop("scrollHeight") - $console.height() }, 300);
         }
-      });
-  }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert(textStatus);
+      }
+    });
+}
 
-  $('#command_help tr').popover();
-  $('#command').popover({
-    placement: 'left',
-    trigger: 'manual'
-  })
+$(function () {
+    /* make datatables rows clickable by provided link */
+    $('tr[data-link]').click(function (e) {
+        window.location = $(e.target).parent('tr').attr('data-link');
+    });
 
-  setInterval(function () {
-    var command = $('#command').val(),
-        title;
+    /* datatables initialisation: http://datatables.net/usage/options */
+    $('.datatables').dataTable({
+        "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+        "sPaginationType": "bootstrap",
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ per page"
+        },
+        "iDisplayLength": 50,
+        "aoColumnDefs": [
+            {aTargets: ["size"], sType: "file-size"}
+      
+        ],
+    });
+    $('#command_help').dataTable({
+        "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'>",
+        "iDisplayLength": 200
+    });
 
-    if (!command) {
-       $('#command').popover('hide').data('last-command', "");
-       return
-    }
+    // -- console.pt
 
-    // only change popup if we have new command
-    if ($('#command').data('last-command') == command) { return; }
+    // calculate height of console
+    var window_height = $(window).height(),
+        console_offset = $('#console').offset().top,
+        command_height = $('#command').parents('.row-fluid').height() + 100,
+        console_height = window_height - console_offset - command_height;
+    $('#console').height(console_height);
 
-  
-    title = $('#command_help tr').filter(function () {
-      var current_command = $(this).find('td:first').text(),
-          rgp = new RegExp('^' + command + '$');
-      return rgp.test(current_command)
-    }).attr('data-content');
+    // enable popovers
+    $('#command_help tr').popover();
+    $('#command').popover({
+        placement: 'left',
+        trigger: 'manual'
+    })
 
-    if (title) {
-        $('#command').attr('data-content', title)
-          .attr('data-original-title', "Parameters for " + command)
-          .popover('show').data('last-command', command);
-    }
-  }, 100);
+    // every 100ms check command input and display help if apropriate
+    setInterval(function () {
+        var command = $('#command').val(),
+            title;
 
-  // TODO: we will have to reimplement this with comet technology (gevent), does not work currently
-  $('#command_btn').bind('click', send_command);
-  $('#command').bind('keyup', send_command);
+        // when there is no input, hide popover
+        if (!command) {
+             $('#command').popover('hide').data('last-command', "");
+             return
+        }
+
+        // only change popup if we have new command
+        if ($('#command').data('last-command') == command) {
+            return;
+        }
+
+        // match command title to list of help commands
+        title = $('#command_help tr').filter(function () {
+            var current_command = $(this).find('td:first').text(),
+                rgp = new RegExp('^' + command + '$');
+            return rgp.test(current_command)
+        }).attr('data-content');
+
+        // if we have a match, display popover
+        if (title) {
+            $('#command').attr('data-content', title)
+                .attr('data-original-title', "Parameters for " + command)
+                .popover('show').data('last-command', command);
+          }
+    }, 100);
+
+    $('#command-btn').bind('click', send_command);
+    $('#command').bind('keyup', send_command);
+
+    // connect to director right away
+    send_command({which: 1}, true);
 });

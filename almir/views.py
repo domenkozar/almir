@@ -1,4 +1,9 @@
 from datetime import datetime
+import subprocess
+import collections
+import fcntl
+import select
+import os
 
 from deform import Form
 from sqlalchemy.sql.expression import desc
@@ -7,7 +12,6 @@ from sqlalchemy.sql.functions import sum, count
 from almir.meta import DBSession
 from almir.models import Job, Client, Log, Media, Storage, Pool
 from almir.forms import *
-from almir.lib.bconsole import BConsole
 from almir.lib.filters import nl2br
 from almir.lib.console_commands import CONSOLE_COMMANDS
 
@@ -34,15 +38,6 @@ def console(request):
     command_array = ','.join(['"%s"' % name for name in CONSOLE_COMMANDS.keys()])
     console_commands = CONSOLE_COMMANDS
     return locals()
-
-
-def console_ajax(request):
-    b = BConsole()
-    stdout, stderr = b.run_command(request.POST['bconsole_command'].strip())
-    return {
-        "stdout": nl2br(stdout),
-        "stderr": nl2br(stderr),
-    }
 
 
 def log(request):
@@ -114,3 +109,42 @@ class VolumeView(MixinView):
 class PoolView(MixinView):
     model = Pool
     form = LogPoolSchema
+
+
+bconsole_session = None
+command_cache = collections.deque(maxlen=10)
+
+def ajax_console_input(request):
+    global bconsole_session
+    # TODO: if status for client is requested, it might timeout after few seconds, but not 0.5
+    # TODO: thread locking
+    # TODO: implement session based on cookie
+    # TODO: stderr?
+
+    if not request.POST['bconsole_command'] and bconsole_session is not None:
+        return {"commands": list(command_cache)}
+
+    if bconsole_session is None:
+        bconsole_command = 'bconsole -n'
+        bconsole_session = subprocess.Popen(['bconsole', '-n'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+
+    if request.POST['bconsole_command']:
+        bconsole_session.stdin.write(request.POST['bconsole_command'].strip()+'\n')
+
+    fp = bconsole_session.stdout.fileno()
+    flags = fcntl.fcntl(fp, fcntl.F_GETFL)
+    fcntl.fcntl(fp, fcntl.F_SETFL, flags | os.O_NONBLOCK)
+
+    output = ''
+
+    while 1:
+        [i, o, e] = select.select([fp], [], [], 1)
+        if i:
+            output += bconsole_session.stdout.read(1000)
+        else:
+            output = nl2br(output)
+            command_cache.append(output)
+
+            return {
+                "commands": [output]
+            }
