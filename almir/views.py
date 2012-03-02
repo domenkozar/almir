@@ -122,16 +122,21 @@ def ajax_console_input(request):
     # TODO: implement session based on cookie
     # TODO: stderr?
     # TODO: config file could be set with buildout
+    # TODO: tests
 
+    # if we have a session with no entered commands, just return last 10 commands
     if not request.POST['bconsole_command'] and bconsole_session is not None:
         return {"commands": list(command_cache)}
 
+    # start bconsole session if it's not initialized
     if bconsole_session is None:
         bconsole_session = subprocess.Popen(['bconsole', '-n'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
 
+    # send bconsole command
     if request.POST['bconsole_command']:
         bconsole_session.stdin.write(request.POST['bconsole_command'].strip()+'\n')
 
+    # make stdout fileobject nonblockable
     fp = bconsole_session.stdout.fileno()
     flags = fcntl.fcntl(fp, fcntl.F_GETFL)
     fcntl.fcntl(fp, fcntl.F_SETFL, flags | os.O_NONBLOCK)
@@ -139,10 +144,13 @@ def ajax_console_input(request):
     output = ''
 
     while 1:
+        # wait for data or timeout
         [i, o, e] = select.select([fp], [], [], 1)
         if i:
+            # we have more data
             output += bconsole_session.stdout.read(1000)
         else:
+            # we have a timeout
             output = nl2br(output)
             command_cache.append(output)
 

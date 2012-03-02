@@ -16,6 +16,8 @@
                 <th>Status</th>
                 <th>Type</th>
                 <th>Level</th>
+                <th>Files</th>
+                <th>Size</th>
                 <th>Client</th>
                 <th>Started</th>
             </tr>
@@ -27,6 +29,8 @@
                     <td>{{ job.status_name }}</td>
                     <td>{{ job.type_name }}</td>
                     <td>{{ job.level_name }}</td>
+                    <td>{{ job.jobfiles }}</td>
+                    <td>{{ link(job.render_jobbytes(request)) }}</td>
                     <td>{{ link(job.render_client_name(request)) }}</td>
                     <td>{{ link(job.render_starttime(request)) }}</td>
                 </tr>
