@@ -1,7 +1,7 @@
 {% macro link(options) -%}
     {% if options.href %}
         <a href="{{ options.href }}">{{ options.text }}</a>
-    {% elif options.text %}
+    {% elif options.text != None %}
         {{ options.text }}
     {% else %}
         /

@@ -9,6 +9,9 @@
             <tr>
                 <th>Filename</th>
                 <th>Size</th>
+                <th>Mode</th>
+                <th>UID</th>
+                <th>GID</th>
         </tr>
         </thead>
         <tbody>
@@ -16,6 +19,9 @@
                 <tr>
                     <td>{{ file.path.path }}{{ file.filename.name }}</td>
                     <td>{{ macros.link(file.render_size(request)) }}</td>
+                    <td>{{ macros.link(file.render_mode(request)) }}</td>
+                    <td>{{ macros.link(file.render_uid(request)) }}</td>
+                    <td>{{ macros.link(file.render_gid(request)) }}</td>
                 </tr>
             {% endfor %}
         </tbody>

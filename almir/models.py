@@ -1,5 +1,6 @@
 """Models generated from bacula-dir-postgresql 5.0.2"""
 import datetime
+import stat
 
 from jinja2 import Markup
 from sqlalchemy.orm import relationship
@@ -556,8 +557,29 @@ class File(ModelMixin, Base):
         innerjoin=True,
     )
 
+    # lstat: http://docs.python.org/library/os.html?highlight=lstat#os.stat
+    # dev    ino      mode   nlink  uid gid rdev bytes  blksize blocks atime       mtime       ctime       optional
+    # [2049, 6160392, 16877, 2,     0,  0,  0,   16384, 4096,   32,    1304426698, 1330102044, 1330102044, 0, 0, 2]
+
+    def get_stat_data(self):
+        data = getattr(self, 'lstat_raw', None)
+        if data is None:
+            self.lstat_raw = [decode_base64(s) for s in self.lstat.split()]
+            return self.lstat_raw
+        else:
+            return data
+
     def render_size(self, request):
-        return {'text': self.format_byte_size(decode_base64(self.lstat.split()[7]))}
+        return {'text': self.format_byte_size(self.get_stat_data()[7])}
+
+    def render_uid(self, request):
+        return {'text': self.get_stat_data()[4]}
+
+    def render_gid(self, request):
+        return {'text': self.get_stat_data()[5]}
+
+    def render_mode(self, request):
+        return {'text': oct(stat.S_IMODE(self.get_stat_data()[2]))}
 
     # TODO: pathvisibility: size and number of files in directory
     # TODO: pathhierarchy: parent-child relationship with paths
