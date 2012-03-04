@@ -30,7 +30,6 @@ class BConsole(object):
         stdout, stderr = p.communicate('.status dir scheduled\n')
         if stderr.strip():
             pass  # TODO: display flash?
-        print 'results!!!'
         for jobmatch in UPCOMING_JOB_REGEX.finditer(stdout):
             print jobmatch.groups()
             jobs.append(jobmatch.groupdict())
