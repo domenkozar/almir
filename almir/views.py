@@ -1,5 +1,4 @@
 from datetime import datetime
-import subprocess
 import collections
 import fcntl
 import select
@@ -15,6 +14,7 @@ from almir.models import Job, Client, Log, Media, Storage, Pool, Status
 from almir.forms import *
 from almir.lib.filters import nl2br
 from almir.lib.console_commands import CONSOLE_COMMANDS
+from almir.lib.bconsole import BConsole
 
 
 def dashboard(request):
@@ -22,6 +22,7 @@ def dashboard(request):
 
     jobs = dbsession.query(Job).join('status').filter(Status.severity != 15).order_by(desc(Job.schedtime)).limit(5)
     running_jobs = Job.get_running()
+    upcoming_jobs = Job.get_upcoming()
 
     # statistics
     num_clients = dbsession.query(Client).count() or 0
@@ -135,7 +136,7 @@ def ajax_console_input(request):
 
     # start bconsole session if it's not initialized
     if bconsole_session is None:
-        bconsole_session = subprocess.Popen(['bconsole', '-n'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+        bconsole_session = BConsole().start_process()
 
     # send bconsole command
     if request.POST['bconsole_command']:

@@ -8,6 +8,33 @@
     {% endif %}
 {%- endmacro %}
 
+{% macro upcoming_jobs_table(request, jobs) -%}
+    <table class="table table-bordered datatables">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Level</th>
+                <th>Priority</th>
+                <th>Scheduled</th>
+                <th>Volume</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+                <tr>
+                    <td>{{ job.name }}</td>
+                    <td>{{ job.type }}</td>
+                    <td>{{ job.level }}</td>
+                    <td>{{ job.priority }}</td>
+                    <td>{{ job.date }} {{ job.time }}</td>
+                    <td>{{ job.volume }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{%- endmacro %}
+
 {% macro jobs_table(request, jobs) -%}
     <table class="table table-bordered datatables">
         <thead>

@@ -12,6 +12,7 @@ from almir.meta import Base, ModelMixin, DBSession
 from almir.lib.sqlalchemy_custom_types import BaculaDateTime
 from almir.lib.filters import nl2br, distance_of_time_in_words, time_ago_in_words, yesno
 from almir.lib.bacula_base64 import decode_base64
+from almir.lib.bconsole import BConsole
 
 
 # defined in bacula/src/plugins/fd/fd_common.h
@@ -64,13 +65,14 @@ class Client(ModelMixin, Base):
         d.update({
             'jobs': Job.query.filter(Job.clientid == id_).order_by(desc(Job.schedtime)).limit(50),
             # TODO: catch jobs that actually transfered something?
-            'last_successful_job': Job.query.filter(Job.clientid == id_).order_by(desc(Job.schedtime)).filter(Status.jobstatus == 'T').first(),
+            'last_successful_job': Job.query.filter(Job.clientid == id_).filter(Job.jobstatus == 'T').order_by(desc(Job.starttime)).first(),
             'total_size_backups': cls.format_byte_size(Job.query.with_entities(func.sum(Job.jobbytes)).filter(Job.clientid == id_).scalar()),
         })
         return d
 
     @classmethod
     def objects_list(cls):
+        # TODO: this SQL changed, correct the comment
         # SELECT client.clientid, job_bytes, max_job FROM client
         # LEFT JOIN (SELECT job.clientid, SUM(job.jobbytes) AS job_bytes FROM job
         # GROUP BY job.clientid) AS vsota ON vsota.clientid = client.clientid
@@ -81,7 +83,7 @@ class Client(ModelMixin, Base):
             .group_by(Job.clientid)\
             .subquery('stmt_sub')
         last_stmt = Job.query\
-            .with_entities(Job.clientid, func.max(Job.schedtime).label('job_maxschedtime'))\
+            .with_entities(Job.clientid, Job.starttime.label('job_maxschedtime')).filter(Job.jobstatus == 'T').order_by(desc(Job.starttime))\
             .group_by(Job.clientid)\
             .subquery('stmt_max')
         d = {}
@@ -205,6 +207,10 @@ class Job(ModelMixin, Base):
         foreign_keys="Job.volsessionid",
         backref="jobs",
     )
+
+    @classmethod
+    def get_upcoming(cls):
+        return BConsole().get_upcoming_jobs()
 
     @classmethod
     def get_running(cls):

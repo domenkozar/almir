@@ -2,12 +2,13 @@ Tickets are somewhat prioritized starting with most important:
 
 v0.1
 BUG: sort jobs by started date by default
+BUG: sort by date correctly (1 day, 10 days)
 BUG: sort size correctly (MB, GB...)
 BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
 BUG: timezones: if I start a job on dreamy, almir will says it started on hour ago
 BUG: get forms working
 FEATURE: expire on volumes
-FEATURE: dashboard: scheduled jobs (.status dir scheduled), running jobs, error jobs
+FEATURE: dashboard: scheduled jobs (.status dir scheduled)
 FEATURE: colored: status of volume list, job errors, log errors
 FEATURE: add number of jobs on client
 FEATURE: datatables with export
@@ -26,6 +27,7 @@ FEATURE: deform_bootstrap
 FEATURE: robot framework / travis-ci js lib?
 FEATURE: install alternatives and compare
 FEATURE: quickstart landing page
+FEATURE: add icons from twitter.bootstrap http://twitter.github.com/bootstrap/base-css.html#icons
 BUG: get metadata caching to work
 IDEAS: CSRF?
 IDEAS: convention: volumes vs. medias

@@ -22,7 +22,7 @@ settings = appconfig('config:' + os.path.join(here, '../../', 'development.ini')
 #        request = testing.DummyRequest()
 #        info = views.dashboard(request)
 
-# TODO: fixtures
+# TODO: test all db
 
 class FunctionalTests(unittest.TestCase):
     def setUp(self):
@@ -31,7 +31,7 @@ class FunctionalTests(unittest.TestCase):
 
     def test_root(self):
         res = self.testapp.get('/', status=200)
-        self.failUnless('Latests finished Jobs' in res.body)
+        self.failUnless('Last finished Jobs' in res.body)
         self.failUnless('Running Jobs' in res.body)
 
     def test_about(self):
