@@ -12,16 +12,9 @@ pyramid.includes =
 sqlalchemy.url = ${sqla_engine_url}
 
 [server:main]
-# TODO: gunicorn has problems with --reload
-#use = egg:gunicorn#main
 use = egg:waitress#main
 host = 0.0.0.0
 port = 6543
-#worker_class = gevent
-#workers = 1
-#timeout = 9000
-#debug = true
-#loglevel = warning
 
 # Begin logging configuration
 [loggers]
