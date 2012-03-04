@@ -23,6 +23,7 @@ requires = [
     'waitress',
     'pg8000',  # postgres
     'mysql-connector',
+    'docutils',
 ]
 
 if sys.version_info[:3] < (2, 5, 0):
