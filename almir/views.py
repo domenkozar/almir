@@ -10,7 +10,7 @@ from sqlalchemy.sql.expression import desc
 from sqlalchemy.sql.functions import sum, count
 from docutils.core import publish_parts
 
-from almir.meta import DBSession
+from almir.meta import DBSession, get_database_size
 from almir.models import Job, Client, Log, Media, Storage, Pool, Status
 from almir.forms import *
 from almir.lib.filters import nl2br
@@ -28,7 +28,7 @@ def dashboard(request):
     num_jobs = dbsession.query(Job).count() or 0
     num_media = dbsession.query(Media).count() or 0
     sum_volumes = Media.format_byte_size(dbsession.query(sum(Media.volbytes)).scalar() or 0)
-    now = datetime.now()
+    database_size = get_database_size(DBSession.bind)
     return locals()
 
 

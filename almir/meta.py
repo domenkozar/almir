@@ -53,6 +53,22 @@ class ModelMixin(object):
         return format_byte_size(float(size))
 
 
+def get_database_size(engine):
+    """Returns human formatted SQL database size.
+
+    Example: 3.04GB
+    """
+    if engine.name == 'sqlite':
+        size_bytes = engine.execute('PRAGMA page_count;').scalar() * engine.execute('PRAGMA page_size;').scalar()
+    elif engine.name == 'mysql':
+        size_bytes = engine.execute('sum(ROUND((DATA_LENGTH + INDEX_LENGTH - DATA_FREE),2)) AS Size FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA like "%s";' % engine.url.database).scalar()
+    elif engine.name == 'postgresql':
+        size_bytes = engine.execute('SELECT pg_database_size(\'%s\');' % engine.url.database).scalar()
+    else:
+        raise NotImplemented
+    return format_byte_size(float(size_bytes))
+
+
 def initialize_sql(settings):
     # make sure metadata is populated
     import almir.models
@@ -63,13 +79,13 @@ def initialize_sql(settings):
     # while postgres has lowercase tables/columns
     engine.dialect.inspector = LowerCaseInspector
 
-    # hash engine paramters so we don't cache wrong metadata
-    engine_hash = hashlib.md5(str(engine.url)).hexdigest()
     DBSession.configure(bind=engine)
 
     # cache (pickle) metadata
     Base.prepare(engine)
 
+    # hash engine paramters so we don't cache wrong metadata
+    #engine_hash = hashlib.md5(str(engine.url)).hexdigest()
     # TODO: figure out a way for sqlalchemy_declarative_reflection to work with metadata caching
     # TODO: configure with .ini
     #cachefile = os.path.join(os.path.dirname(__name__), 'db.metada.cache.%s' % engine_hash)
