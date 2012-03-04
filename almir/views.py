@@ -8,6 +8,7 @@ import os
 from deform import Form
 from sqlalchemy.sql.expression import desc
 from sqlalchemy.sql.functions import sum, count
+from docutils.core import publish_parts
 
 from almir.meta import DBSession
 from almir.models import Job, Client, Log, Media, Storage, Pool
@@ -30,6 +31,10 @@ def dashboard(request):
 
 
 def about(request):
+    filename = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'CHANGES.txt')
+    f = open(filename).read()
+    parts = publish_parts(f, writer_name="html", settings_overrides={'initial_header_level': 2, 'doctitle_xform': False})
+    changelog = parts['html_body']
     return locals()
 
 
@@ -69,7 +74,6 @@ def log(request):
 class MixinView(object):
     model = None
     form = None
-    # TODO: pass request to models
 
     def __init__(self, request):
         self.request = request
@@ -88,8 +92,6 @@ class MixinView(object):
 class JobView(MixinView):
     model = Job
     form = LogJobSchema
-
-    # TODO: file.lstat http://old.nabble.com/The-File.LStat-field-td940366.html
 
 
 class ClientView(MixinView):

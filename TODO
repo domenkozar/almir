@@ -6,8 +6,11 @@ BUG: sort size correctly (MB, GB...)
 BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
 BUG: timezones: if I start a job on dreamy, almir will says it started on hour ago
 BUG: get forms working
-BUG: sqlite: datetime with default 0, BIGINT/TINYINT handling
-BUG: get metadata caching to work
+FEATURE: expire on volumes
+FEATURE: dashboard: scheduled jobs (.status dir scheduled), running jobs, error jobs
+FEATURE: colored: status of volume list, job errors, log errors
+FEATURE: add number of jobs on client
+FEATURE: datatables with export
 FEATURE: tests for sqlite, postgresql, mysql
 FEATURE: sphinx documentation:
     * overview
@@ -16,17 +19,16 @@ FEATURE: sphinx documentation:
     * installation
     * quickstart
 FEATURE: migrate to delcarative configuration (scan)
-FEATURE: scheduled jobs
 FEATURE: use https://github.com/mozilla-services/cornice
 FEATURE: pyramid_exclog (+ sentry)
-FEATURE: community links, donate button+flattr
+FEATURE: community links, donate button+flattr, twitter
 FEATURE: deform_bootstrap
 FEATURE: robot framework / travis-ci js lib?
 FEATURE: install alternatives and compare
 FEATURE: quickstart landing page
+BUG: get metadata caching to work
 IDEAS: CSRF?
-IDEAS: switch to AFFERO licence (from GPL?)
-IDEAS: convention volumes vs. medias
+IDEAS: convention: volumes vs. medias
 
 
 V0.2
@@ -37,3 +39,7 @@ FEATURE: configurable datetime formatting
 
 FUTURE: multiple directors
 FUTURE: graph reports
+FUTURE: browse cataloged files
+FUTURE: configurable rss
+FUTURE IDEA: ship bacula to kill administrators burdon?
+FUTURE: ACL would allow users to restire their own files and have access to one client
