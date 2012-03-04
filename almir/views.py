@@ -11,7 +11,7 @@ from sqlalchemy.sql.functions import sum, count
 from docutils.core import publish_parts
 
 from almir.meta import DBSession
-from almir.models import Job, Client, Log, Media, Storage, Pool
+from almir.models import Job, Client, Log, Media, Storage, Pool, Status
 from almir.forms import *
 from almir.lib.filters import nl2br
 from almir.lib.console_commands import CONSOLE_COMMANDS
@@ -19,7 +19,9 @@ from almir.lib.console_commands import CONSOLE_COMMANDS
 
 def dashboard(request):
     dbsession = DBSession()
-    jobs = dbsession.query(Job).order_by(desc(Job.schedtime)).limit(5)
+
+    jobs = dbsession.query(Job).join('status').filter(Status.severity != 15).order_by(desc(Job.schedtime)).limit(5)
+    running_jobs = Job.get_running()
 
     # statistics
     num_clients = dbsession.query(Client).count() or 0

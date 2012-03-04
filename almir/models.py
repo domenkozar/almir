@@ -207,6 +207,11 @@ class Job(ModelMixin, Base):
     )
 
     @classmethod
+    def get_running(cls):
+        d = super(Job, cls).objects_list()
+        return d['objects'].join('status').filter(Status.severity == 15).order_by(desc(Job.starttime)).limit(50)
+
+    @classmethod
     def objects_list(cls):
         d = super(Job, cls).objects_list()
         d['objects'] = d['objects'].order_by(desc(Job.starttime)).limit(50)

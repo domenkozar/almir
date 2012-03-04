@@ -2,8 +2,10 @@
 
 {% block content %}
     <h1 class="view">Dashboard <small>Overview</small></h1>
-    <h2>Latests Jobs</h2>
-    {{ macros.jobs_table(request,jobs) }}
+    <h2>Running Jobs</h2>
+    {{ macros.jobs_table(request, running_jobs) }}
+    <h2>Latests finished Jobs</h2>
+    {{ macros.jobs_table(request, jobs) }}
 {% endblock %}
 
 {% block sidebar %}
