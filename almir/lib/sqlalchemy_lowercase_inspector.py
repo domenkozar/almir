@@ -17,9 +17,6 @@ class LowerCaseInspector(Inspector):
             column['name'] = column['name'].lower()
             return column
 
-        # TODO: this should be fixed with custom datetime type
-        print 'skipping column initialwrite since it gives trouble on sqlite (default as 0 while its datatime type)'
-        columns = filter(lambda x: x['name'].lower() != 'initialwrite' ,columns)
         return map(lower_case, columns)
 
     def get_indexes(self, *a, **kw):
@@ -42,5 +39,8 @@ class LowerCaseInspector(Inspector):
             column['referred_columns'] = map(string.lower, column['referred_columns'])
             column['constrained_columns'] = map(string.lower, column['constrained_columns'])
             return column
+
+        # ugly bacula bugix since sqlite 'LocationLog' foreignkey that depends on non-existent table LocationId
+        columns = filter(lambda x: x['referred_table'] != u'LocationId', columns)
 
         return map(lower_case, columns)

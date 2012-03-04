@@ -3,6 +3,7 @@ import datetime
 import stat
 
 from jinja2 import Markup
+from sqlalchemy import Column
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import desc
 from sqlalchemy.sql import functions as func
@@ -14,7 +15,6 @@ from almir.lib.bacula_base64 import decode_base64
 
 
 # defined in bacula/src/plugins/fd/fd_common.h
-# TODO: parse with script
 LEVELS = {
     'F': 'Full',
     'I': 'Incremental',  # since last backup
@@ -152,10 +152,10 @@ class Job(ModelMixin, Base):
         "job_name_idx" btree (name)
     """
 
-    schedtime = BaculaDateTime()
-    starttime = BaculaDateTime()
-    endtime = BaculaDateTime()
-    realendtime = BaculaDateTime()
+    schedtime = Column('schedtime', BaculaDateTime())
+    starttime = Column('starttime', BaculaDateTime())
+    endtime = Column('endtime', BaculaDateTime())
+    realendtime = Column('realendtime', BaculaDateTime())
 
     @property
     def level_name(self):
@@ -302,10 +302,10 @@ class Media(ModelMixin, Base):
         "media_volstatus_check" CHECK (volstatus = ANY (ARRAY['Full'::text, 'Archive'::text, 'Append'::text, 'Recycle'::text, 'Purged'::text, 'Read-Only'::text, 'Disabled'::text, 'Error'::text, 'Busy'::text, 'Used'::text, 'Cleaning'::text, 'Scratch'::text]))
 
     """
-    firsttime = BaculaDateTime()
-    lasttime = BaculaDateTime()
-    labeldate = BaculaDateTime()
-    initialwrite = BaculaDateTime()
+    firstwritten = Column('firstwritten', BaculaDateTime())
+    lastwritten = Column('lastwritten', BaculaDateTime())
+    labeldate = Column('labeldate', BaculaDateTime())
+    initalwrite = Column('initialwrite', BaculaDateTime())
 
     storage = relationship(
         "Storage",
@@ -413,7 +413,7 @@ class Log(ModelMixin, Base):
         "log_name_idx" btree (jobid)
 
     """
-    time = BaculaDateTime()
+    time = Column('time', BaculaDateTime())
 
     def render_logtext(self, request):
         return {'text': Markup(nl2br(self.logtext))}
@@ -494,7 +494,7 @@ class FileSet(ModelMixin, Base):
         "fileset_pkey" PRIMARY KEY, btree (filesetid)
         "fileset_name_idx" btree (fileset)
     """
-    createtime = BaculaDateTime()
+    createtime = Column('createtime', BaculaDateTime())
 
 
 class Filename(ModelMixin, Base):
