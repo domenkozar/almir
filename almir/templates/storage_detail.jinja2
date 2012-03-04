@@ -2,6 +2,9 @@
 
 {% block content %}
     <h1 class="view">Storage <small>{{ object.name }}</small></h1>
+
+    <h1 class="view">Volumes <small>list</small></h1>
+    {{ macros.volumes_table(request, object.medias) }}
 {% endblock %}
 
 {% block sidebar %}

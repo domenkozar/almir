@@ -12,8 +12,8 @@
         <tbody>
             {% for storage in objects %}
                 <tr class="clickable-row" data-link="{{ request.route_url('storage_detail', id=storage.storageid) }}">
-                    <td>{{ storage.name }}</td>
-                    <!-- TODO: add total backup size, clients, jobs, volumes, etc... -->
+                    <td>{{ macros.link(storage.render_name(request)) }}</td>
+                    <!-- TODO: add total backup size, clients, jobs, num volumes, etc... -->
                 </tr>
             {% endfor %}
         </tbody>

@@ -242,6 +242,9 @@ class Job(ModelMixin, Base):
     def render_jobbytes(self, request):
         return {'text': self.format_byte_size(self.jobbytes)}
 
+    def render_joberrors(self, request):
+        return {'text': self.joberrors}
+
     def render_starttime(self, request):
         if self.starttime:
             now = datetime.datetime.now()
@@ -313,6 +316,7 @@ class Media(ModelMixin, Base):
         primaryjoin="Media.storageid==Storage.storageid",
         foreign_keys="Media.storageid",
         innerjoin=True,
+        backref="medias",
     )
 
     pool = relationship(
@@ -343,6 +347,10 @@ class Media(ModelMixin, Base):
 
     def render_volretention(self, request):
         return {'text': self.format_byte_size(self.volretention)}
+
+    def render_volstatus(self, request):
+        # TODO: colors
+        return {'text': self.volstatus}
 
     def render_storage_name(self, request):
         if self.storage:

@@ -20,6 +20,7 @@
                 <th>Size</th>
                 <th>Client</th>
                 <th>Started</th>
+                <th>Errors</th>
             </tr>
         </thead>
         <tbody>
@@ -33,6 +34,7 @@
                     <td>{{ link(job.render_jobbytes(request)) }}</td>
                     <td>{{ link(job.render_client_name(request)) }}</td>
                     <td>{{ link(job.render_starttime(request)) }}</td>
+                    <td>{{ link(job.render_joberrors(request)) }}</td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -44,6 +46,7 @@
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Status</th>
                 <th>Size</th>
                 <th>Last written</th>
                 <th>Storage</th>
@@ -54,6 +57,7 @@
             {% for media in volumes %}
                 <tr class="clickable-row" data-link="{{ request.route_url('volume_detail', id=media.mediaid) }}">
                     <td>{{ link(media.render_volumename(request)) }}</td>
+                    <td>{{ link(media.render_volstatus(request)) }}</td>
                     <td>{{ link(media.render_volbytes(request)) }}</td>
                     <td>{{ media.lastwritten }}</td>
                     <td>{{ link(media.render_storage_name(request)) }}</td>
