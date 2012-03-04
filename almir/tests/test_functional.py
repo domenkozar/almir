@@ -31,7 +31,8 @@ class FunctionalTests(unittest.TestCase):
 
     def test_root(self):
         res = self.testapp.get('/', status=200)
-        self.failUnless('Latests Jobs' in res.body)
+        self.failUnless('Latests finished Jobs' in res.body)
+        self.failUnless('Running Jobs' in res.body)
 
     def test_about(self):
         res = self.testapp.get('/about', status=200)
