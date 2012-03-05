@@ -73,7 +73,7 @@ def initialize_sql(settings):
     # make sure metadata is populated
     import almir.models
 
-    engine = engine_from_config(settings, prefix='sqlalchemy.')
+    engine = engine_from_config(settings, prefix='sqlalchemy.', encoding='utf-8')
 
     # monkey patch inspector to reflect lowercase tables/columns since sqlite has mixed case
     # while postgres has lowercase tables/columns

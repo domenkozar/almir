@@ -83,7 +83,7 @@ class Client(ModelMixin, Base):
             .group_by(Job.clientid)\
             .subquery('stmt_sub')
         last_stmt = Job.query\
-            .with_entities(Job.clientid, Job.starttime.label('job_maxschedtime')).filter(Job.jobstatus == 'T').order_by(desc(Job.starttime))\
+            .with_entities(Job.clientid, func.max(Job.starttime).label('job_maxschedtime')).filter(Job.jobstatus == 'T')\
             .group_by(Job.clientid)\
             .subquery('stmt_max')
         d = {}

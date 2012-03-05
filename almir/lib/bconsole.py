@@ -31,7 +31,6 @@ class BConsole(object):
         if stderr.strip():
             pass  # TODO: display flash?
         for jobmatch in UPCOMING_JOB_REGEX.finditer(stdout):
-            print jobmatch.groups()
             jobs.append(jobmatch.groupdict())
 
         return jobs

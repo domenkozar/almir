@@ -18,6 +18,7 @@ FEATURE: sphinx documentation:
     * screenshots
     * design goals
     * installation
+        * postgresql.conf on servers should have "client_encoding = utf8"
     * quickstart
 FEATURE: migrate to delcarative configuration (scan)
 FEATURE: use https://github.com/mozilla-services/cornice
