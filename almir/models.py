@@ -200,11 +200,11 @@ class Job(ModelMixin, Base):
         primaryjoin="Job.poolid==Pool.poolid",
         foreign_keys="Job.poolid",
     )
-    media = relationship(
-        "Media",
+    jobmedias = relationship(
+        "JobMedia",
         lazy="joined",
-        primaryjoin="Job.volsessionid==Media.mediaid",
-        foreign_keys="Job.volsessionid",
+        primaryjoin="Job.jobid==JobMedia.jobid",
+        foreign_keys="JobMedia.jobid",
         backref="jobs",
     )
 
@@ -239,8 +239,8 @@ class Job(ModelMixin, Base):
             return self.client.render_name(request)
 
     def render_volume_name(self, request):
-        if self.media:
-            return self.media.render_volumename(request)
+        if self.jobmedias:
+            return (jobmedia.medias.render_volumename(request) for jobmedia in self.jobmedias)
 
     def render_pool_name(self, request):
         if self.pool:
@@ -326,7 +326,6 @@ class Media(ModelMixin, Base):
         lazy="joined",
         primaryjoin="Media.storageid==Storage.storageid",
         foreign_keys="Media.storageid",
-        innerjoin=True,
         backref="medias",
     )
 
@@ -335,7 +334,6 @@ class Media(ModelMixin, Base):
         lazy="joined",
         primaryjoin="Media.poolid==Pool.poolid",
         foreign_keys="Media.poolid",
-        innerjoin=True,
         backref="medias",
     )
 
@@ -397,6 +395,14 @@ class JobMedia(ModelMixin, Base):
         "jobmedia_pkey" PRIMARY KEY, btree (jobmediaid)
         "job_media_job_id_media_id_idx" btree (jobid, mediaid)
     """
+
+    medias = relationship(
+        "Media",
+        lazy="joined",
+        primaryjoin="JobMedia.mediaid==Media.mediaid",
+        foreign_keys="JobMedia.mediaid",
+        backref="jobmedias",
+    )
 
 
 class Storage(ModelMixin, Base):
