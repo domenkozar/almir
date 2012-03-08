@@ -62,9 +62,10 @@ class Client(ModelMixin, Base):
     def object_detail(cls, id_):
         id_ = int(id_)
         d = super(Client, cls).object_detail(id_)
+        # TODO: write this with subqueries
         d.update({
             'jobs': Job.query.filter(Job.clientid == id_).order_by(desc(Job.schedtime)).limit(50),
-            # TODO: catch jobs that actually transfered something?
+            'num_jobs': Job.query.count(),
             'last_successful_job': Job.query.filter(Job.clientid == id_).filter(Job.jobstatus == 'T').order_by(desc(Job.starttime)).first(),
             'total_size_backups': cls.format_byte_size(Job.query.with_entities(func.sum(Job.jobbytes)).filter(Job.clientid == id_).scalar()),
         })
@@ -86,7 +87,8 @@ class Client(ModelMixin, Base):
             .group_by(Job.clientid)\
             .subquery('stmt_max')
         d = {}
-        d['objects'] = Client.query.with_entities(Client, 'job_sumvolbytes', 'job_maxschedtime')\
+        d['objects'] = Client.query.with_entities(Client, 'job_sumvolbytes', 'job_maxschedtime', func.count(Job.jobid).label('num_jobs'))\
+            .outerjoin(Job)\
             .outerjoin(sum_stmt, sum_stmt.c.clientid == Client.clientid)\
             .outerjoin(last_stmt, last_stmt.c.clientid == Client.clientid)\
             .all()
@@ -240,6 +242,8 @@ class Job(ModelMixin, Base):
     def render_volume_name(self, request):
         if self.jobmedias:
             return (jobmedia.medias.render_volumename(request) for jobmedia in self.jobmedias)
+        else:
+            return []
 
     def render_pool_name(self, request):
         if self.pool:

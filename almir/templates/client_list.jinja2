@@ -6,6 +6,7 @@
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Jobs</th>
                 <th>Last successful backup</th>
                 <th>Total backup size</th>
             </tr>
@@ -14,6 +15,7 @@
             {% for object in objects %}
                 <tr class="clickable-row" data-link="{{ request.route_url('client_detail', id=object.Client.clientid) }}">
                     <td>{{ macros.link(object.Client.render_name(request)) }}</td>
+                    <td>{{ object.num_jobs }}</td>
                     <td>{{ object.Client.time_ago_in_words(object.job_maxschedtime) }}</td>
                     <td>{{ object.Client.format_byte_size(object.job_sumvolbytes) }}</td>
                 </tr>

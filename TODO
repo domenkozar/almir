@@ -8,7 +8,6 @@ BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offse
 BUG: timezones: if I start a job on dreamy, almir will says it started on hour ago
 BUG: get forms working
 FEATURE: expire on volumes
-FEATURE: dashboard: scheduled jobs (.status dir scheduled)
 FEATURE: colored: status of volume list, job errors, log errors
 FEATURE: add number of jobs on client
 FEATURE: datatables with export
