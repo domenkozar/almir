@@ -14,7 +14,7 @@ from zope.sqlalchemy import ZopeTransactionExtension
 
 from almir.lib.sqlalchemy_declarative_reflection import DeclarativeReflectedBase
 from almir.lib.sqlalchemy_lowercase_inspector import LowerCaseInspector
-from almir.lib.filters import format_byte_size
+from almir.lib.filters import format_byte_size, time_ago_in_words
 
 
 log = logging.getLogger(__name__)
@@ -49,8 +49,18 @@ class ModelMixin(object):
 
     @staticmethod
     def format_byte_size(size):
-        # we use float since postgres driver will return decimal
-        return format_byte_size(float(size))
+        if size:
+            # we use float since postgres driver will return decimal
+            return format_byte_size(float(size))
+        else:
+            return '/'
+
+    @staticmethod
+    def time_ago_in_words(dt):
+        if dt:
+            return time_ago_in_words(dt)
+        else:
+            return '/'
 
 
 def get_database_size(engine):

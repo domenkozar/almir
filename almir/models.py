@@ -10,7 +10,7 @@ from sqlalchemy.sql import functions as func
 
 from almir.meta import Base, ModelMixin, DBSession
 from almir.lib.sqlalchemy_custom_types import BaculaDateTime
-from almir.lib.filters import nl2br, distance_of_time_in_words, time_ago_in_words, yesno
+from almir.lib.filters import nl2br, distance_of_time_in_words, yesno
 from almir.lib.bacula_base64 import decode_base64
 from almir.lib.bconsole import BConsole
 
@@ -72,7 +72,6 @@ class Client(ModelMixin, Base):
 
     @classmethod
     def objects_list(cls):
-        # TODO: this SQL changed, correct the comment
         # SELECT client.clientid, job_bytes, max_job FROM client
         # LEFT JOIN (SELECT job.clientid, SUM(job.jobbytes) AS job_bytes FROM job
         # GROUP BY job.clientid) AS vsota ON vsota.clientid = client.clientid
@@ -88,8 +87,8 @@ class Client(ModelMixin, Base):
             .subquery('stmt_max')
         d = {}
         d['objects'] = Client.query.with_entities(Client, 'job_sumvolbytes', 'job_maxschedtime')\
-            .join(sum_stmt, sum_stmt.c.clientid == Client.clientid)\
-            .join(last_stmt, last_stmt.c.clientid == Client.clientid)\
+            .outerjoin(sum_stmt, sum_stmt.c.clientid == Client.clientid)\
+            .outerjoin(last_stmt, last_stmt.c.clientid == Client.clientid)\
             .all()
 
         # ugly hack since sqlite returns strings for job_maxschedtime
