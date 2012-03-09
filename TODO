@@ -5,43 +5,46 @@ BUG: sort jobs by started date by default
 BUG: sort by date correctly (1 day, 10 days)
 BUG: sort size correctly (MB, GB...)
 BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
-BUG: timezones: if I start a job on dreamy, almir will says it started on hour ago
+BUG: timezones: specify in buildout and make sure datetime type uses that information
 BUG: get forms working
+BUG: inspect if bconsole is corretly setup
+FEATURE: tests for sqlite, postgresql, mysql
 FEATURE: expire on volumes
 FEATURE: colored: status of volume list, job errors, log errors
-FEATURE: add number of jobs on client
-FEATURE: datatables with export
-FEATURE: tests for sqlite, postgresql, mysql
 FEATURE: sphinx documentation:
     * overview
     * screenshots
     * design goals
     * installation
         * postgresql.conf on servers should have "client_encoding = utf8"
+        * bconsole.conf through buildout
     * quickstart
 FEATURE: migrate to delcarative configuration (scan)
-FEATURE: use https://github.com/mozilla-services/cornice
 FEATURE: pyramid_exclog (+ sentry)
-FEATURE: community links, donate button+flattr, twitter
 FEATURE: deform_bootstrap
 FEATURE: robot framework / travis-ci js lib?
 FEATURE: install alternatives and compare
 FEATURE: quickstart landing page
 FEATURE: add icons from twitter.bootstrap http://twitter.github.com/bootstrap/base-css.html#icons
+FEATURE: community links, donate button+flattr, twitter
 BUG: get metadata caching to work
 IDEAS: CSRF?
 IDEAS: convention: volumes vs. medias
+UPSTREAM: debug_toolbar fails when interactive console raises excpetion
 
 
 V0.2
 FEATURE: inline documentation for data from database
+FEATURE: use https://github.com/mozilla-services/cornice
 FEATURE: director actions through dropdown menu
 FEATURE: configurable datetime formatting
+FEATURE: clickable headings (anchors)
 
 
 FUTURE: multiple directors
 FUTURE: graph reports
 FUTURE: browse cataloged files
+FUTURE: responsive design
 FUTURE: configurable rss
 FUTURE IDEA: ship bacula to kill administrators burdon?
 FUTURE: ACL would allow users to restire their own files and have access to one client
