@@ -129,6 +129,7 @@ def ajax_console_input(request):
     # TODO: config file could be set with buildout
     # TODO: tests
     # TODO: .messages
+    # TODO: what to do on quit command?
 
     # if we have a session with no entered commands, just return last 10 commands
     if not request.POST['bconsole_command'] and bconsole_session is not None:

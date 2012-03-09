@@ -1,0 +1,6 @@
+Director {
+  Name = ${almir:director_name}
+  DIRport = ${almir:director_port}
+  address = ${almir:director_address}
+  Password = "${almir:director_password}"
+}

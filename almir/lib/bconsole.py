@@ -1,6 +1,10 @@
 import re
+import os
 import shlex
 from subprocess import Popen, PIPE
+
+
+CURRENT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 
 
 # Full           Backup    10  04-Mar-12 23:05    BackupClient1      *unknown*
@@ -18,7 +22,7 @@ class BConsole(object):
     """Interface to bconsole binary"""
 
     # TODO: use sudo?
-    def __init__(self, bconsole_command='bconsole -n'):
+    def __init__(self, bconsole_command='bconsole -n -c %s' % os.path.join(CURRENT_DIRECTORY, '..', '..', 'bconsole.conf')):
         self.bconsole_command = bconsole_command
 
     def start_process(self):

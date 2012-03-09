@@ -9,7 +9,7 @@ pyramid.default_locale_name = en
 pyramid.includes =
     pyramid_debugtoolbar
     pyramid_tm
-sqlalchemy.url = ${sqla_engine_url}
+sqlalchemy.url = ${almir:sqla_engine_url}
 
 [server:main]
 use = egg:waitress#main
