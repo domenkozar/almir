@@ -45,3 +45,9 @@ table.table thead .sorting_desc_disabled { background: url('images/sort_desc_dis
 table.dataTable th:active {
 	outline: none;
 }
+div.DTTT_container {
+    position: relative;
+    float: right;
+    margin-bottom: 1em;
+	margin-right: 10px;
+}

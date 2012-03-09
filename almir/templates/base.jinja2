@@ -18,6 +18,7 @@
   <!-- datatables -->
   <link href="{{ request.static_url('almir:static/datatables/bootstrap.css') }}" rel="stylesheet" type="text/css" />
   <script src="{{ request.static_url('almir:static/datatables/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ request.static_url('almir:static/datatables/TableTools.min.js') }}"></script>
   <script src="{{ request.static_url('almir:static/datatables/bootstrap.js') }}"></script>
 
   <!-- deform -->
@@ -25,29 +26,16 @@
   <script src="{{ request.static_url('deform:static/scripts/deform.js') }}"></script>
   <script src="{{ request.static_url('deform:static/scripts/jquery.form.js') }}"></script>
 
+  <!-- init for main -->
+  <script type="text/javascript">
+   var submit_delay_miliseconds = 2000,
+       tabletools_swf = "{{ request.static_url('almir:static/datatables/copy_cvs_xls_pdf.swf') }}";
+  </script>
+
   <!-- main -->
   <link rel="stylesheet/less" href="{{ request.static_url('almir:static/css/main.less') }}" type="text/css" media="screen" />
   <script src="{{ request.static_url('almir:static/js/less-1.1.5.min.js') }}"></script>
   <script src="{{ request.static_url('almir:static/js/main.js') }}"></script>
-
-  <script type="text/javascript">
-   var submit_delay_miliseconds = 2000;
-
-   function submitForm () {
-    console.log('submitted form');
-    $('form').submit();
-   }
-
-   $(function () {
-     deform.load();
-     $('form')
-       .data('timeout', null)
-       .keyup(function(){
-         clearTimeout($(this).data('timeout'));
-         jQuery(this).data('timeout', setTimeout(submitForm, submit_delay_miliseconds));
-       });
-     });
-  </script>
   {% block extrahead %}
   {% endblock  %}
 </head>

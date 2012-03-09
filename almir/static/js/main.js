@@ -56,10 +56,14 @@ $(function () {
 
     /* datatables initialisation: http://datatables.net/usage/options */
     $('.datatables').dataTable({
-        "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+        "sDom": "<'row-fluid'<'span6'l><'span6'fT>r>t<'row-fluid'<'span6'i><'span6'p>>",
         "sPaginationType": "bootstrap",
         "oLanguage": {
             "sLengthMenu": "_MENU_ per page"
+        },
+        "oTableTools": {
+            sSwfPath: tabletools_swf,
+            aButtons: ["copy", "xls", "pdf", "print"]
         },
         "iDisplayLength": 50,
         "aoColumnDefs": [
@@ -71,57 +75,77 @@ $(function () {
         "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'>",
         "iDisplayLength": 200
     });
+    // apply twitter.bootstrap markup on tabletools
+    $('.DTTT_button').addClass('btn');
+
 
     // -- console.pt
+    if ($('#console').length == 1) {
+        // calculate height of console
+        var window_height = $(window).height(),
+            console_offset = $('#console').offset().top,
+            command_height = $('#command').parents('.row-fluid').height() + 100,
+            console_height = window_height - console_offset - command_height;
+        $('#console').height(console_height);
 
-    // calculate height of console
-    var window_height = $(window).height(),
-        console_offset = $('#console').offset().top,
-        command_height = $('#command').parents('.row-fluid').height() + 100,
-        console_height = window_height - console_offset - command_height;
-    $('#console').height(console_height);
+        // enable popovers
+        $('#command_help tr').popover();
+        $('#command').popover({
+            placement: 'left',
+            trigger: 'manual'
+        })
 
-    // enable popovers
-    $('#command_help tr').popover();
-    $('#command').popover({
-        placement: 'left',
-        trigger: 'manual'
-    })
+        // every 100ms check command input and display help if apropriate
+        setInterval(function () {
+            var command = $('#command').val(),
+                title;
 
-    // every 100ms check command input and display help if apropriate
-    setInterval(function () {
-        var command = $('#command').val(),
-            title;
+            // when there is no input, hide popover
+            if (!command) {
+                 $('#command').popover('hide').data('last-command', "");
+                 return
+            }
 
-        // when there is no input, hide popover
-        if (!command) {
-             $('#command').popover('hide').data('last-command', "");
-             return
-        }
+            // only change popup if we have new command
+            if ($('#command').data('last-command') == command) {
+                return;
+            }
 
-        // only change popup if we have new command
-        if ($('#command').data('last-command') == command) {
-            return;
-        }
+            // match command title to list of help commands
+            title = $('#command_help tr').filter(function () {
+                var current_command = $(this).find('td:first').text(),
+                    rgp = new RegExp('^' + command + '$');
+                return rgp.test(current_command)
+            }).attr('data-content');
 
-        // match command title to list of help commands
-        title = $('#command_help tr').filter(function () {
-            var current_command = $(this).find('td:first').text(),
-                rgp = new RegExp('^' + command + '$');
-            return rgp.test(current_command)
-        }).attr('data-content');
+            // if we have a match, display popover
+            if (title) {
+                $('#command').attr('data-content', title)
+                    .attr('data-original-title', "Parameters for " + command)
+                    .popover('show').data('last-command', command);
+              }
+        }, 100);
 
-        // if we have a match, display popover
-        if (title) {
-            $('#command').attr('data-content', title)
-                .attr('data-original-title', "Parameters for " + command)
-                .popover('show').data('last-command', command);
-          }
-    }, 100);
+        $('#command-btn').bind('click', send_command);
+        $('#command').bind('keyup', send_command);
 
-    $('#command-btn').bind('click', send_command);
-    $('#command').bind('keyup', send_command);
+        // connect to director right away
+        send_command({which: 1}, true);
+    }
 
-    // connect to director right away
-    send_command({which: 1}, true);
+   // TODO: forms
+   function submitForm () {
+    console.log('submitted form');
+    $('form').submit();
+   }
+
+   $(function () {
+     deform.load();
+     $('form')
+       .data('timeout', null)
+       .keyup(function(){
+         clearTimeout($(this).data('timeout'));
+         jQuery(this).data('timeout', setTimeout(submitForm, submit_delay_miliseconds));
+       });
+     });
 });
