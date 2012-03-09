@@ -1,4 +1,3 @@
-Tickets are somewhat prioritized starting with most important:
 
 v0.1
 BUG: sort jobs by started date by default
@@ -9,7 +8,6 @@ BUG: timezones: specify in buildout and make sure datetime type uses that inform
 BUG: inspect if bconsole is corretly setup
 BUG: get forms working
 FEATURE: tests for sqlite, postgresql, mysql
-FEATURE: expire on volumes
 FEATURE: colored: status of volume list, job errors, log errors
 FEATURE: sphinx documentation:
     * overview
@@ -19,15 +17,14 @@ FEATURE: sphinx documentation:
         * postgresql.conf on servers should have "client_encoding = utf8"
         * bconsole.conf through buildout
     * quickstart
-FEATURE: migrate to delcarative configuration (scan)
 FEATURE: pyramid_exclog (+ sentry)
 FEATURE: deform_bootstrap
 FEATURE: robot framework / travis-ci js lib?
-FEATURE: install alternatives and compare
 FEATURE: quickstart landing page
 FEATURE: add icons from twitter.bootstrap http://twitter.github.com/bootstrap/base-css.html#icons
 FEATURE: community links, donate button+flattr, twitter
 BUG: get metadata caching to work
+IDEAS: install alternatives and compare
 IDEAS: CSRF?
 IDEAS: convention: volumes vs. medias
 UPSTREAM: debug_toolbar fails when interactive console raises excpetion
@@ -37,7 +34,7 @@ V0.2
 FEATURE: inline documentation for data from database
 FEATURE: use https://github.com/mozilla-services/cornice
 FEATURE: director actions through dropdown menu
-FEATURE: configurable datetime formatting
+FEATURE: configurable datetime formatting (watch out for sorting)
 FEATURE: clickable headings (anchors)
 
 
@@ -46,5 +43,5 @@ FUTURE: graph reports
 FUTURE: browse cataloged files
 FUTURE: responsive design
 FUTURE: configurable rss
-FUTURE IDEA: ship bacula to kill administrators burdon?
+FUTURE IDEA: ship with bacula to kill administrators burdon?
 FUTURE: ACL would allow users to restire their own files and have access to one client
