@@ -64,7 +64,6 @@
             </tr>
             <tr>
                 <td>Retention:</td>
-                <!-- TODO: wtf is this? -->
                 <td>{{ macros.link(object.render_volretention(request)) }}</td>
             </tr>
             <tr>
@@ -74,6 +73,10 @@
             <tr>
                 <td>Last written:</td>
                 <td>{{ object.lastwritten }}</td>
+            </tr>
+            <tr>
+                <td>Expires:</td>
+                <td>{{ macros.link(object.render_expires(request)) }}</td>
             </tr>
         </tbody>
     </table>

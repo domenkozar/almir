@@ -250,8 +250,8 @@ class Job(ModelMixin, Base):
             return self.pool.render_name(request)
 
     def render_duration(self, request):
-        # TODO: if no end time?
-        return {'text': distance_of_time_in_words(self.starttime, self.endtime)}
+        if self.starttime and self.endtime:
+            return {'text': distance_of_time_in_words(self.starttime, self.endtime)}
 
     def render_jobbytes(self, request):
         return {'text': self.format_byte_size(self.jobbytes)}
@@ -322,7 +322,7 @@ class Media(ModelMixin, Base):
     firstwritten = Column('firstwritten', BaculaDateTime())
     lastwritten = Column('lastwritten', BaculaDateTime())
     labeldate = Column('labeldate', BaculaDateTime())
-    initalwrite = Column('initialwrite', BaculaDateTime())
+    initialwrite = Column('initialwrite', BaculaDateTime())
 
     storage = relationship(
         "Storage",
@@ -358,7 +358,7 @@ class Media(ModelMixin, Base):
         return {'text': self.format_byte_size(self.maxvolbytes)}
 
     def render_volretention(self, request):
-        return {'text': self.format_byte_size(self.volretention)}
+        return {'text': distance_of_time_in_words(self.volretention)}
 
     def render_volstatus(self, request):
         # TODO: colors
@@ -377,6 +377,10 @@ class Media(ModelMixin, Base):
 
     def render_recycled(self, request):
         return {'text': yesno(self.enabled)}
+
+    def render_expires(self, request):
+        if self.firstwritten and self.volretention:
+            return {'text': self.firstwritten + datetime.timedelta(seconds=self.volretention)}
 
 
 class JobMedia(ModelMixin, Base):

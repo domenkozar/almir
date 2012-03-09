@@ -76,6 +76,7 @@
                 <th>Status</th>
                 <th>Size</th>
                 <th>Last written</th>
+                <th>Expires</th>
                 <th>Storage</th>
                 <th>Pool</th>
             </tr>
@@ -87,6 +88,7 @@
                     <td>{{ link(media.render_volstatus(request)) }}</td>
                     <td>{{ link(media.render_volbytes(request)) }}</td>
                     <td>{{ media.lastwritten }}</td>
+                    <td>{{ link(media.render_expires(request)) }}</td>
                     <td>{{ link(media.render_storage_name(request)) }}</td>
                     <td>{{ link(media.render_pool_name(request)) }}</td>
                 </tr>

@@ -6,8 +6,8 @@ BUG: sort by date correctly (1 day, 10 days)
 BUG: sort size correctly (MB, GB...)
 BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
 BUG: timezones: specify in buildout and make sure datetime type uses that information
-BUG: get forms working
 BUG: inspect if bconsole is corretly setup
+BUG: get forms working
 FEATURE: tests for sqlite, postgresql, mysql
 FEATURE: expire on volumes
 FEATURE: colored: status of volume list, job errors, log errors
