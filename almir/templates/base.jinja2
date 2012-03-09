@@ -46,7 +46,7 @@
        <a class="brand" href="{{ request.route_url('about') }}">Almir</a>
        {% for item in navigation_tree %}
         <ul class="nav">
-         <li class="{{ item.active_class }}"><a href="{{ item.url }}">{{  item.name  }}</a></li>
+         <li class="{% if request.current_route_url() == item.url %}active{% endif %}"><a href="{{ item.url }}">{{  item.name  }}</a></li>
         </ul>
        {% endfor %}
         <!-- TODO: v0.3

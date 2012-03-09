@@ -22,12 +22,6 @@ def navigation_tree(event):
         dict(name="Logs", url=request.route_url('log')),
         dict(name="Console", url=request.route_url('console')),
     ]
-    for i, item in enumerate(event['navigation_tree']):
-        try:
-            event['navigation_tree'][i]['active_class'] = request.current_route_url() == item['url'] and "active" or ""
-        except ValueError:
-            # Current request matches no route
-            break
 
 
 def main(global_config, **settings):
