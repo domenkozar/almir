@@ -24,6 +24,7 @@ requires = [
     'pg8000',  # postgres
     'MySQL-Connector',
     'docutils',
+    'Sphinx',
 ]
 
 if sys.version_info[:3] < (2, 5, 0):
@@ -58,6 +59,6 @@ setup(name='almir',
       paster_plugins=['pyramid'],
       extras_require={
           'test': ['webtest', 'nose', 'coverage'],
-          'develop': ['Sphinx', 'bpython', 'z3c.checkversions [buildout]'],
+          'develop': ['bpython', 'z3c.checkversions [buildout]'],
       },
 )
