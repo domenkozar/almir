@@ -22,7 +22,7 @@ requires = [
     'gunicorn',
     'waitress',
     'pg8000',  # postgres
-    'mysql-connector',
+    'MySQL-Connector',
     'docutils',
 ]
 
