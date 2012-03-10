@@ -34,7 +34,7 @@ def dashboard(request):
 
 
 def about(request):
-    filename = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'CHANGES.txt')
+    filename = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'docs', 'source', 'changelog.rst')
     f = open(filename).read()
     parts = publish_parts(f, writer_name="html", settings_overrides={'initial_header_level': 2, 'doctitle_xform': False})
     changelog = parts['html_body']

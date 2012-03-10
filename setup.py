@@ -58,5 +58,6 @@ setup(name='almir',
       paster_plugins=['pyramid'],
       extras_require={
           'test': ['webtest', 'nose', 'coverage'],
+          'develop': ['Sphinx', 'bpython', 'z3c.checkversions [buildout]'],
       },
 )
