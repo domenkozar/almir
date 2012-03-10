@@ -7,7 +7,8 @@ install:
   - cp buildout.d/templates/buildout.cfg.in buildout.cfg
   - sudo cat /etc/bacula/bconsole.conf
   - sed -i 's/bacula.db/bacula_kaki.db/' buildout.cfg
-  - sed -i "s/director_password = /director_password = director_password=$(sudo grep 'Password' /etc/bacula/bconsole.conf | sed 's/.*Password\s*=\s*"\(.\+\)"/\1/')/" buildout.cfg
+  - director_password=$(sudo grep 'Password' /etc/bacula/bconsole.conf | sed 's/.*Password\s*=\s*"\(.\+\)"/\1/')
+  - sed -i "s#director_password = #director_password = $director_password#" buildout.cfg
   - cat buildout.cfg
   - python bootstrap.py
   - bin/buildout
