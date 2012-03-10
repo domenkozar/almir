@@ -28,11 +28,11 @@ FEATURE: director actions through dropdown menu
 FEATURE: configurable datetime formatting (watch out for sorting)
 FEATURE: clickable headings (anchors)
 
-
-FUTURE: multiple directors
-FUTURE: graph reports
-FUTURE: browse cataloged files
-FUTURE: responsive design
-FUTURE: configurable rss
-FUTURE IDEA: ship with bacula to kill administrators burdon?
-FUTURE: ACL would allow users to restire their own files and have access to one client
+FUTURE
+FEATURE: multiple directors
+FEATURE: graph reports
+FEATURE: browse cataloged files
+FEATURE: responsive design
+FEATURE: configurable rss
+FEATURE: ACL would allow users to restire their own files and have access to one client
+IDEA: ship with bacula to kill administrators burdon?
