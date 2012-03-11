@@ -7,8 +7,8 @@ Welcome to almir's documentation!
 =================================
 
 :Author: Domen Kožar <domen@dev.si>
-:Source code: `github.com <https://github.com/iElectric/almir>`_
-:Bug tracker: `github.com <https://github.com/iElectric/almir/issues>`_
+:Source code: `github.com project <https://github.com/iElectric/almir>`_
+:Bug tracker: `github.com issues <https://github.com/iElectric/almir/issues>`_
 :Generated: |today|
 :License: GPL v3
 :Version: |release|

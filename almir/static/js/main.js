@@ -56,7 +56,7 @@ $(function () {
 
     /* datatables initialisation: http://datatables.net/usage/options */
     $('.datatables').dataTable({
-        "sDom": "<'row-fluid'<'span6'l><'span6'fT>r>t<'row-fluid'<'span6'i><'span6'p>>",
+        "sDom": "<'row-fluid'<'span5'l><'span7'fT>r>t<'row-fluid'<'span6'i><'span6'p>>",
         "sPaginationType": "bootstrap",
         "oLanguage": {
             "sLengthMenu": "_MENU_ per page"
