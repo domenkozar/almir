@@ -90,7 +90,7 @@ Source documentation
    :show-inheritance:
 
 :mod:`almir.lib.sqlalchemy_declarative_reflection`
-++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. automodule:: almir.lib.sqlalchemy_declarative_reflection
    :members:

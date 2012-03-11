@@ -22,7 +22,7 @@ requires = [
     'gunicorn',
     'waitress',
     'pg8000',  # postgres
-    'MySQL-Connector',
+    'mysql-connector-repackaged',  # original one does not install with buildout
     'docutils',
     'Sphinx',
 ]
