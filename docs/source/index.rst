@@ -17,6 +17,7 @@ Welcome to almir's documentation!
 .. sidebar:: Features
 
     - supports bacula-director version 5.0.x
+    - supports sqlite, postgresql, mysql databases
     - complete representation of bacula-director information
     - interactive web console frontend to bconsole
     - export data to excel, pdf and clipboard 

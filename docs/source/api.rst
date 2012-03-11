@@ -8,7 +8,7 @@ Source documentation
 .. automodule:: almir
 
 
-:mod:`almir.forms` - HTML forms definitions
+:mod:`almir.forms` -- HTML forms definitions
 -------------------------------------------
 
 .. automodule:: almir.forms
@@ -33,7 +33,7 @@ Source documentation
    :show-inheritance:
 
 
-:mod:`almir.views` - Pyramid views
+:mod:`almir.views` -- Pyramid views
 ----------------------------------
 .. automodule:: almir.views
    :members:
@@ -41,13 +41,13 @@ Source documentation
    :show-inheritance:
 
 
-:mod:`almir.lib`
-----------------
+:mod:`almir.lib` -- Non MVC code
+-------------------------------
 
 .. automodule:: almir.lib
 
 
-:mod:`almir.lib.bacula_base64` - Bacula custom base64 implmentation
+:mod:`almir.lib.bacula_base64` -- Bacula custom base64 implmentation
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. automodule:: almir.lib.bacula_base64
@@ -56,7 +56,7 @@ Source documentation
    :show-inheritance:
 
 
-:mod:`almir.lib.bconsole` - Python interface to bconsole
+:mod:`almir.lib.bconsole` -- Python interface to bconsole
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. automodule:: almir.lib.bconsole
@@ -65,7 +65,7 @@ Source documentation
    :show-inheritance:
 
 
-:mod:`almir.lib.console_commands` - Parsed list of bconsole commands
+:mod:`almir.lib.console_commands` -- Parsed list of bconsole commands
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. automodule:: almir.lib.console_commands
@@ -73,7 +73,7 @@ Source documentation
    :undoc-members:
    :show-inheritance:
 
-:mod:`almir.lib.filters` - Templating filters
+:mod:`almir.lib.filters` -- Templating filters
 +++++++++++++++++++++++++++++++++++++++++++++
 
 .. automodule:: almir.lib.filters
@@ -107,14 +107,14 @@ Source documentation
    :show-inheritance:
 
 
-:mod:`almir.scripts` - Runnable scripts package
+:mod:`almir.scripts` -- Runnable scripts package
 -----------------------------------------------
 
 .. automodule:: almir.scripts
 
 
-:mod:`almir.scripts.parse_console_commands`
-+++++++++++++++++++++++++++++++++++++++++++
+:mod:`almir.scripts.parse_console_commands` -- Parse help commands from bconsole source
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. automodule:: almir.scripts.parse_console_commands
    :members:
@@ -129,7 +129,7 @@ Source documentation
 
 
 
-:mod:`almir.tests.test_functional` - Functional tests
+:mod:`almir.tests.test_functional` -- Functional tests
 +++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. automodule:: almir.tests.test_functional
