@@ -53,14 +53,12 @@ class ModelMixin(object):
             # we use float since postgres driver will return decimal
             return format_byte_size(float(size))
         else:
-            return '/'
+            return format_byte_size(0)
 
     @staticmethod
-    def time_ago_in_words(dt):
+    def render_time_ago_in_words(dt):
         if dt:
-            return time_ago_in_words(dt)
-        else:
-            return '/'
+            return {'text': time_ago_in_words(dt), 'data_numeric': dt.strftime('%s')}
 
 
 def get_database_size(engine):

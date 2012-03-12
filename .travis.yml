@@ -12,7 +12,14 @@ install:
   - cat buildout.cfg
   - python bootstrap.py
   - bin/buildout
-script: bin/nosetests
+
+ibefore_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - "python -m SimpleHTTPServer >/dev/null 2>/dev/null&"
+script:
+  - bin/nosetests
+  - find almir/tests/javascript/ -iname "test_*" | xargs phantomjs almir/tests/javascript/run-qunit.js
 
 notifications:
   irc:

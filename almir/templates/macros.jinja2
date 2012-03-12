@@ -1,8 +1,12 @@
 {% macro link(options) -%}
     {% if options.href %}
-        <a href="{{ options.href }}">{{ options.text }}</a>
-    {% elif options.text != None %}
-        {{ options.text }}
+        <a {% if options.data_numeric is defined %}data-numeric="{{ options.data_numeric }}" {% endif %}href="{{ options.href }}">{{ options.text }}</a>
+    {% elif options.text is defined %}
+        {% if options.data_numeric is defined %}
+            <span data-numeric="{{ options.data_numeric }}">{{ options.text }}</span>
+        {% else %}
+            {{ options.text }}
+        {% endif %}
     {% else %}
         /
     {% endif %}

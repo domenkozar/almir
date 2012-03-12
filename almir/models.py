@@ -109,10 +109,10 @@ class Client(ModelMixin, Base):
         return {'text': self.name, 'href': self.url(request)}
 
     def render_jobretention(self, request):
-        return {'text': distance_of_time_in_words(self.jobretention)}
+        return {'text': distance_of_time_in_words(self.jobretention), 'data_numeric': self.jobretention}
 
     def render_fileretention(self, request):
-        return {'text': distance_of_time_in_words(self.fileretention)}
+        return {'text': distance_of_time_in_words(self.fileretention), 'data_numeric': self.fileretention}
 
     def render_autoprune(self, request):
         return {'text': yesno(self.autoprune)}
@@ -251,7 +251,8 @@ class Job(ModelMixin, Base):
 
     def render_duration(self, request):
         if self.starttime and self.endtime:
-            return {'text': distance_of_time_in_words(self.starttime, self.endtime)}
+            return {'text': distance_of_time_in_words(self.starttime, self.endtime),
+                    'data_numeric': -(self.endtime - self.starttime).total_seconds()}
 
     def render_jobbytes(self, request):
         return {'text': self.format_byte_size(self.jobbytes)}
@@ -261,8 +262,9 @@ class Job(ModelMixin, Base):
 
     def render_starttime(self, request):
         if self.starttime:
-            now = datetime.datetime.now()
-            return {'text': distance_of_time_in_words(self.starttime, now) + ' ago', 'href': self.url(request)}
+            return {'text': distance_of_time_in_words(self.starttime) + ' ago',
+                    'href': self.url(request),
+                    'data_numeric': self.starttime.strftime('%s')}
 
 
 class Media(ModelMixin, Base):
@@ -358,7 +360,7 @@ class Media(ModelMixin, Base):
         return {'text': self.format_byte_size(self.maxvolbytes)}
 
     def render_volretention(self, request):
-        return {'text': distance_of_time_in_words(self.volretention)}
+        return {'text': distance_of_time_in_words(self.volretention), 'data_numeric': self.volretention}
 
     def render_volstatus(self, request):
         # TODO: colors

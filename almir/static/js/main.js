@@ -66,10 +66,6 @@ $(function () {
             aButtons: ["copy", "xls", "pdf", "print"]
         },
         "iDisplayLength": 50,
-        "aoColumnDefs": [
-            {aTargets: ["size"], sType: "file-size"}
-      
-        ],
     });
     $('#command_help').dataTable({
         "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'>",
