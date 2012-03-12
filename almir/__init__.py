@@ -11,10 +11,13 @@ from almir.lib.filters import filters
 def navigation_tree(event):
     """Generate navigation data"""
     request = event['request']
+    if not request:
+        # debugger does not provide request
+        return
     event['navigation_tree'] = [
         dict(name="Dashboard", url=request.route_url('dashboard')),
         dict(name="Clients", url=request.route_url('client_list')),
-        # TODO: does this make sense? dict(name="FileSets", url=request.route_url('fileset_list')),
+        # TODO: add later dict(name="FileSets", url=request.route_url('fileset_list')),
         dict(name="Jobs", url=request.route_url('job_list')),
         dict(name="Volumes", url=request.route_url('volume_list')),
         dict(name="Pools", url=request.route_url('pool_list')),
