@@ -2,3 +2,4 @@ production.ini
 development.ini
 buildout.cfg
 bconsole.conf
+docs/build/
