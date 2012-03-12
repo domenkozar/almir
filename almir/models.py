@@ -87,10 +87,11 @@ class Client(ModelMixin, Base):
             .group_by(Job.clientid)\
             .subquery('stmt_max')
         d = {}
-        d['objects'] = Client.query.with_entities(Client, 'job_sumvolbytes', 'job_maxschedtime', func.count(Job.jobid).label('num_jobs'))\
+        d['objects'] = cls.query.with_entities(Client, 'job_sumvolbytes', 'job_maxschedtime', func.count(Job.jobid).label('num_jobs'))\
             .outerjoin(Job)\
             .outerjoin(sum_stmt, sum_stmt.c.clientid == Client.clientid)\
             .outerjoin(last_stmt, last_stmt.c.clientid == Client.clientid)\
+            .group_by(cls)\
             .all()
 
         # ugly hack since sqlite returns strings for job_maxschedtime
