@@ -264,7 +264,6 @@ class Job(ModelMixin, Base):
     def render_starttime(self, request):
         if self.starttime:
             return {'text': distance_of_time_in_words(self.starttime) + ' ago',
-                    'href': self.url(request),
                     'data_numeric': self.starttime.strftime('%s')}
 
 

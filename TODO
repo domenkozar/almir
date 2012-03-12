@@ -16,7 +16,7 @@ BUG: get metadata caching to work
 IDEAS: install alternatives and compare
 IDEAS: CSRF?
 IDEAS: convention: volumes vs. medias
-UPSTREAM: debug_toolbar fails when interactive console raises excpetion
+UPSTREAM: debug_toolbar fails when interactive console raises excpetion https://github.com/Pylons/pyramid_debugtoolbar/issues/56
 UPSTREAM: readthedocs have no option to install extras https://github.com/rtfd/readthedocs.org/issues/173
 
 
