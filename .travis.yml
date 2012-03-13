@@ -12,13 +12,12 @@ install:
   - bin/buildout
 
 before_script:
-  - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
 
 script:
   - bin/nosetests
 #  - find almir/tests/javascript/ -iname "test_*.html" | DISPLAY=:99.0 xargs /usr/local/bin/phantomjs almir/tests/javascript/run-qunit.js
-  - phantomjs almir/tests/javascript/run-qunit.js http://docs.jquery.com/QUnit
+  - DISPLAY=:99.0 phantomjs almir/tests/javascript/run-qunit.js almir/tests/javascript/test_datatables.html
 
 notifications:
   irc:
