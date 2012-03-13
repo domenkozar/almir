@@ -13,6 +13,7 @@ from almir.lib.sqlalchemy_custom_types import BaculaDateTime
 from almir.lib.filters import nl2br, distance_of_time_in_words, yesno
 from almir.lib.bacula_base64 import decode_base64
 from almir.lib.bconsole import BConsole
+from almir.lib.utils import timedelta_to_seconds
 
 
 # defined in bacula/src/plugins/fd/fd_common.h
@@ -253,7 +254,7 @@ class Job(ModelMixin, Base):
     def render_duration(self, request):
         if self.starttime and self.endtime:
             return {'text': distance_of_time_in_words(self.starttime, self.endtime),
-                    'data_numeric': -(self.endtime - self.starttime).total_seconds()}
+                    'data_numeric': -timedelta_to_seconds(self.endtime - self.starttime)}
 
     def render_jobbytes(self, request):
         return {'text': self.format_byte_size(self.jobbytes)}
