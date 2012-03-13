@@ -18,9 +18,7 @@ ibefore_script:
   - "sh -e /etc/init.d/xvfb start"
 script:
   - bin/nosetests
-  - find almir/tests/javascript/ -iname "test_*.html"
-  - phantomjs --help
-  - find almir/tests/javascript/ -iname "test_*.html" | xargs phantomjs almir/tests/javascript/run-qunit.js
+  - find almir/tests/javascript/ -iname "test_*.html" | xargs /usr/local/bin/phantomjs almir/tests/javascript/run-qunit.js
 
 notifications:
   irc:
