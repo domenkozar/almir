@@ -3,7 +3,6 @@ python:
   - 2.6
   - 2.7
 install:
-  - sudo echo "127.0.0.1 localhost" > /etc/hosts
   - sudo apt-get install -y libevent-dev git gcc python-dev sendmail bacula-console
   - cp buildout.d/templates/buildout.cfg.in buildout.cfg
   - sed -i 's/bacula.db/bacula_kaki.db/' buildout.cfg
@@ -18,7 +17,8 @@ before_script:
 script:
   - bin/nosetests
 #  - find almir/tests/javascript/ -iname "test_*.html" | DISPLAY=:99.0 xargs /usr/local/bin/phantomjs almir/tests/javascript/run-qunit.js
-  - DISPLAY=:99.0 phantomjs almir/tests/javascript/run-qunit.js almir/tests/javascript/test_datatables.html
+  - echo `pwd`
+  - DISPLAY=:99.0 phantomjs almir/tests/javascript/run-qunit.js file://`pwd`/almir/tests/javascript/test_datatables.html
 
 notifications:
   irc:
