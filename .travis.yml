@@ -16,9 +16,7 @@ before_script:
 
 script:
   - bin/nosetests
-#  - find almir/tests/javascript/ -iname "test_*.html" | DISPLAY=:99.0 xargs /usr/local/bin/phantomjs almir/tests/javascript/run-qunit.js
-  - echo `pwd`
-  - DISPLAY=:99.0 phantomjs almir/tests/javascript/run-qunit.js file://`pwd`/almir/tests/javascript/test_datatables.html
+  - DISPLAY=:99.0 find almir/tests/javascript/ -iname "test_*.html" -exec phantomjs almir/tests/javascript/run-qunit.js "file://`pwd`/{}" \;
 
 notifications:
   irc:
