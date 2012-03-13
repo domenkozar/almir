@@ -18,7 +18,7 @@ before_script:
 script:
   - bin/nosetests
 #  - find almir/tests/javascript/ -iname "test_*.html" | DISPLAY=:99.0 xargs /usr/local/bin/phantomjs almir/tests/javascript/run-qunit.js
-  - phantomjs http://www.google.com
+  - phantomjs almir/tests/javascript/run-qunit.js http://docs.jquery.com/QUnit
 
 notifications:
   irc:
