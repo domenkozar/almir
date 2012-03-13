@@ -3,6 +3,8 @@ python:
   - 2.6
   - 2.7
 install:
+  - sudo cat /etc/hosts
+  - echo "127.0.0.1 localhost" > /etc/hosts
   - sudo apt-get install -y libevent-dev git gcc python-dev sendmail bacula-console
   - cp buildout.d/templates/buildout.cfg.in buildout.cfg
   - sed -i 's/bacula.db/bacula_kaki.db/' buildout.cfg
