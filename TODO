@@ -8,7 +8,6 @@ FEATURE: tests for sqlite, postgresql, mysql
 FEATURE: colored: status of volume list, job errors, log errors
 FEATURE: pyramid_exclog (+ sentry)
 FEATURE: deform_bootstrap
-FEATURE: robot framework / travis-ci js lib?
 FEATURE: quickstart landing page
 FEATURE: add icons from twitter.bootstrap http://twitter.github.com/bootstrap/base-css.html#icons
 FEATURE: community links, donate button+flattr, twitter
@@ -35,3 +34,4 @@ FEATURE: responsive design
 FEATURE: configurable rss
 FEATURE: ACL would allow users to restire their own files and have access to one client
 IDEA: ship with bacula to kill administrators burdon?
+IDEA: http://siliconforks.com/jscoverage/ 

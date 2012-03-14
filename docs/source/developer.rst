@@ -35,5 +35,4 @@ Install and configure phantomjs (webkit headless testing)::
 Run tests::
 
     cd ../almir
-    python -m SimpleHTTPServer >/dev/null 2>/dev/null&
-    phantomjs almir/tests/javascript/run-qunit.js http://localhost:8000/almir/tests/javascript/test_datatables.html
+    ./.travis_qunit_tests.sh
