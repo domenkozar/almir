@@ -16,7 +16,7 @@ before_script:
 
 script:
   - bin/nosetests
-  - 'DISPLAY=:99.0 find almir/tests/javascript/ -iname test_*.html -exec phantomjs almir/tests/javascript/run-qunit.js file://`pwd`/{} \;'
+  - .travis_qunit_tests.sh
 
 notifications:
   irc:
