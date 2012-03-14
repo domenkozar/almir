@@ -16,7 +16,7 @@ before_script:
 
 script:
   - bin/nosetests
-  - .travis_qunit_tests.sh
+  - ./.travis_qunit_tests.sh
 
 notifications:
   irc:
