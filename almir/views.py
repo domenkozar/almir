@@ -20,16 +20,17 @@ from almir.lib.utils import render_rst_section
 def dashboard(request):
     dbsession = DBSession()
 
-    jobs = dbsession.query(Job).join('status').filter(Status.severity != 15).order_by(desc(Job.schedtime)).limit(5)
+    jobs = Job.get_last()
     running_jobs = Job.get_running()
     upcoming_jobs = Job.get_upcoming()
 
     # statistics
-    num_clients = dbsession.query(Client).count() or 0
-    num_jobs = dbsession.query(Job).count() or 0
-    num_media = dbsession.query(Media).count() or 0
+    num_clients = dbsession.query(count(Client.clientid)).scalar()
+    num_jobs = dbsession.query(count(Job.jobid)).scalar()
+    num_media = dbsession.query(count(Media.mediaid)).scalar()
     sum_volumes = Media.format_byte_size(dbsession.query(sum(Media.volbytes)).scalar() or 0)
     database_size = get_database_size(DBSession.bind)
+
     return locals()
 
 

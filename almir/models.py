@@ -4,7 +4,7 @@ import stat
 
 from jinja2 import Markup
 from sqlalchemy import Column
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, noload, joinedload
 from sqlalchemy.sql.expression import desc
 from sqlalchemy.sql import functions as func
 
@@ -218,7 +218,12 @@ class Job(ModelMixin, Base):
     @classmethod
     def get_running(cls):
         d = super(Job, cls).objects_list()
-        return d['objects'].join('status').filter(Status.severity == 15).order_by(desc(Job.starttime)).limit(50)
+        return d['objects'].options(noload('*'), joinedload(cls.status), joinedload(cls.client)).join('status').filter(Status.severity == 15).order_by(desc(Job.starttime)).limit(50)
+
+    @classmethod
+    def get_last(cls):
+        d = super(Job, cls).objects_list()
+        return d['objects'].options(noload('*'), joinedload(cls.status), joinedload(cls.client)).join('status').filter(Status.severity != 15).order_by(desc(Job.schedtime)).limit(5)
 
     @classmethod
     def objects_list(cls):
