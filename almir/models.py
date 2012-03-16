@@ -7,6 +7,7 @@ from sqlalchemy import Column
 from sqlalchemy.orm import relationship, noload, joinedload
 from sqlalchemy.sql.expression import desc
 from sqlalchemy.sql import functions as func
+from webhelpers.date import distance_of_time_in_words
 
 from almir.meta import Base, ModelMixin, DBSession
 from almir.lib.sqlalchemy_custom_types import BaculaDateTime
@@ -123,10 +124,12 @@ class Client(ModelMixin, Base):
         return {'text': self.name, 'href': self.url(request)}
 
     def render_jobretention(self, request):
-        return self.render_distance_of_time_in_words(self.jobretention)
+        # jobretention is integer of seconds
+        return {'text': distance_of_time_in_words(self.jobretention)}
 
     def render_fileretention(self, request):
-        return self.render_distance_of_time_in_words(self.fileretention)
+        # fileretention is integer of seconds
+        return {'text': distance_of_time_in_words(self.fileretention)}
 
     def render_autoprune(self, request):
         return {'text': yesno(self.autoprune)}
@@ -378,7 +381,8 @@ class Media(ModelMixin, Base):
         return {'text': self.format_byte_size(self.maxvolbytes)}
 
     def render_volretention(self, request):
-        return self.render_distance_of_time_in_words(self.volretention)
+        # volretention is integer of seconds
+        return {'text': distance_of_time_in_words(self.volretention)}
 
     def render_volstatus(self, request):
         return {'text': self.volstatus, 'cssclass': MEDIA_STATUS_SEVERITY[self.volstatus]}

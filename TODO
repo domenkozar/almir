@@ -2,11 +2,11 @@ v0.1
 ----
 
 FEATURE: storage list/view is incomplete
+FEATURE: finish bconsole
 FEATURE: pyramid_exclog
 FEATURE: deform_bootstrap
 FEATURE: production buildout/config
 FEATURE: docs on productions: basicauth
-FEATURE: quickstart landing page
 FEATURE: community links, donate button+flattr, twitter, mailinglist
 IDEA: convention: volumes vs. medias
 FEATURE: log issues to github tracker and get rid of this TODO
@@ -25,6 +25,7 @@ FEATURE: use https://github.com/mozilla-services/cornice
 FEATURE: director actions through dropdown menu
 FEATURE: configurable datetime formatting (watch out for sorting)
 FEATURE: clickable headings (anchors)
+FEATURE: quickstart landing page
 FEATURE: caching for most obvious things
 IDEA: http://siliconforks.com/jscoverage/ 
 IDEA: CSRF?
