@@ -9,7 +9,7 @@ Source documentation
 
 
 :mod:`almir.forms` -- HTML forms definitions
--------------------------------------------
+--------------------------------------------
 
 .. automodule:: almir.forms
    :members:
@@ -34,7 +34,7 @@ Source documentation
 
 
 :mod:`almir.views` -- Pyramid views
-----------------------------------
+-----------------------------------
 .. automodule:: almir.views
    :members:
    :undoc-members:
@@ -42,13 +42,13 @@ Source documentation
 
 
 :mod:`almir.lib` -- Non MVC code
--------------------------------
+--------------------------------
 
 .. automodule:: almir.lib
 
 
 :mod:`almir.lib.bacula_base64` -- Bacula custom base64 implmentation
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. automodule:: almir.lib.bacula_base64
    :members:
@@ -57,7 +57,7 @@ Source documentation
 
 
 :mod:`almir.lib.bconsole` -- Python interface to bconsole
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. automodule:: almir.lib.bconsole
    :members:
@@ -66,7 +66,7 @@ Source documentation
 
 
 :mod:`almir.lib.console_commands` -- Parsed list of bconsole commands
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. automodule:: almir.lib.console_commands
    :members:
@@ -74,7 +74,7 @@ Source documentation
    :show-inheritance:
 
 :mod:`almir.lib.filters` -- Templating filters
-+++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++
 
 .. automodule:: almir.lib.filters
    :members:
@@ -107,8 +107,17 @@ Source documentation
    :show-inheritance:
 
 
+:mod:`almir.lib.utils` - General utilities
+++++++++++++++++++++++++++++++++++++++++++
+
+.. automodule:: almir.lib.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
 :mod:`almir.scripts` -- Runnable scripts package
------------------------------------------------
+------------------------------------------------
 
 .. automodule:: almir.scripts
 
@@ -130,7 +139,7 @@ Source documentation
 
 
 :mod:`almir.tests.test_functional` -- Functional tests
-+++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. automodule:: almir.tests.test_functional
    :members:
