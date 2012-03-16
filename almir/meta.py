@@ -1,8 +1,9 @@
-import os.path
-import pickle
+#import os.path
+#import pickle
 import logging
-import hashlib
-import sqlite3
+#import hashlib
+#import sqlite3
+from datetime import datetime
 
 from pyramid.httpexceptions import exception_response
 from sqlalchemy import engine_from_config
@@ -11,10 +12,12 @@ from sqlalchemy.ext.declarative import declared_attr
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 from zope.sqlalchemy import ZopeTransactionExtension
+from webhelpers.date import distance_of_time_in_words
+from webhelpers.number import format_byte_size
 
 from almir.lib.sqlalchemy_declarative_reflection import DeclarativeReflectedBase
 from almir.lib.sqlalchemy_lowercase_inspector import LowerCaseInspector
-from almir.lib.filters import format_byte_size, time_ago_in_words
+from almir.lib.utils import timedelta_to_seconds, convert_timezone
 
 
 log = logging.getLogger(__name__)
@@ -56,11 +59,23 @@ class ModelMixin(object):
             return format_byte_size(0)
 
     @staticmethod
-    def render_time_ago_in_words(dt):
-        if dt:
-            return {'text': time_ago_in_words(dt), 'data_numeric': dt.strftime('%s')}
+    def render_distance_of_time_in_words(dt_from, dt_to=None):
+        if not dt_from:
+            return
+
+        if dt_from.tzinfo is None:
+            dt_from = convert_timezone(dt_from)
+
+        if dt_to is None:
+            return {'text': distance_of_time_in_words(dt_from, convert_timezone(datetime.now())), 'data_numeric': dt_from.strftime('%s')}
+        else:
+            if dt_to.tzinfo is None:
+                dt_to = convert_timezone(dt_to)
+            return {'text': distance_of_time_in_words(dt_from, dt_to),
+                    'data_numeric': -timedelta_to_seconds(dt_to - dt_from)}
 
 
+# TODO: cache for 5min
 def get_database_size(engine):
     """Returns human formatted SQL database size.
 

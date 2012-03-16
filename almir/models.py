@@ -10,10 +10,9 @@ from sqlalchemy.sql import functions as func
 
 from almir.meta import Base, ModelMixin, DBSession
 from almir.lib.sqlalchemy_custom_types import BaculaDateTime
-from almir.lib.filters import nl2br, distance_of_time_in_words, yesno
+from almir.lib.filters import nl2br, yesno
 from almir.lib.bacula_base64 import decode_base64
 from almir.lib.bconsole import BConsole
-from almir.lib.utils import timedelta_to_seconds
 
 
 # defined in bacula/src/plugins/fd/fd_common.h
@@ -111,10 +110,10 @@ class Client(ModelMixin, Base):
         return {'text': self.name, 'href': self.url(request)}
 
     def render_jobretention(self, request):
-        return {'text': distance_of_time_in_words(self.jobretention), 'data_numeric': self.jobretention}
+        return self.render_distance_of_time_in_words(self.jobretention)
 
     def render_fileretention(self, request):
-        return {'text': distance_of_time_in_words(self.fileretention), 'data_numeric': self.fileretention}
+        return self.render_distance_of_time_in_words(self.fileretention)
 
     def render_autoprune(self, request):
         return {'text': yesno(self.autoprune)}
@@ -258,8 +257,7 @@ class Job(ModelMixin, Base):
 
     def render_duration(self, request):
         if self.starttime and self.endtime:
-            return {'text': distance_of_time_in_words(self.starttime, self.endtime),
-                    'data_numeric': -timedelta_to_seconds(self.endtime - self.starttime)}
+            return self.render_distance_of_time_in_words(self.starttime, self.endtime)
 
     def render_jobbytes(self, request):
         return {'text': self.format_byte_size(self.jobbytes)}
@@ -268,9 +266,7 @@ class Job(ModelMixin, Base):
         return {'text': self.joberrors}
 
     def render_starttime(self, request):
-        if self.starttime:
-            return {'text': distance_of_time_in_words(self.starttime) + ' ago',
-                    'data_numeric': self.starttime.strftime('%s')}
+        return self.render_distance_of_time_in_words(self.starttime)
 
 
 class Media(ModelMixin, Base):
@@ -366,7 +362,7 @@ class Media(ModelMixin, Base):
         return {'text': self.format_byte_size(self.maxvolbytes)}
 
     def render_volretention(self, request):
-        return {'text': distance_of_time_in_words(self.volretention), 'data_numeric': self.volretention}
+        return self.render_distance_of_time_in_words(self.volretention)
 
     def render_volstatus(self, request):
         # TODO: colors

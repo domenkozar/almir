@@ -25,6 +25,7 @@ requires = [
     'mysql-connector-repackaged',  # original one does not install with buildout
     'docutils',
     'Sphinx',
+    'pytz',
 ]
 
 if sys.version_info[:3] < (2, 5, 0):

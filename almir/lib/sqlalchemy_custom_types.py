@@ -3,13 +3,18 @@ import re
 
 import sqlalchemy.types as types
 
+from almir.lib.utils import convert_timezone
+
 DATETIME_RE = re.compile("(\d+)-(\d+)-(\d+) (\d+):(\d+):(\d+)(?:\.(\d+))?")
 
 
 class BaculaDateTime(types.TypeDecorator):
-    '''Changes sqlite DateTime to parse 0 values as no value'''
+    '''Changes sqlite DateTime to parse 0 values as no value. Also converts to right timezone'''
 
     impl = types.DateTime
+
+    def process_result_value(self, value, dialect=None):
+        return convert_timezone(value)
 
     def result_processor(self, dialect, coltype):
         if dialect.name == 'sqlite':
@@ -29,7 +34,7 @@ class BaculaDateTime(types.TypeDecorator):
                     if m is None:
                         raise ValueError("Couldn't parse %s string: "
                                         "'%s'" % (datetime.datetime.__name__, value))
-                    return datetime.datetime(*map(int, m.groups(0)))
+                    return self.process_result_value(datetime.datetime(*map(int, m.groups(0))))
             return process
         else:
             return super(BaculaDateTime, self).result_processor(dialect, coltype)
