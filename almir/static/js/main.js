@@ -51,29 +51,46 @@ function send_command (e, force_command) {
 $(function () {
     /* make datatables rows clickable by provided link */
     $('tr[data-link]').click(function (e) {
-        window.location = $(e.target).parent('tr').attr('data-link');
+       window.location = $(e.target).parents('tr').data('link');
     });
 
-    /* datatables initialisation: http://datatables.net/usage/options */
-    $('.datatables').dataTable({
-        "sDom": "<'row-fluid'<'span5'l><'span7'fT>r>t<'row-fluid'<'span6'i><'span6'p>>",
-        "sPaginationType": "bootstrap",
-        "oLanguage": {
-            "sLengthMenu": "_MENU_ per page"
-        },
-        "oTableTools": {
-            sSwfPath: tabletools_swf,
-            aButtons: ["copy", "xls", "pdf", "print"]
-        },
-        "iDisplayLength": 50,
-    });
-    $('#command_help').dataTable({
-        "sDom": "<'row-fluid'<'span12'f>r>t<'row-fluid'>",
-        "iDisplayLength": 200
+    $('.datatables').each(function () {
+        var $this = $(this),
+            /* datatables initialisation: http://datatables.net/usage/options */
+            options = {
+              "sDom": "<'row-fluid'<'span5'l><'span7'fT>r>t<'row-fluid'<'span6'i><'span6'p>>",
+              "sPaginationType": "bootstrap",
+              "oLanguage": {
+                  "sLengthMenu": "_MENU_ per page"
+              },
+              "oTableTools": {
+                  sSwfPath: tabletools_swf,
+                  aButtons: ["copy", "xls", "pdf", "print"]
+              },
+              "iDisplayLength": 50,
+           };
+
+        if ($.inArray($this.prevAll('h2').attr('id'), ['last_jobs', 'upcoming_jobs', 'running_jobs']) != -1) {
+           options.sDom = "<'row-fluid'<'span12'fT>r>t<'row-fluid'>";
+        }
+        if ($this.prevAll('h2').attr('id') == "command_help") {
+           options.sDom = "<'row-fluid'<'span12'f>r>t<'row-fluid'>";
+           options.iDisplayLength = 200;
+        }
+
+        $this.find('thead th').each(function (index) {
+           if ($.inArray($(this).text(), ['Scheduled', 'Started']) != -1) {
+              options.aaSorting = [[index, "asc"]];
+           }
+           if ($.inArray($(this).text(), ['Time', 'Last written']) != -1) {
+              options.aaSorting = [[index, "desc"]];
+           }
+        }); 
+
+        $this.dataTable(options);
     });
     // apply twitter.bootstrap markup on tabletools
     $('.DTTT_button').addClass('btn');
-
 
     // -- console.pt
     if ($('#console').length == 1) {

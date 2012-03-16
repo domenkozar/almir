@@ -2,11 +2,14 @@
 
 {% block content %}
     <h1 class="view">Dashboard <small>Overview</small></h1>
-    <h2>Upcoming Jobs (next 24h)</h2>
+
+    <h2 id="upcoming_jobs">Upcoming Jobs (next 24h)</h2>
     {{ macros.upcoming_jobs_table(request, upcoming_jobs) }}
-    <h2>Running Jobs</h2>
+
+    <h2 id="running_jobs">Running Jobs</h2>
     {{ macros.jobs_table(request, running_jobs) }}
-    <h2>Last finished Jobs</h2>
+
+    <h2 id="last_jobs">Last finished Jobs</h2>
     {{ macros.jobs_table(request, jobs) }}
 {% endblock %}
 
