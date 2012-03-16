@@ -7,7 +7,6 @@ import os
 from deform import Form
 from sqlalchemy.sql.expression import desc
 from sqlalchemy.sql.functions import sum, count
-from docutils.core import publish_parts
 
 from almir.meta import DBSession, get_database_size
 from almir.models import Job, Client, Log, Media, Storage, Pool, Status
@@ -15,6 +14,7 @@ from almir.forms import *
 from almir.lib.filters import nl2br
 from almir.lib.console_commands import CONSOLE_COMMANDS
 from almir.lib.bconsole import BConsole
+from almir.lib.utils import render_rst_section
 
 
 def dashboard(request):
@@ -34,10 +34,8 @@ def dashboard(request):
 
 
 def about(request):
-    filename = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'docs', 'source', 'changelog.rst')
-    f = open(filename).read()
-    parts = publish_parts(f, writer_name="html", settings_overrides={'initial_header_level': 2, 'doctitle_xform': False})
-    changelog = parts['html_body']
+    changelog = render_rst_section('changelog.rst')
+    about = render_rst_section('about.rst')
     return locals()
 
 

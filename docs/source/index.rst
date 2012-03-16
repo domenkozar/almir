@@ -27,7 +27,7 @@ Welcome to almir's documentation!
 
 .. topic:: Overview
 
-    **almir**...
+    .. include:: about.rst
 
 
 .. toctree::
