@@ -1,32 +1,38 @@
-
 v0.1
-BUG: sort jobs by started date by default
-BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
-BUG: timezones: specify in buildout and make sure datetime type uses that information
-BUG: get forms working
-FEATURE: tests for sqlite, postgresql, mysql
-FEATURE: colored: status of volume list, job errors, log errors
-FEATURE: pyramid_exclog (+ sentry)
+----
+
+FEATURE: storage list/view is incomplete
+FEATURE: pyramid_exclog
 FEATURE: deform_bootstrap
+FEATURE: production buildout/config
+FEATURE: docs on productions: basicauth
 FEATURE: quickstart landing page
-FEATURE: add icons from twitter.bootstrap http://twitter.github.com/bootstrap/base-css.html#icons
-FEATURE: community links, donate button+flattr, twitter
-BUG: get metadata caching to work
-IDEAS: install alternatives and compare
-IDEAS: CSRF?
-IDEAS: convention: volumes vs. medias
-UPSTREAM: debug_toolbar fails when interactive console raises excpetion https://github.com/Pylons/pyramid_debugtoolbar/issues/56
-UPSTREAM: readthedocs have no option to install extras https://github.com/rtfd/readthedocs.org/issues/173
+FEATURE: community links, donate button+flattr, twitter, mailinglist
+IDEA: convention: volumes vs. medias
+FEATURE: log issues to github tracker and get rid of this TODO
+FEATURE: get forms working
+    FEATURE: implement configurable limit of elements in table 
+BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
+FEATURE: tests for sqlite, postgresql, mysql
 
 
 V0.2
+----
+
+BUG: get metadata caching to work
 FEATURE: inline documentation for data from database
 FEATURE: use https://github.com/mozilla-services/cornice
 FEATURE: director actions through dropdown menu
 FEATURE: configurable datetime formatting (watch out for sorting)
 FEATURE: clickable headings (anchors)
+FEATURE: caching for most obvious things
+IDEA: http://siliconforks.com/jscoverage/ 
+IDEA: CSRF?
+
 
 FUTURE
+------
+
 FEATURE: multiple directors
 FEATURE: graph reports
 FEATURE: browse cataloged files
@@ -34,4 +40,12 @@ FEATURE: responsive design
 FEATURE: configurable rss
 FEATURE: ACL would allow users to restire their own files and have access to one client
 IDEA: ship with bacula to kill administrators burdon?
-IDEA: http://siliconforks.com/jscoverage/ 
+IDEA: add icons from twitter.bootstrap http://twitter.github.com/bootstrap/base-css.html#icons
+
+
+UPSTREAM
+--------
+
+IDEA: ask how does bacula handle timezones (bound to director?)
+BUG: debug_toolbar fails when interactive console raises excpetion https://github.com/Pylons/pyramid_debugtoolbar/issues/56
+BUG: readthedocs have no option to install extras https://github.com/rtfd/readthedocs.org/issues/173

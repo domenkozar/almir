@@ -7,7 +7,6 @@ from almir.meta import initialize_sql
 from almir.lib.filters import filters
 
 
-# TODO: cache
 def navigation_tree(event):
     """Generate navigation data"""
     request = event['request']
