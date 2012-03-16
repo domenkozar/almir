@@ -25,6 +25,19 @@ TYPES = {
     'B': 'Backup',
     'R': 'Restore',
 }
+# TODO: parse from bacula/bacula/src/lib/util.c
+MEDIA_STATUS_SEVERITY = {
+    "Append": 'ok',
+    "Archive": 'unknown',
+    "Disabled": 'unknown',
+    "Full": 'unknown',
+    "Used": 'unknown',
+    "Cleaning": 'unknown',
+    "Purged": 'unknown',
+    "Recycle": 'unknown',
+    "Read-Only": 'unknown',
+    "Error": 'error',
+}
 
 
 class Status(ModelMixin, Base):
@@ -263,7 +276,10 @@ class Job(ModelMixin, Base):
         return {'text': self.format_byte_size(self.jobbytes)}
 
     def render_joberrors(self, request):
-        return {'text': self.joberrors}
+        d = {'text': self.joberrors}
+        if self.joberrors:
+            d['cssclass'] = 'error'
+        return d
 
     def render_starttime(self, request):
         return self.render_distance_of_time_in_words(self.starttime)
@@ -365,8 +381,7 @@ class Media(ModelMixin, Base):
         return self.render_distance_of_time_in_words(self.volretention)
 
     def render_volstatus(self, request):
-        # TODO: colors
-        return {'text': self.volstatus}
+        return {'text': self.volstatus, 'cssclass': MEDIA_STATUS_SEVERITY[self.volstatus]}
 
     def render_storage_name(self, request):
         if self.storage:
@@ -452,7 +467,13 @@ class Log(ModelMixin, Base):
     time = Column('time', BaculaDateTime())
 
     def render_logtext(self, request):
-        return {'text': Markup(nl2br(self.logtext))}
+        d = {}
+        # sanitize logs
+        log = self.logtext.strip('\\').strip().strip('\n')
+        d['text'] = Markup(nl2br(log))
+        if 'ERR' in self.logtext or 'Fatal error' in self.logtext:
+            d['cssclass'] = 'error'
+        return d
 
 
 class Pool(ModelMixin, Base):

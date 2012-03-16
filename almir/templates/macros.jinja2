@@ -12,6 +12,10 @@
     {% endif %}
 {%- endmacro %}
 
+{% macro td_link(options) -%}
+    <td {% if options.cssclass is defined %}class="{{ options.cssclass }}"{% endif %}>{{ link(options) }}</td>
+{%- endmacro %}
+
 {% macro upcoming_jobs_table(request, jobs) -%}
     <table class="table table-bordered datatables">
         <thead>
@@ -67,7 +71,7 @@
                     <td>{{ link(job.render_client_name(request)) }}</td>
                     <td>{{ link(job.render_starttime(request)) }}</td>
                     <td>{{ link(job.render_duration(request)) }}</td>
-                    <td>{{ link(job.render_joberrors(request)) }}</td>
+                    {{ td_link(job.render_joberrors(request)) }}
                 </tr>
             {% endfor %}
         </tbody>
@@ -91,7 +95,7 @@
             {% for media in volumes %}
                 <tr class="clickable-row" data-link="{{ request.route_url('volume_detail', id=media.mediaid) }}">
                     <td>{{ link(media.render_volumename(request)) }}</td>
-                    <td>{{ link(media.render_volstatus(request)) }}</td>
+                    {{ td_link(media.render_volstatus(request)) }}
                     <td>{{ link(media.render_volbytes(request)) }}</td>
                     <td>{{ media.lastwritten }}</td>
                     <td>{{ link(media.render_expires(request)) }}</td>
@@ -121,7 +125,7 @@
                     <td>{{ log.jobid }}</td>
                     {% endif %}
                     <td>{{ log.time }}</td>
-                    <td>{{ link(log.render_logtext(request)) }}</td>
+                    {{ td_link(log.render_logtext(request)) }}
                 </tr>
             {% endfor %}
         </tbody>
