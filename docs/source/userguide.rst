@@ -34,12 +34,12 @@ Buildout (recommended)
 
 Install prerequesities (Debian based)::
 
-    apt-get git bacula-console
+    apt-get install git bacula-console
 
 Install almir::
 
     cd /some/directory/to/install/almir/
-    wget https://raw.github.com/iElectric/almir/latest/install_production.sh | sh
+    sh -c "$(wget -qO - https://raw.github.com/iElectric/almir/master/install_production.sh)"
 
 
 Manual (not recommended)

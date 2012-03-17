@@ -1,6 +1,7 @@
 """Dirty script to output buildout.cfg, but it does the job.
 """
 import os
+import getpass
 
 
 ROOT = os.path.join(os.path.dirname(__file__), '..', '..')
@@ -35,7 +36,7 @@ director_password = %(director_password)s
 
 
 def main():
-    print 'Configuring almir ...'
+    print '\n\nConfiguring almir ...'
     print 'If you want to use the default, press enter.'
     print ''
 
@@ -50,9 +51,9 @@ def main():
     options['director_name'] = raw_input('Name of director to connect to (default: localhost-dir): ') or 'localhost-dir'
     options['director_address'] = raw_input('Address of director to connect to (default: localhost): ') or 'localhost'
     options['director_port'] = raw_input('Port of director to connect to (default: 9101): ') or '9101'
-    options['director_password'] = raw_input('Password of director to connect to: ')
+    options['director_password'] = getpass.getpass('Password of director to connect to: ')
 
-    with open(OUTPUT) as f:
+    with open(OUTPUT, 'w') as f:
         f.write(TEMPLATE % options)
 
 if __name__ == '__main__':
