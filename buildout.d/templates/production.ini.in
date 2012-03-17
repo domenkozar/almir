@@ -12,7 +12,7 @@ pyramid.includes =
     pyramid_exclog
 exclog.extra_info = true
 
-sqlalchemy.url = ${sqla_engine_url}
+sqlalchemy.url = ${almir:sqla_engine_url}
 timezone = ${almir:timezone}
 
 [server:main]
