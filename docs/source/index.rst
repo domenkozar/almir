@@ -18,7 +18,7 @@ Welcome to almir's documentation!
 
     - supports bacula-director version 5.0.x
     - supports sqlite, postgresql, mysql databases
-    - complete representation of bacula-director information
+    - complete read-only interface for bacula-director information
     - interactive web console frontend to bconsole
     - export data to excel, pdf and clipboard 
     - supports python2.6 and python 2.7
