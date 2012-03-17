@@ -7,13 +7,16 @@
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Volumes</th>
+                <th>Total backups</th>
             </tr>
         </thead>
         <tbody>
             {% for storage in objects %}
-                <tr class="clickable-row" data-link="{{ request.route_url('storage_detail', id=storage.storageid) }}">
-                    <td>{{ macros.link(storage.render_name(request)) }}</td>
-                    <!-- TODO: add total backup size, clients, jobs, num volumes, etc... -->
+                <tr class="clickable-row" data-link="{{ request.route_url('storage_detail', id=storage.Storage.storageid) }}">
+                    <td>{{ macros.link(storage.Storage.render_name(request)) }}</td>
+                    <td>{{ storage.num_volumes }}</td>
+                    <td>{{ storage.Storage.format_byte_size(storage.total_backup_size) }}</td>
                 </tr>
             {% endfor %}
         </tbody>

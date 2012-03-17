@@ -461,6 +461,19 @@ class Storage(ModelMixin, Base):
         "storage_pkey" PRIMARY KEY, btree (storageid)
     """
 
+    @classmethod
+    def objects_list(cls):
+        d = super(Storage, cls).objects_list()
+        d['objects'] = cls.query.with_entities(Storage,
+                                               func.count(Media.mediaid).label('num_volumes'),
+                                               #func.count(Job.jobid).label('num_jobs'),
+                                               #func.count(Client.clientid).label('num_clients'),
+                                               func.sum(Media.volbytes).label('total_backup_size'))\
+                                .outerjoin('medias')\
+                                .group_by(cls)
+                                #.outerjoin('medias', 'jobmedias', 'jobs')\
+        return d
+
     def url(self, request):
         return request.route_url('storage_detail', id=self.storageid)
 

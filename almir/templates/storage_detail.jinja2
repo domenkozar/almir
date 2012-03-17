@@ -15,6 +15,10 @@
                 <td>Name:</td>
                 <td>{{ object.name }}</td>
             </tr>
+            <tr>
+                <td>Autochanger:</td>
+                <td>{{ yesno(object.autochanger) }}</td>
+            </tr>
         </tbody>
     </table>
 {% endblock %}
