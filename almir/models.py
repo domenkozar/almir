@@ -27,7 +27,7 @@ TYPES = {
     'R': 'Restore',
 }
 # TODO: parse from bacula/bacula/src/lib/util.c
-MEDIA_STATUS_SEVERITY = {
+VOLUME_STATUS_SEVERITY = {
     "Append": 'ok',
     "Archive": 'unknown',
     "Disabled": 'unknown',
@@ -399,7 +399,7 @@ class Media(ModelMixin, Base):
         return {'text': distance_of_time_in_words(self.volretention)}
 
     def render_volstatus(self, request):
-        return {'text': self.volstatus, 'cssclass': MEDIA_STATUS_SEVERITY[self.volstatus]}
+        return {'text': self.volstatus, 'cssclass': VOLUME_STATUS_SEVERITY[self.volstatus]}
 
     def render_storage_name(self, request):
         if self.storage:

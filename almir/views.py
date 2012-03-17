@@ -26,7 +26,7 @@ def dashboard(request):
     # statistics
     num_clients = dbsession.query(count(Client.clientid)).scalar()
     num_jobs = dbsession.query(count(Job.jobid)).scalar()
-    num_media = dbsession.query(count(Media.mediaid)).scalar()
+    num_volumes = dbsession.query(count(Media.mediaid)).scalar()
     sum_volumes = Media.format_byte_size(dbsession.query(sum(Media.volbytes)).scalar() or 0)
     database_size = get_database_size(DBSession.bind)
 

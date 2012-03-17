@@ -6,7 +6,6 @@ FEATURE: production buildout/config
 FEATURE: pyramid_exclog
 FEATURE: docs on productions: basicauth, nginx
 FEATURE: community links, donate button+flattr, twitter, mailinglist
-IDEA: convention: volumes vs. medias
 BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
 FEATURE: get forms working
     FEATURE: implement configurable limit of elements in table 

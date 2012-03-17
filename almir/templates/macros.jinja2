@@ -92,15 +92,15 @@
             </tr>
         </thead>
         <tbody>
-            {% for media in volumes %}
-                <tr class="clickable-row" data-link="{{ request.route_url('volume_detail', id=media.mediaid) }}">
-                    <td>{{ link(media.render_volumename(request)) }}</td>
-                    {{ td_link(media.render_volstatus(request)) }}
-                    <td>{{ link(media.render_volbytes(request)) }}</td>
-                    <td>{{ media.lastwritten }}</td>
-                    <td>{{ link(media.render_expires(request)) }}</td>
-                    <td>{{ link(media.render_storage_name(request)) }}</td>
-                    <td>{{ link(media.render_pool_name(request)) }}</td>
+            {% for volume in volumes %}
+                <tr class="clickable-row" data-link="{{ request.route_url('volume_detail', id=volume.mediaid) }}">
+                    <td>{{ link(volume.render_volumename(request)) }}</td>
+                    {{ td_link(volume.render_volstatus(request)) }}
+                    <td>{{ link(volume.render_volbytes(request)) }}</td>
+                    <td>{{ volume.lastwritten }}</td>
+                    <td>{{ link(volume.render_expires(request)) }}</td>
+                    <td>{{ link(volume.render_storage_name(request)) }}</td>
+                    <td>{{ link(volume.render_pool_name(request)) }}</td>
                 </tr>
             {% endfor %}
         </tbody>
