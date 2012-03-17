@@ -8,7 +8,8 @@ sqla_engine_url = sqlite:///%(here)s/bacula.db
 #sqla_engine_url = mysql+mysqlconnector://bacula:<password>@hostname/<database>
 
 # your timezone from TZ* column in table https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-timezone = Europe/Ljubljana
+# if not set, defaults to system timezone
+#timezone = Europe/Ljubljana
 
 # bconsole director parameters
 director_name = localhost-dir
