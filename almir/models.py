@@ -482,6 +482,9 @@ class Storage(ModelMixin, Base):
     def render_name(self, request):
         return {'text': self.name, 'href': self.url(request)}
 
+    def render_autochanger(self, request):
+        return {'text': yesno(self.autochanger)}
+
 
 class Log(ModelMixin, Base):
     """

@@ -13,11 +13,11 @@
         <tbody>
             <tr>
                 <td>Name:</td>
-                <td>{{ object.name }}</td>
+                <td>{{ macros.link(object.render_name(request)) }}</td>
             </tr>
             <tr>
                 <td>Autochanger:</td>
-                <td>{{ yesno(object.autochanger) }}</td>
+                <td>{{ macros.link(object.render_autochanger(request)) }}</td>
             </tr>
         </tbody>
     </table>
