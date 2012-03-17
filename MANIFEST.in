@@ -1,2 +1,2 @@
-include *.txt *.cfg *.rst *.in
+include *.cfg *.rst *.in
 graft almir
