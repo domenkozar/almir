@@ -26,6 +26,11 @@ def navigation_tree(event):
         dict(name="Console", url=request.route_url('console')),
     ]
 
+    try:
+        event['current_url'] = request.current_route_url()
+    except ValueError:
+        event['current_url'] = ''
+
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application. """
