@@ -23,7 +23,6 @@ class BConsole(object):
 
     config_file = os.path.realpath(os.path.join(CURRENT_DIRECTORY, '..', '..', 'bconsole.conf'))
 
-    # TODO: use sudo?
     def __init__(self, bconsole_command='bconsole -n -c %s'):
         self.bconsole_command = bconsole_command % self.config_file
 

@@ -3,7 +3,7 @@ python:
   - 2.6
   - 2.7
 install:
-  - sudo apt-get install -y libevent-dev git gcc python-dev sendmail bacula-console
+  - sudo apt-get install git gcc python-dev sendmail bacula-console
   - cp buildout.d/templates/buildout.cfg.in buildout.cfg
   - sed -i 's/bacula.db/bacula_kaki.db/' buildout.cfg
   - director_password=$(sudo grep 'Password' /etc/bacula/bconsole.conf | sed 's/.*Password\s*=\s*"\(.\+\)"/\1/')

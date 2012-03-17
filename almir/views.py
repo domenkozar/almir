@@ -39,8 +39,6 @@ def about(request):
 
 
 def console(request):
-    # TODO: do all checks if console is working
-    permission_problem = False
     command_array = ','.join(['"%s"' % name for name in CONSOLE_COMMANDS.keys()])
     console_commands = CONSOLE_COMMANDS
     return locals()

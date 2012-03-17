@@ -377,7 +377,9 @@ class Media(ModelMixin, Base):
         backref="medias",
     )
 
-    # TODO: mediatype
+    # we don't use mediatype table yet,
+    # because it only provides readonly information
+    # for mediatype
 
     def url(self, request):
         return request.route_url('volume_detail', id=self.mediaid)

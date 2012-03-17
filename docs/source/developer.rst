@@ -4,7 +4,7 @@ Developer guide
 Setup developer environment
 ---------------------------
 
-* sudo aptitude install libevent-dev git gcc python-dev bacula-console sendmail
+* sudo aptitude install git gcc python-dev bacula-console
 * git clone https://github.com/iElectric/almir.git almir
 * cd almir
 * cp buildout.d/templates/buildout.cfg.in buildout.cfg 
@@ -36,3 +36,11 @@ Run tests::
 
     cd ../almir
     ./.travis_qunit_tests.sh
+
+
+Coding conventions
+------------------
+
+* `PEP8 <http://www.python.org/dev/peps/pep-0008/>`_ except for 80 char length rule
+* add changelog, test and documentation with code in commits
+* same applies to javascript
