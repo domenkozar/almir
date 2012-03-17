@@ -37,6 +37,7 @@ class BConsole(object):
             return False
 
     def get_upcoming_jobs(self):
+        # TODO: we can do: .status dir scheduled days=10
         jobs = []
         p = self.start_process()
         stdout, stderr = p.communicate('.status dir scheduled\n')

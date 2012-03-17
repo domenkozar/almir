@@ -1,17 +1,20 @@
 v0.1
 ----
 
+BUG: make bconsole working on travis
 FEATURE: production buildout/config
 FEATURE: docs on productions: basicauth, nginx
-FEATURE: community links, donate button+flattr, twitter, mailinglist
 FEATURE: finish bconsole
-BUG: make bconsole working on travis
-BUG: 100% test coverage
+FEATURE: add classifiers
+BUG: memory leaks
 BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
-FEATURE: get forms working
     FEATURE: implement configurable limit of elements in table 
+FEATURE: get forms working
 FEATURE: tests for sqlite, postgresql, mysql
+BUG: 100% test coverage
 FEATURE: log issues to github tracker and get rid of this TODO
+FEATURE: donate button+flattr
+RELEASE: pypi, bacula users list, almir list, blog post
 
 
 V0.2
