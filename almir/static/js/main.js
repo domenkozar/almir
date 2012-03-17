@@ -42,11 +42,11 @@ function send_command (e, force_command) {
         }
 
         if (data.error) {
-           alert(data.error);
+           $console.before($('<div class="alert alert-error"><a class="close" data-dismiss="alert">×</a>' + data.error + '</div>'));
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        alert(textStatus);
+        $console.before($('<div class="alert alert-error"><a class="close" data-dismiss="alert">×</a>Something went wrong, inspect server logs.</div>'));
       }
     });
 }
