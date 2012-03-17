@@ -137,6 +137,11 @@ def ajax_console_input(request):
     if bconsole_session is None:
         bconsole_session = BConsole().start_process()
 
+    if bconsole_session.poll():
+        bconsole_session = None
+        command_cache.clear()
+        return {'error': 'Connection to director terminated. Refresh to reconnect.'}
+
     # send bconsole command
     if request.POST['bconsole_command']:
         bconsole_session.stdin.write(request.POST['bconsole_command'].strip()+'\n')

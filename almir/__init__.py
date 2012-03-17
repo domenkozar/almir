@@ -5,6 +5,7 @@ from pyramid.view import append_slash_notfound_view
 
 from almir.meta import initialize_sql
 from almir.lib.filters import filters
+from almir.lib.bconsole import BConsole
 
 
 def navigation_tree(event):
@@ -75,5 +76,9 @@ def main(global_config, **settings):
             )
 
     config.add_view(append_slash_notfound_view, context=HTTPNotFound)
+
+    # test bconsole connectivity
+    if not BConsole().is_running():
+        raise RuntimeError('Can not connect to bconsole, check if it is running. Config file: %s' % BConsole.config_file)
 
     return config.make_wsgi_app()

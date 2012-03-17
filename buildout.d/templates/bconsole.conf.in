@@ -1,3 +1,6 @@
+# you should never edit this file, but the template located at
+# buildout.d/templates/bconsole.conf.in
+
 Director {
   Name = ${almir:director_name}
   DIRport = ${almir:director_port}

@@ -21,12 +21,21 @@ UPCOMING_JOB_REGEX = re.compile(r"""
 class BConsole(object):
     """Interface to bconsole binary"""
 
+    config_file = os.path.realpath(os.path.join(CURRENT_DIRECTORY, '..', '..', 'bconsole.conf'))
+
     # TODO: use sudo?
-    def __init__(self, bconsole_command='bconsole -n -c %s' % os.path.join(CURRENT_DIRECTORY, '..', '..', 'bconsole.conf')):
-        self.bconsole_command = bconsole_command
+    def __init__(self, bconsole_command='bconsole -n -c %s'):
+        self.bconsole_command = bconsole_command % self.config_file
 
     def start_process(self):
         return Popen(shlex.split(self.bconsole_command), stdout=PIPE, stdin=PIPE, stderr=PIPE)
+
+    def is_running(self):
+        stdout, stderr = self.start_process().communicate('version')
+        if 'version' in stdout.lower():
+            return True
+        else:
+            return False
 
     def get_upcoming_jobs(self):
         jobs = []

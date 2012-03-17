@@ -28,7 +28,6 @@ function send_command (e, force_command) {
         bconsole_command: bconsole_text
       },
       success: function (data, textStatus, jqXHR) {
-        console.log(data.commands);
         if (data.commands) {
             $.each(data.commands, function(index, value) {
                 // prettyfy first line, which is the command
@@ -40,6 +39,10 @@ function send_command (e, force_command) {
 
             // scroll nicely to the bottom of text
             $console.animate({scrollTop: $console.prop("scrollHeight") - $console.height() }, 300);
+        }
+
+        if (data.error) {
+           alert(data.error);
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {
