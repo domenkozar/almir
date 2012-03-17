@@ -1,6 +1,6 @@
 from pyramid.config import Configurator
 from pyramid.events import BeforeRender
-from pyramid.httpexceptions import default_exceptionresponse_view
+from pyramid.httpexceptions import HTTPError
 from sqlalchemy.dialects import sqlite
 from sqlalchemy.types import INTEGER
 
@@ -38,7 +38,6 @@ def main(global_config, **settings):
 
     config = Configurator(settings=settings)
     config.include('pyramid_jinja2')
-    config.add_notfound_view(default_exceptionresponse_view, append_slash=True)
 
     # events
     config.add_subscriber(navigation_tree, BeforeRender)
@@ -69,6 +68,14 @@ def main(global_config, **settings):
                     route_name='console_ajax',
                     renderer='json',
                     request_method='POST')
+
+    # exception handling views
+    config.add_view(lambda x: x,
+                    context=HTTPError,
+                    renderer='templates/httpexception.jinja2')
+    config.add_notfound_view(lambda x: x,
+                             renderer='templates/httpexception.jinja2',
+                             append_slash=True)
 
     # RESTful resources
     for name in ['job', 'client', 'storage', 'volume', 'pool']:
