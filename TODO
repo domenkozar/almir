@@ -1,19 +1,17 @@
 v0.1
 ----
 
-FEATURE: storage list/view is incomplete
 FEATURE: finish bconsole
-FEATURE: pyramid_exclog
-FEATURE: deform_bootstrap
 FEATURE: production buildout/config
-FEATURE: docs on productions: basicauth
+FEATURE: pyramid_exclog
+FEATURE: docs on productions: basicauth, nginx
 FEATURE: community links, donate button+flattr, twitter, mailinglist
 IDEA: convention: volumes vs. medias
-FEATURE: log issues to github tracker and get rid of this TODO
+BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
 FEATURE: get forms working
     FEATURE: implement configurable limit of elements in table 
-BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
 FEATURE: tests for sqlite, postgresql, mysql
+FEATURE: log issues to github tracker and get rid of this TODO
 
 
 V0.2
@@ -27,6 +25,9 @@ FEATURE: configurable datetime formatting (watch out for sorting)
 FEATURE: clickable headings (anchors)
 FEATURE: quickstart landing page
 FEATURE: caching for most obvious things
+FEATURE: autochanger/devices
+FEATURE: counter
+FEATURE: filesets representations
 IDEA: http://siliconforks.com/jscoverage/ 
 IDEA: CSRF?
 
@@ -42,6 +43,7 @@ FEATURE: configurable rss
 FEATURE: ACL would allow users to restire their own files and have access to one client
 IDEA: ship with bacula to kill administrators burdon?
 IDEA: add icons from twitter.bootstrap http://twitter.github.com/bootstrap/base-css.html#icons
+IDEA: testing configuration http://www.bacula.org/manuals/en/install/install/Getting_Started_with_Bacula.html#SECTION00234000000000000000
 
 
 UPSTREAM
