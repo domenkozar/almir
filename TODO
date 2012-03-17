@@ -3,7 +3,6 @@ v0.1
 
 FEATURE: finish bconsole
 FEATURE: production buildout/config
-FEATURE: pyramid_exclog
 FEATURE: docs on productions: basicauth, nginx
 FEATURE: community links, donate button+flattr, twitter, mailinglist
 BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
