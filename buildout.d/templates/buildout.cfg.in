@@ -2,15 +2,18 @@
 extends = buildout.d/development.cfg
 
 [almir]
-# define parameters for sql connection as specified in 
+# define sql database connection as specified in
 # http://docs.sqlalchemy.org/en/latest/core/engines.html#database-urls
-sqla_engine_url = sqlite:///%(here)s/bacula.db
 #sqla_engine_url = postgresql+pg8000://bacula:<password>@hostname/<database>
 #sqla_engine_url = mysql+mysqlconnector://bacula:<password>@hostname/<database>
+sqla_engine_url = sqlite:///%(here)s/bacula.db
 
 # your timezone from TZ* column in table https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 # if not set, defaults to system timezone
 #timezone = Europe/Ljubljana
+
+#host = 127.0.0.1
+#port = 2500
 
 # bconsole director parameters
 director_name = localhost-dir

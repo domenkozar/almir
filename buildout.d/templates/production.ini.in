@@ -17,8 +17,8 @@ timezone = ${almir:timezone}
 
 [server:main]
 use = egg:waitress#main
-host = 0.0.0.0
-port = 2500
+host = ${almir:host}
+port = ${almir:port}
 
 # Begin logging configuration
 

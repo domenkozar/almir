@@ -21,18 +21,29 @@ Design goals
 Installation
 ------------
 
+Almir will install everything inside on directory. Application is meant to be self-contained,
+meaning no additional administrator is needed besides upgrading to a newer version. Almir should
+be always installed on a system together with bacula-director.
+
+Note that currently python2.6 and python2.7 are supported.
+
+If you are using postresql, make sure `postgresql.conf` includes a line `client_encoding = utf8`
+
 Buildout (recommended)
 **********************
 
-- get code
-- buildout
-- configure front web server
+Install prerequesities (Debian based)::
 
-* almir should be installed besides director
-* postgresql.conf on servers should have "client_encoding = utf8"
-* bconsole.conf through buildout
+    apt-get git bacula-console
+
+Install almir::
+
+    cd /some/directory/to/install/almir/
+    wget https://raw.github.com/iElectric/almir/latest/install_production.sh | sh
 
 
 Manual (not recommended)
 ************************
 
+Filesystem structure
+--------------------
