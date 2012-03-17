@@ -15,7 +15,7 @@
         </tr>
         </thead>
         <tbody>
-            {% for file in files %}
+            {% for file in object.files %}
                 <tr>
                     <td>{{ file.path.path }}{{ file.filename.name }}</td>
                     <td>{{ macros.link(file.render_size(request)) }}</td>
@@ -28,7 +28,7 @@
     </table>
 
     <h2 class="view">Log</h2>
-    {{ macros.logs_table(request, logs, show_jobid=False) }}
+    {{ macros.logs_table(request, object.logs, show_jobid=False) }}
 {% endblock %}
 
 {% block sidebar %}

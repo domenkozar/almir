@@ -225,6 +225,20 @@ class Job(ModelMixin, Base):
         foreign_keys="JobMedia.jobid",
         backref="jobs",
     )
+    logs = relationship(
+        "Log",
+        lazy="joined",
+        primaryjoin="Job.jobid==Log.jobid",
+        foreign_keys="Log.jobid",
+        backref="job",
+    )
+    files = relationship(
+        "File",
+        lazy="joined",
+        primaryjoin="Job.jobid==File.jobid",
+        foreign_keys="File.jobid",
+        backref="job",
+    )
 
     @classmethod
     def get_upcoming(cls):
@@ -233,25 +247,25 @@ class Job(ModelMixin, Base):
     @classmethod
     def get_running(cls):
         d = super(Job, cls).objects_list()
-        return d['objects'].options(noload('*'), joinedload(cls.status), joinedload(cls.client)).join('status').filter(Status.severity == 15).order_by(desc(Job.starttime)).limit(50)
+        return d['objects'].options(noload('*'), joinedload(cls.status), joinedload(cls.client))\
+                           .join('status')\
+                           .filter(Status.severity == 15)\
+                           .order_by(desc(Job.starttime))\
+                           .limit(50)
 
     @classmethod
     def get_last(cls):
         d = super(Job, cls).objects_list()
-        return d['objects'].options(noload('*'), joinedload(cls.status), joinedload(cls.client)).join('status').filter(Status.severity != 15).order_by(desc(Job.schedtime)).limit(5)
+        return d['objects'].options(noload('*'), joinedload(cls.status), joinedload(cls.client))\
+                           .join('status')\
+                           .filter(Status.severity != 15)\
+                           .order_by(desc(Job.schedtime))\
+                           .limit(5)
 
     @classmethod
     def objects_list(cls):
         d = super(Job, cls).objects_list()
         d['objects'] = d['objects'].order_by(desc(Job.starttime)).limit(50)
-        return d
-
-    @classmethod
-    def object_detail(cls, id_):
-        id_ = int(id_)
-        d = super(Job, cls).object_detail(id_)
-        d['logs'] = Log.query.filter(Log.jobid == id_).order_by(desc(Log.time)).all()
-        d['files'] = File.query.filter(File.jobid == id_).all()
         return d
 
     def url(self, request):
