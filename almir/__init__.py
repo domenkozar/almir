@@ -2,6 +2,8 @@ from pyramid.config import Configurator
 from pyramid.events import BeforeRender
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import append_slash_notfound_view
+from sqlalchemy.dialects import sqlite
+from sqlalchemy.types import INTEGER
 
 from almir.meta import initialize_sql
 from almir.lib.filters import filters
@@ -29,7 +31,13 @@ def navigation_tree(event):
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application. """
+    # provide aliases for sqlite types
+    # to silence warnings
+    sqlite.base.ischema_names['TINYINT'] = INTEGER
+    sqlite.base.ischema_names['BIGINT'] = INTEGER
+
     initialize_sql(settings)
+
     config = Configurator(settings=settings)
     config.include('pyramid_jinja2')
 
@@ -75,10 +83,10 @@ def main(global_config, **settings):
                 renderer='templates/%s_%s.jinja2' % (name, action),
             )
 
-    config.add_view(append_slash_notfound_view, context=HTTPNotFound)
+    #config.add_view(append_slash_notfound_view, context=HTTPNotFound)
 
     # test bconsole connectivity
     if not BConsole().is_running():
-        raise RuntimeError('Can not connect to bconsole, check if it is running. Config file: %s' % BConsole.config_file)
+        raise RuntimeError('Can not connect to director, check if it is running. BConsole config file: %s' % BConsole.config_file)
 
     return config.make_wsgi_app()
