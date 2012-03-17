@@ -1,12 +1,10 @@
 from pyramid.config import Configurator
 from pyramid.events import BeforeRender
-from pyramid.httpexceptions import HTTPNotFound
-from pyramid.view import append_slash_notfound_view
+from pyramid.httpexceptions import default_exceptionresponse_view
 from sqlalchemy.dialects import sqlite
 from sqlalchemy.types import INTEGER
 
 from almir.meta import initialize_sql
-from almir.lib.filters import filters
 from almir.lib.bconsole import BConsole
 
 
@@ -40,9 +38,9 @@ def main(global_config, **settings):
 
     config = Configurator(settings=settings)
     config.include('pyramid_jinja2')
+    config.add_notfound_view(default_exceptionresponse_view, append_slash=True)
 
     # events
-    config.add_subscriber(filters, BeforeRender)
     config.add_subscriber(navigation_tree, BeforeRender)
 
     # static
@@ -54,15 +52,15 @@ def main(global_config, **settings):
     config.add_view('almir.views.dashboard',
                     route_name='dashboard',
                     renderer='templates/dashboard.jinja2')
-    config.add_route('about', '/about')
+    config.add_route('about', '/about/')
     config.add_view('almir.views.about',
                     route_name='about',
                     renderer='templates/about.jinja2')
-    config.add_route('log', '/log')
+    config.add_route('log', '/log/')
     config.add_view('almir.views.log',
                     route_name='log',
                     renderer='templates/log.jinja2')
-    config.add_route('console', '/console')
+    config.add_route('console', '/console/')
     config.add_view('almir.views.console',
                     route_name='console',
                     renderer='templates/console.jinja2')
@@ -74,7 +72,7 @@ def main(global_config, **settings):
 
     # RESTful resources
     for name in ['job', 'client', 'storage', 'volume', 'pool']:
-        for action, url in [('list', '/%s' % name), ('detail', '/%s/{id:\d+}' % name)]:
+        for action, url in [('list', '/%s/' % name), ('detail', '/%s/{id:\d+}/' % name)]:
             config.add_route('%s_%s' % (name, action), url)
             config.add_view(
                 'almir.views.%sView' % name.title(),
@@ -82,8 +80,6 @@ def main(global_config, **settings):
                 attr=action,
                 renderer='templates/%s_%s.jinja2' % (name, action),
             )
-
-    #config.add_view(append_slash_notfound_view, context=HTTPNotFound)
 
     # test bconsole connectivity
     if not BConsole().is_running():

@@ -10,10 +10,10 @@ from sqlalchemy.sql import functions as func
 from webhelpers.date import distance_of_time_in_words
 
 from almir.meta import Base, ModelMixin, DBSession
-from almir.lib.sqlalchemy_custom_types import BaculaDateTime
-from almir.lib.filters import nl2br, yesno
 from almir.lib.bacula_base64 import decode_base64
 from almir.lib.bconsole import BConsole
+from almir.lib.sqlalchemy_custom_types import BaculaDateTime
+from almir.lib.utils import nl2br, yesno
 
 
 # defined in bacula/src/plugins/fd/fd_common.h
@@ -76,7 +76,7 @@ class Client(ModelMixin, Base):
     def object_detail(cls, id_):
         id_ = int(id_)
         d = super(Client, cls).object_detail(id_)
-        # TODO: write this with subqueries
+        # TODO: write this in one query
         d.update({
             'jobs': Job.query.filter(Job.clientid == id_).order_by(desc(Job.schedtime)).limit(50),
             'num_jobs': Job.query.count(),

@@ -34,3 +34,11 @@ def render_rst_section(filename):
     with open(path) as f:
         parts = publish_parts(f.read(), writer_name="html", settings_overrides={'initial_header_level': 2, 'doctitle_xform': False})
         return parts['html_body']
+
+
+def yesno(text):
+    return 'Yes' if text else 'No'
+
+
+def nl2br(text):
+    return text.replace('\n', '<br />')

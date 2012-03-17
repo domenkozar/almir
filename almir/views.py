@@ -10,10 +10,9 @@ from sqlalchemy.sql.functions import sum, count
 from almir.meta import DBSession, get_database_size
 from almir.models import Job, Client, Log, Media, Storage, Pool
 from almir.forms import *
-from almir.lib.filters import nl2br
 from almir.lib.console_commands import CONSOLE_COMMANDS
 from almir.lib.bconsole import BConsole
-from almir.lib.utils import render_rst_section
+from almir.lib.utils import render_rst_section, nl2br
 
 
 def dashboard(request):

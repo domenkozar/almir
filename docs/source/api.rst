@@ -73,14 +73,6 @@ Source documentation
    :undoc-members:
    :show-inheritance:
 
-:mod:`almir.lib.filters` -- Templating filters
-++++++++++++++++++++++++++++++++++++++++++++++
-
-.. automodule:: almir.lib.filters
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 :mod:`almir.lib.sqlalchemy_custom_types`
 ++++++++++++++++++++++++++++++++++++++++
 
