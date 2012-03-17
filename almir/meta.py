@@ -23,11 +23,7 @@ from almir.lib.utils import timedelta_to_seconds, convert_timezone
 log = logging.getLogger(__name__)
 
 
-def readonly_flush(*a, **kw):
-    print 'readonly session, there should be no writes to DB'
-
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
-DBSession.flush = readonly_flush
 Base = declarative_base(cls=DeclarativeReflectedBase)
 
 

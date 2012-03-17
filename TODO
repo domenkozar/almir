@@ -1,10 +1,12 @@
 v0.1
 ----
 
-FEATURE: finish bconsole
 FEATURE: production buildout/config
 FEATURE: docs on productions: basicauth, nginx
 FEATURE: community links, donate button+flattr, twitter, mailinglist
+FEATURE: finish bconsole
+BUG: make bconsole working on travis
+BUG: 100% test coverage
 BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
 FEATURE: get forms working
     FEATURE: implement configurable limit of elements in table 

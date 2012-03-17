@@ -13,7 +13,7 @@ def navigation_tree(event):
     request = event['request']
     if not request:
         # debugger does not provide request
-        return
+        return  # PRAGMA: no cover
     event['navigation_tree'] = [
         dict(name="Dashboard", url=request.route_url('dashboard')),
         dict(name="Clients", url=request.route_url('client_list')),

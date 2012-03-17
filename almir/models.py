@@ -271,6 +271,9 @@ class Job(ModelMixin, Base):
     def url(self, request):
         return request.route_url('job_detail', id=self.jobid)
 
+    def render_name(self, request):
+        return {'text': self.name, 'href': self.url(request)}
+
     def render_client_name(self, request):
         if self.client:
             return self.client.render_name(request)
