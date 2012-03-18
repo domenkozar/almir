@@ -112,7 +112,8 @@ class Client(ModelMixin, Base):
         # TODO: report upstream to sqlalchemy
         if DBSession.bind.dialect.name == 'sqlite':
             def convert_datetime(l):
-                l.job_maxschedtime = datetime.datetime.strptime(l.job_maxschedtime, '%Y-%m-%d %H:%M:%S')
+                if l.job_maxschedtime:
+                    l.job_maxschedtime = datetime.datetime.strptime(l.job_maxschedtime, '%Y-%m-%d %H:%M:%S')
                 return l
             d['objects'] = map(convert_datetime, d['objects'])
         return d
