@@ -114,6 +114,15 @@ Source documentation
 .. automodule:: almir.scripts
 
 
+:mod:`almir.scripts.configure_deploy` -- Ask few questions and configure almir
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+.. automodule:: almir.scripts.configure_deploy
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+
 :mod:`almir.scripts.parse_console_commands` -- Parse help commands from bconsole source
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 

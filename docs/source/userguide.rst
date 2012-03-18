@@ -1,3 +1,5 @@
+.. highlight:: bash
+
 User guide
 ==========
 
@@ -34,16 +36,19 @@ Buildout (recommended)
 
 Install prerequesities (Debian based)::
 
-    apt-get install git bacula-console
+    $ sudo apt-get install git bacula-console
 
 Install almir::
 
-    cd /some/directory/to/install/almir/
-    sh -c "$(wget -qO - https://raw.github.com/iElectric/almir/master/install_production.sh)"
+    $ cd /some/directory/to/install/almir/
+    $ sh -c "$(wget -O - https://raw.github.com/iElectric/almir/master/install_production.sh)"
 
 
 Manual (not recommended)
 ************************
+
+Configuring Nginx as frontend
+*****************************
 
 Filesystem structure
 --------------------

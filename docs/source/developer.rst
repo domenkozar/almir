@@ -1,3 +1,5 @@
+.. highlight:: bash
+
 Developer guide
 ===============
 
@@ -19,7 +21,7 @@ Running Python tests
 
 Easy as::
 
-    bin/nosetests
+    $ bin/nosetests
 
 
 Running Javascript tests
@@ -27,15 +29,15 @@ Running Javascript tests
 
 Install and configure phantomjs (webkit headless testing)::
 
-    sudo apt-get install libqtwebkit-dev
-    git clone git://github.com/ariya/phantomjs.git && cd phantomjs
-    qmake-qt4 && make
-    sudo cp bin/phantomjs /usr/local/bin/
+    $ sudo apt-get install libqtwebkit-dev
+    $ git clone git://github.com/ariya/phantomjs.git && cd phantomjs
+    $ qmake-qt4 && make
+    $ sudo cp bin/phantomjs /usr/local/bin/
 
 Run tests::
 
-    cd ../almir
-    ./.travis_qunit_tests.sh
+    $ cd ../almir
+    $ ./.travis_qunit_tests.sh
 
 
 Coding conventions
@@ -46,9 +48,11 @@ Coding conventions
 * same applies to javascript
 
 
-Releasing the package
----------------------
+Releasing :mod:`almir`
+----------------------
 
-bin/mkrelease -d pypi
-git checkout latests
-git merge master
+::
+
+    $ bin/mkrelease -d pypi
+    $ git checkout latests
+    $ git merge master
