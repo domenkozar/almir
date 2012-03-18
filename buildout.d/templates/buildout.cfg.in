@@ -8,7 +8,7 @@ extends = buildout.d/development.cfg
 #sqla_engine_url = mysql+mysqlconnector://bacula:<password>@hostname/<database>
 sqla_engine_url = sqlite:///%(here)s/bacula.db
 
-# your timezone from TZ* column in table https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+# director timezone from TZ* column in table https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 # if not set, defaults to system timezone
 #timezone = Europe/Ljubljana
 
@@ -16,7 +16,7 @@ sqla_engine_url = sqlite:///%(here)s/bacula.db
 #port = 2500
 
 # bconsole director parameters
-director_name = localhost-dir
-director_port = 9101
-director_address = localhost
+#director_name = localhost-dir
+#director_port = 9101
+#director_address = localhost
 director_password = 

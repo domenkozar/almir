@@ -101,11 +101,12 @@ def main():
     options['host'] = ask_question('Host to listen on (default: 127.0.0.1): ', default='127.0.0.1')
     options['port'] = ask_question('Port to listen on (default: 2500): ', default='2500', validator=validate_open_port)
 
-    print 'Define SQL database connection as specified in http://docs.sqlalchemy.org/en/latest/core/engines.html#database-urls'
+    print 'Define SQL database connection to bacula catalog as specified in http://docs.sqlalchemy.org/en/latest/core/engines.html#database-urls'
     print 'For example:'
     print '    postgresql+pg8000://bacula:<password>@hostname/<database>'
     print '    mysql+mysqlconnector://bacula:<password>@hostname/<database>'
-    print '    sqlite:///var/lib/bacula/bacula.db'
+    print '    sqlite:////var/lib/bacula/bacula.db'
+    print '    sqlite:///bacula.db'
     print
     options['engine'] = ask_question('SQL connection string: ', validator=validate_engine)
 
