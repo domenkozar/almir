@@ -47,9 +47,11 @@ class FunctionalTests(unittest.TestCase):
         self.failUnless('Console' in res.body)
 
     def test_console_ajax(self):
-        pass
-        #res = self.testapp.post('/console/input/', {'bconsole_command': 'version'}, status=200)
-        # TODO: test when we have working bacula console test environment setup (or mocks)
+        res = self.testapp.post('/console/input/', {'bconsole_command': 'version'}, status=200)
+        self.assertTrue('commands' in res.body)
+
+        res = self.testapp.post('/console/input/', {'bconsole_command': ''}, status=200)
+        self.assertTrue('commands' in res.body)
 
 # restful
 

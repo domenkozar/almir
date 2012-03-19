@@ -1,6 +1,4 @@
 import collections
-import fcntl
-import select
 import os
 
 from deform import Form
@@ -121,46 +119,20 @@ def ajax_console_input(request):
     # TODO: thread locking
     # TODO: implement session based on cookie
     # TODO: stderr?
-    # TODO: config file could be set with buildout
-    # TODO: tests
-    # TODO: .messages
-    # TODO: what to do on quit command?
 
-    # if we have a session with no entered commands, just return last 10 commands
     if not request.POST['bconsole_command'] and bconsole_session is not None:
         return {"commands": list(command_cache)}
 
-    # start bconsole session if it's not initialized
-    if bconsole_session is None:
-        bconsole_session = BConsole().start_process()
+    b = BConsole()
+    bconsole_session, response = b.send_command_by_polling(request.POST['bconsole_command'], bconsole_session)
 
-    if bconsole_session.poll():
-        bconsole_session = None
+    if 'error' in response:
         command_cache.clear()
-        return {'error': 'Connection to director terminated. Refresh to reconnect.'}
 
-    # send bconsole command
-    if request.POST['bconsole_command']:
-        bconsole_session.stdin.write(request.POST['bconsole_command'].strip()+'\n')
+    if 'commands' in response:
+        command_cache.extend(response['commands'])
+    return response
 
-    # make stdout fileobject nonblockable
-    fp = bconsole_session.stdout.fileno()
-    flags = fcntl.fcntl(fp, fcntl.F_GETFL)
-    fcntl.fcntl(fp, fcntl.F_SETFL, flags | os.O_NONBLOCK)
-
-    output = ''
-
-    while 1:
-        # wait for data or timeout
-        [i, o, e] = select.select([fp], [], [], 1)
-        if i:
-            # we have more data
-            output += bconsole_session.stdout.read(1000)
-        else:
-            # we have a timeout
-            output = nl2br(output)
-            command_cache.append(output)
-
-            return {
-                "commands": [output]
-            }
+def httpexception(context, request):
+    request.response.status_int = context.code
+    return {'context': context}

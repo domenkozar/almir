@@ -1,9 +1,13 @@
 """Dirty script to output buildout.cfg, but it does the job.
 """
 import os
-import re
 import getpass
 import socket
+
+import pytz
+import sqlalchemy
+
+from almir.lib.bconsole import BConsole
 
 
 ROOT = os.path.join(os.path.dirname(__file__), '..', '..')
@@ -49,6 +53,13 @@ def validate_open_port(v):
         s.close()
 
 
+def validate_timezone(v):
+    try:
+        pytz.timezone(v)
+    except:
+        raise ValueError('Invalid timezone: %s' % v)
+
+
 def validate_int(v):
     try:
         int(v)
@@ -57,28 +68,24 @@ def validate_int(v):
 
 
 def validate_engine(v):
-    pass
-    # TODO: connect to database to verify parameters (tricky, sqlalchemy not importable here)
-
-
-def validate_timezone(v):
-    # TODO: use pytz to validate timezone
-    match = re.match(r'[a-zA-Z_ ]+/[a-zA-Z_ ]+|[A-Z]+', v)
-    if not match:
-        raise ValueError('Incorrect timezone format, should be like Continent/City or CET')
+    print 'Connecting to catalog database to verify configuration ...'
+    engine = sqlalchemy.create_engine(v)
+    if 'client' not in map(lambda e: e.lower(), engine.table_names()):
+        raise ValueError('Connection string has wrong parameters (could not connect to catalog database)')
+    print 'OK!'
 
 
 def ask_question(question, default=None, validator=None, func=raw_input):
     good_answer = None
 
     while good_answer is None:
-        answer = func(question)
+        answer = func("--> " + question)
 
         if validator and answer:
             try:
                 validator(answer)
-            except ValueError as e:
-                print '    Try again: ' + e.message
+            except Exception as e:
+                print '    Try again: ' + str(e)
                 continue
 
         if answer:
@@ -117,17 +124,34 @@ def main():
     print
     options['timezone'] = ask_question('Timezone (defaults to system timezone): ', default='', validator=validate_timezone)
 
-    # TODO: in future we may extract this from config file?
+    # TODO: in future we may extract this from bconsole config file?
     print 'Almost finished, we just need bconsole parameters to connect to director!'
-    options['director_name'] = ask_question('Name of director to connect to (default: localhost-dir): ', default='localhost-dir')
-    options['director_address'] = ask_question('Address of director to connect to (default: localhost): ', default='localhost')
-    options['director_port'] = ask_question('Port of director to connect to (default: 9101): ', default='9101', validator=validate_open_port)
-    options['director_password'] = ask_question('Password of director to connect to: ', func=getpass.getpass)
-    # TODO: test bconsole connectivity (we don't have almir installed yet, this one is tricky.)
+    print
+
+    bconsole_running = False
+    while not bconsole_running:
+        options['director_name'] = ask_question('Name of director to connect to (default: localhost-dir): ', default='localhost-dir')
+        options['director_address'] = ask_question('Address of director to connect to (default: localhost): ', default='localhost')
+        options['director_port'] = ask_question('Port of director to connect to (default: 9101): ', default='9101', validator=validate_open_port)
+        options['director_password'] = ask_question('Password of director to connect to: ', func=getpass.getpass)
+
+        print 'Connecting director with bconsole to verify configuration ...'
+
+        # need a way to generate bconsole config before running this
+        with BConsole.from_temp_config(name=options['director_name'],
+                                       address=options['director_address'],
+                                       port=options['director_port'],
+                                       password=options['director_password']) as bconsole:
+            if bconsole.is_running():
+                print 'OK!'
+                bconsole_running = True
+            else:
+                print 'ERROR: try again ..'
 
     with open(OUTPUT, 'w') as f:
         f.write(TEMPLATE % options)
 
+    print
     print 'Written to %s.' % os.path.realpath(OUTPUT)
 
 

@@ -75,10 +75,10 @@ def main(global_config, **settings):
                     request_method='POST')
 
     # exception handling views
-    config.add_view(lambda x: x,
+    config.add_view('almir.views.httpexception',
                     context=HTTPError,
                     renderer='templates/httpexception.jinja2')
-    config.add_notfound_view(lambda x: x,
+    config.add_notfound_view('almir.views.httpexception',
                              renderer='templates/httpexception.jinja2',
                              append_slash=True)
 
@@ -92,9 +92,5 @@ def main(global_config, **settings):
                 attr=action,
                 renderer='templates/%s_%s.jinja2' % (name, action),
             )
-
-    # test bconsole connectivity
-    if not BConsole().is_running():
-        raise RuntimeError('Can not connect to director, check if it is running. BConsole config file: %s' % BConsole.config_file)
 
     return config.make_wsgi_app()

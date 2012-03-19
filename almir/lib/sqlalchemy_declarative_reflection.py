@@ -43,7 +43,7 @@ class DeclarativeReflectedBase(object):
             # skipped this since mappings weren't
             # available yet.
             for c in klass.__bases__:
-                if _is_mapped_class(c):
+                if _is_mapped_class(c):  # pragma: nocover
                     kw['inherits'] = c
                     break
 
