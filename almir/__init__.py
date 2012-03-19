@@ -5,7 +5,6 @@ from sqlalchemy.dialects import sqlite
 from sqlalchemy.types import INTEGER
 
 from almir.meta import initialize_sql
-from almir.lib.bconsole import BConsole
 
 
 def navigation_tree(event):

@@ -73,7 +73,7 @@ class BConsole(object):
 
         return jobs
 
-    def send_command_by_polling(self, command, process):
+    def send_command_by_polling(self, command, process=None):
         """"""
         if command == 'quit':
             return process, {'commands': ['Try harder.']}
@@ -82,9 +82,10 @@ class BConsole(object):
         if process is None:
             process = self.start_process()
 
-        if process.poll():
+        poll = process.poll()
+        if poll is not None:
             process = None
-            return process, {'error': 'Connection to director terminated. Refresh to reconnect.'}
+            return process, {'error': 'Connection to director terminated with status %d. Refresh to reconnect.' % poll}
 
         # send bconsole command
         if command:

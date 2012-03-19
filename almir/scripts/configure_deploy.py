@@ -71,7 +71,7 @@ def validate_engine(v):
     print 'Connecting to catalog database to verify configuration ...'
     engine = sqlalchemy.create_engine(v)
     if 'client' not in map(lambda e: e.lower(), engine.table_names()):
-        raise ValueError('Connection string has wrong parameters (could not connect to catalog database)')
+        raise ValueError('Connection string has wrong parameters (could not connect to catalog database)')  # PRAGMA: no cover
     print 'OK!'
 
 
@@ -146,7 +146,7 @@ def main():
                 print 'OK!'
                 bconsole_running = True
             else:
-                print 'ERROR: try again ..'
+                print 'ERROR: Could not connect to director %s, verify configuration and try again!' % options['director_name']  # PRAGMA: no cover
 
     with open(OUTPUT, 'w') as f:
         f.write(TEMPLATE % options)
@@ -156,4 +156,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main()  # PRAGMA: no cover
