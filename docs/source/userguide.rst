@@ -43,12 +43,45 @@ Install almir::
     $ cd /some/directory/to/install/almir/
     $ sh -c "$(wget -O - https://raw.github.com/iElectric/almir/master/install_production.sh)"
 
+You can continue with configuring :ref:`nginx`.
 
 Manual (not recommended)
 ************************
 
+.. _nginx:
+
 Configuring Nginx as frontend
 *****************************
+
+You would normally put this in /etc/nginx/sites-enabled/
+
+.. code-block:: nginx 
+
+    server {
+        listen          80;
+        server_name     almir.mywebsite.com;
+
+        location / {
+                proxy_pass http://localhost:2500;
+
+                proxy_set_header  X-Real-IP  $remote_addr;
+                proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header  Host $http_host;
+                proxy_redirect off;
+
+                # optional authentication - recommended
+                auth_basic "Restricted";
+                # how to place and write htpasswd: http://wiki.nginx.org/HttpAuthBasicModule#auth_basic_user_file
+                auth_basic_user_file htpasswd;
+
+        }
+    }
+
+Then run::
+
+    $ /etc/init.d/nginx reload
+
+Now try to access http://almir.mywebsite.com/
 
 Filesystem structure
 --------------------
