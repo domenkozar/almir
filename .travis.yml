@@ -15,7 +15,7 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
 
 script:
-  - bin/nosetests
+  - bin/nosetests -v
   - ./.travis_qunit_tests.sh
 
 notifications:
