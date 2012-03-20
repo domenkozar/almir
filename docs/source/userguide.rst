@@ -7,6 +7,8 @@ User guide
 Screenshots
 -----------
 
+TODO ;)
+
 
 Design goals
 ------------
@@ -23,7 +25,7 @@ Design goals
 Installation
 ------------
 
-Almir will install everything inside on directory. Application is meant to be self-contained,
+Almir will install everything inside one directory, which must be empty. Application is meant to be self-contained,
 meaning no additional administrator is needed besides upgrading to a newer version. Almir should
 be always installed on a system together with bacula-director.
 
@@ -38,7 +40,7 @@ Install prerequesities (Debian based)::
 
     $ sudo apt-get install git bacula-console
 
-Install almir::
+Install almir (recommended: under same user as bacula)::
 
     $ cd /some/directory/to/install/almir/
     $ sh -c "$(wget -O - https://raw.github.com/iElectric/almir/master/install_production.sh)"
@@ -47,6 +49,8 @@ You can continue with configuring :ref:`nginx`.
 
 Manual (not recommended)
 ************************
+
+TODO ;)
 
 .. _nginx:
 
@@ -83,5 +87,12 @@ Then run::
 
 Now try to access http://almir.mywebsite.com/
 
+Upgrading to a newer release
+----------------------------
+
+TODO ;)
+
 Filesystem structure
 --------------------
+
+TODO ;)

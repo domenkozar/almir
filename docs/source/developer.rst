@@ -46,6 +46,7 @@ Coding conventions
 * `PEP8 <http://www.python.org/dev/peps/pep-0008/>`_ except for 80 char length rule
 * add changelog, test and documentation with code in commits
 * same applies to javascript
+* jslinted javascript
 
 
 Releasing :mod:`almir`

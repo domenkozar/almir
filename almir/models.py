@@ -92,6 +92,7 @@ class Client(ModelMixin, Base):
         # GROUP BY job.clientid) AS vsota ON vsota.clientid = client.clientid
         # LEFT JOIN (SELECT job.clientid, MAX(job.schedtime) AS max_job FROM job
         # GROUP BY job.clientid) AS last_job ON last_job.clientid = client.clientid;
+        # TODO: breaks on postgresql
         sum_stmt = Job.query\
             .with_entities(Job.clientid, func.sum(Job.jobbytes).label('job_sumvolbytes'))\
             .group_by(Job.clientid)\
@@ -178,6 +179,7 @@ class Job(ModelMixin, Base):
     endtime = Column('endtime', BaculaDateTime())
     realendtime = Column('realendtime', BaculaDateTime())
 
+    # TODO: convert those to render_*
     @property
     def level_name(self):
         return LEVELS[self.level]
