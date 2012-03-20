@@ -7,6 +7,9 @@ from sqlalchemy.types import INTEGER
 from almir.meta import initialize_sql
 
 
+__version__ = '0.1'
+
+
 def navigation_tree(event):
     """Generate navigation data"""
     request = event['request']
