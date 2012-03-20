@@ -15,6 +15,9 @@ def convert_timezone(datetime):
     - default to system timezone
 
     """
+    if datetime is None:
+        return None
+
     timezone = get_current_registry().settings.get('timezone', None)
     if not timezone:
         timezone = time.tzname[0]

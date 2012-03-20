@@ -1,7 +1,8 @@
-import unittest
+import unittest2
 import os
 
 from paste.deploy.loadwsgi import appconfig
+from pyramid import testing
 from webtest import TestApp
 
 from almir import main
@@ -11,23 +12,21 @@ here = os.path.dirname(__file__)
 settings = appconfig('config:' + os.path.join(here, '../../', 'development.ini'))
 
 
-#class TestMyView(unittest.TestCase):
-#    def setUp(self):
-#        self.config = testing.setUp()
+class AlmirTestCase(unittest2.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        testing.setUp()
+        cls.app = main({}, **settings)
+        cls.testapp = TestApp(cls.app)
 
-#    def tearDown(self):
-#        testing.tearDown()
+    @classmethod
+    def tearDown(cls):
+        testing.tearDown()
 
-#    def test_dashboard(self):
-#        request = testing.DummyRequest()
-#        info = views.dashboard(request)
 
 # TODO: test all db
 
-class FunctionalTests(unittest.TestCase):
-    def setUp(self):
-        app = main({}, **settings)
-        self.testapp = TestApp(app)
+class FunctionalTests(AlmirTestCase):
 
     def test_root(self):
         res = self.testapp.get('/', status=200)
