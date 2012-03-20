@@ -1,15 +1,23 @@
-function send_command (e, force_command) {
+/*jslint regexp: true,
+         browser: true,
+         sloppy: true,
+         white: true,
+         plusplus: true,
+         indent: 4,
+         maxlen: 200 */
+/*global $, jQuery, tabletools_swf, deform */
+function send_command(e, force_command) {
     var $console = $('#console'),
         $command = $('#command'),
         lines,
         bconsole_text = $command.val();
 
-    if (e.which == 27) {
+    if (e.which === 27) {
         $command.val('');
         return null;
     }
 
-    if (!(e.which == 1 || e.which == 13)) {
+    if (!(e.which === 1 || e.which === 13)) {
         return null;
     }
     
@@ -27,7 +35,7 @@ function send_command (e, force_command) {
       data: {
         bconsole_command: bconsole_text
       },
-      success: function (data, textStatus, jqXHR) {
+      success: function (data) {
         if (data.commands) {
             $.each(data.commands, function(index, value) {
                 // prettyfy first line, which is the command
@@ -45,7 +53,7 @@ function send_command (e, force_command) {
            $console.before($('<div class="alert alert-error"><a class="close" data-dismiss="alert">×</a>' + data.error + '</div>'));
         }
       },
-      error: function (jqXHR, textStatus, errorThrown) {
+      error: function () {
         $console.before($('<div class="alert alert-error"><a class="close" data-dismiss="alert">×</a>Something went wrong, inspect server logs.</div>'));
       }
     });
@@ -70,22 +78,22 @@ $(function () {
                   sSwfPath: tabletools_swf,
                   aButtons: ["copy", "xls", "pdf", "print"]
               },
-              "iDisplayLength": 50,
+              "iDisplayLength": 50
            };
 
-        if ($.inArray($this.prevAll('h2').attr('id'), ['last_jobs', 'upcoming_jobs', 'running_jobs']) != -1) {
+        if ($.inArray($this.prevAll('h2').attr('id'), ['last_jobs', 'upcoming_jobs', 'running_jobs']) !== -1) {
            options.sDom = "<'row-fluid'<'span12'fT>r>t<'row-fluid'>";
         }
-        if ($this.prevAll('h2').attr('id') == "command_help") {
+        if ($this.prevAll('h2').attr('id') === "command_help") {
            options.sDom = "<'row-fluid'<'span12'f>r>t<'row-fluid'>";
            options.iDisplayLength = 200;
         }
 
         $this.find('thead th').each(function (index) {
-           if ($.inArray($(this).text(), ['Scheduled', 'Started']) != -1) {
+           if ($.inArray($(this).text(), ['Scheduled', 'Started']) !== -1) {
               options.aaSorting = [[index, "asc"]];
            }
-           if ($.inArray($(this).text(), ['Time', 'Last written']) != -1) {
+           if ($.inArray($(this).text(), ['Time', 'Last written']) !== -1) {
               options.aaSorting = [[index, "desc"]];
            }
         }); 
@@ -96,7 +104,7 @@ $(function () {
     $('.DTTT_button').addClass('btn');
 
     // -- console.pt
-    if ($('#console').length == 1) {
+    if ($('#console').length === 1) {
         // calculate height of console
         var window_height = $(window).height(),
             console_offset = $('#console').offset().top,
@@ -109,7 +117,7 @@ $(function () {
         $('#command').popover({
             placement: 'left',
             trigger: 'manual'
-        })
+        });
 
         // every 100ms check command input and display help if apropriate
         setInterval(function () {
@@ -119,19 +127,19 @@ $(function () {
             // when there is no input, hide popover
             if (!command) {
                  $('#command').popover('hide').data('last-command', "");
-                 return
+                 return null;
             }
 
             // only change popup if we have new command
-            if ($('#command').data('last-command') == command) {
-                return;
+            if ($('#command').data('last-command') === command) {
+                return null;
             }
 
             // match command title to list of help commands
             title = $('#command_help tr').filter(function () {
                 var current_command = $(this).find('td:first').text(),
                     rgp = new RegExp('^' + command + '$');
-                return rgp.test(current_command)
+                return rgp.test(current_command);
             }).attr('data-content');
 
             // if we have a match, display popover
