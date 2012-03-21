@@ -43,12 +43,17 @@ director_password = %(director_password)s
 
 def validate_open_port(v):
     validate_int(v)
+
+    # python2.6 will overflow port integer if it is too big
+    if int(v) not in xrange(0, 65536):
+        raise ValueError('Cannot listen on port %s: port must be 0-65535.' % v)
+
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         s.bind(('', int(v)))
         # port is open
     except Exception, e:
-        raise ValueError('Cannot listen on port %s: %s' % (v, e.message))
+        raise ValueError('Cannot listen on port %s: %s' % (v, e))
     finally:
         s.close()
 
