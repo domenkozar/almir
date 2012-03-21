@@ -89,7 +89,7 @@ def ask_question(question, default=None, validator=None, func=raw_input):
         if validator and answer:
             try:
                 validator(answer)
-            except Exception as e:
+            except Exception, e:
                 print '    Try again: ' + str(e)
                 continue
 
