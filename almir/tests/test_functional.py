@@ -11,15 +11,14 @@ from almir import main
 
 
 here = os.path.dirname(__file__)
-settings = appconfig('config:' + os.path.join(here, '../../', 'development.ini'))
 
 
 class AlmirTestCase(unittest2.TestCase):
+    settings = appconfig('config:' + os.path.join(here, '../../', 'development.ini'))
+
     @classmethod
     def setUpClass(cls):
         testing.setUp()
-        cls.app = main({}, **settings)
-        cls.testapp = TestApp(cls.app)
 
     @classmethod
     def tearDown(cls):
@@ -29,6 +28,12 @@ class AlmirTestCase(unittest2.TestCase):
 # TODO: test all db
 
 class FunctionalTests(AlmirTestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super(FunctionalTests, cls).setUpClass()
+        cls.app = main({}, **cls.settings)
+        cls.testapp = TestApp(cls.app)
 
     @patch('almir.lib.bconsole.BConsole.start_process')
     def test_root(self, mock_process):

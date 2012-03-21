@@ -22,8 +22,8 @@ class TestConfigureDeploy(unittest2.TestCase):
         main()
 
         file_handle = mock_open.return_value.__enter__.return_value
-        self.assertEqual(file_handle.write.call_args[0][0].replace(' ', '').replace('\n', ''), """
-
+        actual = file_handle.write.call_args[0][0]
+        expected = """
 [buildout]
 extends = buildout.d/production.cfg
 
@@ -49,7 +49,10 @@ director_name = localhost-dir
 director_port = 9101
 director_address = localhost
 director_password = 123123
-        """.replace(' ', '').replace('\n', ''))
+        """
+        self.assertEqual(actual.replace(' ', '').replace('\n', ''),
+                         expected.replace(' ', '').replace('\n', ''),
+                         "%s != %s" % (actual, expected))
 
     @patch('almir.scripts.configure_deploy.open', create=True)
     @patch('almir.lib.bconsole.BConsole.is_running')
@@ -81,8 +84,8 @@ director_password = 123123
         main()
 
         file_handle = mock_open.return_value.__enter__.return_value
-        self.assertEqual(file_handle.write.call_args[0][0].replace(' ', '').replace('\n', ''), """
-
+        actual = file_handle.write.call_args[0][0]
+        expected = """
 [buildout]
 extends = buildout.d/production.cfg
 
@@ -108,4 +111,7 @@ director_name = almir
 director_port = 8080
 director_address = 8.8.8.8
 director_password = 666
-        """.replace(' ', '').replace('\n', ''))
+        """
+        self.assertEqual(actual.replace(' ', '').replace('\n', ''),
+                         expected.replace(' ', '').replace('\n', ''),
+                         "%s != %s" % (actual, expected))
