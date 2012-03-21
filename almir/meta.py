@@ -22,7 +22,6 @@ from almir.lib.utils import timedelta_to_seconds, convert_timezone
 
 log = logging.getLogger(__name__)
 
-
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base(cls=DeclarativeReflectedBase)
 
@@ -99,6 +98,7 @@ def initialize_sql(settings):
     engine.dialect.inspector = LowerCaseInspector
 
     DBSession.configure(bind=engine)
+    Base.metadata.bind = engine
 
     # cache (pickle) metadata
     Base.prepare(engine)
