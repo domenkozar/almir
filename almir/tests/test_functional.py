@@ -1,6 +1,8 @@
 import unittest2
 import os
+from subprocess import Popen, PIPE
 
+from mock import patch
 from paste.deploy.loadwsgi import appconfig
 from pyramid import testing
 from webtest import TestApp
@@ -28,7 +30,10 @@ class AlmirTestCase(unittest2.TestCase):
 
 class FunctionalTests(AlmirTestCase):
 
-    def test_root(self):
+    @patch('almir.lib.bconsole.BConsole.start_process')
+    def test_root(self, mock_process):
+        mock_process.return_value = Popen(['cat'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
+
         res = self.testapp.get('/', status=200)
         self.failUnless('Last finished Jobs' in res.body)
         self.failUnless('Running Jobs' in res.body)
@@ -45,7 +50,10 @@ class FunctionalTests(AlmirTestCase):
         res = self.testapp.get('/console/', status=200)
         self.failUnless('Console' in res.body)
 
-    def test_console_ajax(self):
+    @patch('almir.lib.bconsole.BConsole.start_process')
+    def test_console_ajax(self, mock_process):
+        mock_process.return_value = Popen(['cat'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
+
         res = self.testapp.post('/console/input/', {'bconsole_command': 'version'}, status=200)
         self.assertTrue('commands' in res.body)
 
