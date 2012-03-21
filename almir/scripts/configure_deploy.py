@@ -120,8 +120,8 @@ def main():
 
     print 'Define SQL database connection to bacula catalog as specified in http://docs.sqlalchemy.org/en/latest/core/engines.html#database-urls'
     print 'For example:'
-    print '    postgresql+pg8000://bacula:<password>@hostname/<database>'
-    print '    mysql+mysqlconnector://bacula:<password>@hostname/<database>'
+    print '    postgresql+pg8000://<user>:<password>@<hostname>/<database>'
+    print '    mysql+mysqlconnector://<user>:<password>@<hostname>/<database>'
     print '    sqlite:////var/lib/bacula/bacula.db'
     print '    sqlite:///bacula.db'
     print

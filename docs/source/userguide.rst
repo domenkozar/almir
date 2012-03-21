@@ -33,7 +33,7 @@ Note that currently python2.6 and python2.7 are supported.
 
 If you are using postresql, make sure `postgresql.conf` includes a line `client_encoding = utf8`
 
-Installer (recommended)
+Installer (interactive)
 ***********************
 
 Install prerequesities (Debian based)::
