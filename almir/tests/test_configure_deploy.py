@@ -23,8 +23,7 @@ class TestConfigureDeploy(unittest2.TestCase):
 
         file_handle = mock_open.return_value.__enter__.return_value
         actual = file_handle.write.call_args[0][0]
-        expected = """
-[buildout]
+        expected = """[buildout]
 extends = buildout.d/production.cfg
 
 [almir]

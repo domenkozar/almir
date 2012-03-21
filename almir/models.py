@@ -420,8 +420,8 @@ class Media(ModelMixin, Base):
     def render_enabled(self, request):
         return {'text': yesno(self.enabled)}
 
-    def render_recycled(self, request):
-        return {'text': yesno(self.enabled)}
+    def render_recycle(self, request):
+        return {'text': yesno(self.recycle)}
 
     def render_expires(self, request):
         if self.firstwritten and self.volretention:
