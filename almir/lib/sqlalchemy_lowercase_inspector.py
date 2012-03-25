@@ -34,8 +34,6 @@ class LowerCaseInspector(Inspector):
 
         def lower_case(column):
             column['referred_table'] = column['referred_table'].lower()
-            if column['name']:
-                column['name'] = column['name'].lower()
             column['referred_columns'] = map(string.lower, column['referred_columns'])
             column['constrained_columns'] = map(string.lower, column['constrained_columns'])
             return column
@@ -44,3 +42,12 @@ class LowerCaseInspector(Inspector):
         columns = filter(lambda x: x['referred_table'] != u'LocationId', columns)
 
         return map(lower_case, columns)
+
+    def get_primary_keys(self, *a, **kw):
+        columns = super(LowerCaseInspector, self).get_primary_keys(*a, **kw)
+        return map(string.lower, columns)
+
+    def get_pk_constraint(self, *a, **kw):
+        columns = super(LowerCaseInspector, self).get_pk_constraint(*a, **kw)
+        columns['constrained_columns'] = map(string.lower, columns['constrained_columns'])
+        return columns
