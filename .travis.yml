@@ -20,7 +20,7 @@ before_script:
   - mysql bacula < almir/tests/fixtures/mysql.sql
 # setup postgres
   - psql -U postgres -c 'create database bacula;'
-  - pg_restore -U postgres -d bacula almir/tests/fixtures/postgresql.sql
+  - pg_restore -O -U postgres -d bacula almir/tests/fixtures/postgresql.sql
 
 script:
   - ALL_DATABASES=1 bin/nosetests -v -s
