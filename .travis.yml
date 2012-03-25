@@ -3,7 +3,9 @@ python:
   - 2.6
   - 2.7
 install:
-  - sudo apt-get install git gcc python-dev sendmail bacula-console
+# we don't need bacula console for now
+#  - sudo apt-get install git gcc python-dev sendmail bacula-console
+  - sudo apt-get install git gcc python-dev
   - cp buildout.d/templates/buildout.cfg.in buildout.cfg
   - sed -i 's/bacula.db/bacula_kaki.db/' buildout.cfg
 #  - director_password=$(sudo grep 'Password' /etc/bacula/bconsole.conf | sed 's/.*Password\s*=\s*"\(.\+\)"/\1/')
@@ -13,9 +15,15 @@ install:
 
 before_script:
   - "sh -e /etc/init.d/xvfb start"
+# setup mysql
+  - mysql -e 'create database bacula;'
+  - mysql bacula < almir/tests/fixtures/mysql.sql
+# setup postgres
+  - psql -U postgres -c 'create database bacula;'
+  - psql -U postgres -d bacula -f almir/tests/fixtures/postgresql.sql
 
 script:
-  - bin/nosetests -v -s
+  - ALL_DATABASES=1 bin/nosetests -v -s
   - ./.travis_qunit_tests.sh
 
 notifications:

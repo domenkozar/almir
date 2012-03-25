@@ -75,6 +75,11 @@ def main(global_config, **settings):
                     route_name='console_ajax',
                     renderer='json',
                     request_method='POST')
+    config.add_route('datatables', '/datatables/')
+    config.add_view('almir.views.datatables',
+                    route_name='datatables',
+                    renderer='json',
+                    request_method='GET')
 
     # exception handling views
     config.add_view('almir.views.httpexception',
