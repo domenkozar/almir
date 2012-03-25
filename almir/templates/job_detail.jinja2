@@ -41,7 +41,7 @@
        </tr>
        <tr>
            <td>Volume:</td>
-           <td>{% for volume in object.render_volume_name(request) %}{{ macros.link(volume) }} {% endfor %}</td>
+           <td>{% for volume in object.render_volume_name(request) %}{{ macros.link(volume.render_volumename(request)) }} {% endfor %}</td>
        </tr>
        <tr>
            <td>Pool:</td>

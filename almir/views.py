@@ -133,6 +133,28 @@ def ajax_console_input(request):
         command_cache.extend(response['commands'])
     return response
 
+
 def httpexception(context, request):
     request.response.status_int = context.code
     return {'context': context}
+
+
+def datatables(request):
+    q = request.GET
+    iDisplayStart = q.get('iDisplayStart')
+    iDisplayLength = q.get('iDisplayLength')
+    iColumns = q.get('iColumns')
+    sSearch = q.get('sSearch')
+    bRegex = q.get('bRegex')
+    bSearchable_ = q.get('bSearchable_')
+    sSearch_ = q.get('sSearch_')
+    bSortable_ = q.get('bSortable_')
+    iSortingCols = q.get('iSortingCols')
+    iSortCol_ = q.get('iSortCol_')
+    sSortDir_ = q.get('sSortDir_')
+    mDataProp_ = q.get('mDataProp_')
+    sEcho = q.get('sEcho')
+
+    return {
+            'sEcho': str(int(sEcho)),  # to be sure it's an integer
+    }

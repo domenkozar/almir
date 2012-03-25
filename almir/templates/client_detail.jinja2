@@ -2,8 +2,8 @@
 
 {% block content %}
     <h1 class="view">Client <small>{{ object.name }}</small></h1>
-    <h2>Jobs <small>{{ num_jobs}} total</small></h2>
-    {{ macros.jobs_table(request,jobs) }}
+    <h2>Jobs <small>{{ job_statistics.num_jobs }} total</small></h2>
+    {{ macros.jobs_table(request, jobs) }}
 {% endblock %}
 
 {% block sidebar %}
@@ -16,7 +16,7 @@
            </tr>
            <tr>
                <td>Total size of backups:</td>
-               <td>{{ total_size_backups }}</td>
+               <td>{{ object.format_byte_size(job_statistics.total_size_backups) }}</td>
            </tr>
            <tr>
                <td>Last successful backup:</td>

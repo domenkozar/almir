@@ -41,12 +41,14 @@ class ModelMixin(object):
         return {'objects': cls.query}
 
     @classmethod
-    def object_detail(cls, id_):
-        obj = cls.query.get(int(id_))
-        if obj == None:
+    def object_detail(cls, id_=None, query=None):
+        if id_ is not None:
+            query = cls.query.get(int(id_))
+
+        if query == None:
             raise exception_response(404)
         else:
-            return {'object': obj}
+            return {'object': query}
 
     @staticmethod
     def format_byte_size(size):
@@ -93,16 +95,18 @@ def get_database_size(engine):
 
 def initialize_sql(settings):
     # make sure metadata is populated
-    import almir.models
 
     engine = engine_from_config(settings, prefix='sqlalchemy.', encoding='utf-8')
 
-    # monkey patch inspector to reflect lowercase tables/columns since sqlite has mixed case
+    # monkey patch inspector to reflect lowercase tables/columns since sqlite/mysql have mixed case
     # while postgres has lowercase tables/columns
     engine.dialect.inspector = LowerCaseInspector
 
     DBSession.configure(bind=engine)
+    DBSession.bind = engine
     Base.metadata.bind = engine
+
+    import almir.models
 
     # cache (pickle) metadata
     Base.prepare(engine)

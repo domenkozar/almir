@@ -4,7 +4,7 @@ import stat
 
 from jinja2 import Markup
 from sqlalchemy import Column
-from sqlalchemy.orm import relationship, noload, joinedload
+from sqlalchemy.orm import relationship, joinedload, joinedload_all
 from sqlalchemy.sql.expression import desc
 from sqlalchemy.sql import functions as func
 from webhelpers.date import distance_of_time_in_words
@@ -74,14 +74,13 @@ class Client(ModelMixin, Base):
 
     @classmethod
     def object_detail(cls, id_):
-        id_ = int(id_)
         d = super(Client, cls).object_detail(id_)
-        # TODO: write this in one query
+        jobs = Job.query.filter(Job.clientid == int(id_))
+        # TODO: get jobs as join on client
         d.update({
-            'jobs': Job.query.filter(Job.clientid == id_).order_by(desc(Job.schedtime)).limit(50),
-            'num_jobs': Job.query.count(),
-            'last_successful_job': Job.query.filter(Job.clientid == id_).filter(Job.jobstatus == 'T').order_by(desc(Job.starttime)).first(),
-            'total_size_backups': cls.format_byte_size(Job.query.with_entities(func.sum(Job.jobbytes)).filter(Job.clientid == id_).scalar()),
+            'jobs': jobs.options(joinedload(Job.status)).order_by(desc(Job.schedtime)).limit(50),
+            'job_statistics': jobs.with_entities(func.count().label('num_jobs'), func.sum(Job.jobbytes).label('total_size_backups')).first(),
+            'last_successful_job': jobs.filter(Job.jobstatus == 'T').order_by(desc(Job.starttime)).first(),
         })
         return d
 
@@ -103,7 +102,7 @@ class Client(ModelMixin, Base):
             .subquery('stmt_max')
         d = {}
         d['objects'] = cls.query.with_entities(Client, 'job_sumvolbytes', 'job_maxschedtime', func.count(Job.jobid).label('num_jobs'))\
-            .outerjoin(Job)\
+            .outerjoin(Job, Client.clientid == Job.clientid)\
             .outerjoin(sum_stmt, sum_stmt.c.clientid == Client.clientid)\
             .outerjoin(last_stmt, last_stmt.c.clientid == Client.clientid)\
             .group_by(cls)\
@@ -179,6 +178,59 @@ class Job(ModelMixin, Base):
     endtime = Column('endtime', BaculaDateTime())
     realendtime = Column('realendtime', BaculaDateTime())
 
+    status = relationship(
+        "Status",
+        primaryjoin="Job.jobstatus==Status.jobstatus",
+        foreign_keys="Job.jobstatus",
+    )
+    client = relationship(
+        "Client",
+        primaryjoin="Job.clientid==Client.clientid",
+        foreign_keys="Job.clientid",
+        backref='jobs',
+    )
+    pool = relationship(
+        "Pool",
+        primaryjoin="Job.poolid==Pool.poolid",
+        foreign_keys="Job.poolid",
+    )
+    jobmedias = relationship(
+        "JobMedia",
+        primaryjoin="Job.jobid==JobMedia.jobid",
+        foreign_keys="JobMedia.jobid",
+        backref="jobs",
+    )
+    logs = relationship(
+        "Log",
+        primaryjoin="Job.jobid==Log.jobid",
+        foreign_keys="Log.jobid",
+        backref="job",
+    )
+    files = relationship(
+        "File",
+        primaryjoin="Job.jobid==File.jobid",
+        foreign_keys="File.jobid",
+        backref="job",
+    )
+
+    @classmethod
+    def objects_list(cls):
+        d = super(Job, cls).objects_list()
+        d['objects'] = d['objects'].options(joinedload(cls.status), joinedload(cls.client)).order_by(desc(Job.starttime)).limit(50)
+        return d
+
+    @classmethod
+    def object_detail(cls, id_):
+        query = cls.query.options(joinedload(cls.status),
+                                  joinedload(cls.client),
+                                  joinedload(cls.logs),
+                                  joinedload(cls.pool),
+                                  joinedload(cls.medias),
+                                  joinedload_all("files.path"),
+                                  joinedload_all("files.filename"),
+                                  ).get(int(id_))
+        return super(Job, cls).object_detail(query=query)
+
     # TODO: convert those to render_*
     @property
     def level_name(self):
@@ -202,47 +254,6 @@ class Job(ModelMixin, Base):
         else:
             return "unknown"
 
-    status = relationship(
-        "Status",
-        lazy="joined",
-        primaryjoin="Job.jobstatus==Status.jobstatus",
-        foreign_keys="Job.jobstatus",
-    )
-    client = relationship(
-        "Client",
-        lazy="joined",
-        primaryjoin="Job.clientid==Client.clientid",
-        foreign_keys="Job.clientid",
-        backref='jobs',
-    )
-    pool = relationship(
-        "Pool",
-        lazy="joined",
-        primaryjoin="Job.poolid==Pool.poolid",
-        foreign_keys="Job.poolid",
-    )
-    jobmedias = relationship(
-        "JobMedia",
-        lazy="joined",
-        primaryjoin="Job.jobid==JobMedia.jobid",
-        foreign_keys="JobMedia.jobid",
-        backref="jobs",
-    )
-    logs = relationship(
-        "Log",
-        lazy="joined",
-        primaryjoin="Job.jobid==Log.jobid",
-        foreign_keys="Log.jobid",
-        backref="job",
-    )
-    files = relationship(
-        "File",
-        lazy="joined",
-        primaryjoin="Job.jobid==File.jobid",
-        foreign_keys="File.jobid",
-        backref="job",
-    )
-
     @classmethod
     def get_upcoming(cls):
         return BConsole().get_upcoming_jobs()
@@ -250,7 +261,7 @@ class Job(ModelMixin, Base):
     @classmethod
     def get_running(cls):
         d = super(Job, cls).objects_list()
-        return d['objects'].options(noload('*'), joinedload(cls.status), joinedload(cls.client))\
+        return d['objects'].options(joinedload(cls.status), joinedload(cls.client))\
                            .join('status')\
                            .filter(Status.severity == 15)\
                            .order_by(desc(Job.starttime))\
@@ -259,17 +270,11 @@ class Job(ModelMixin, Base):
     @classmethod
     def get_last(cls):
         d = super(Job, cls).objects_list()
-        return d['objects'].options(noload('*'), joinedload(cls.status), joinedload(cls.client))\
+        return d['objects'].options(joinedload(cls.status), joinedload(cls.client))\
                            .join('status')\
                            .filter(Status.severity != 15)\
                            .order_by(desc(Job.schedtime))\
                            .limit(5)
-
-    @classmethod
-    def objects_list(cls):
-        d = super(Job, cls).objects_list()
-        d['objects'] = d['objects'].order_by(desc(Job.starttime)).limit(50)
-        return d
 
     def url(self, request):
         return request.route_url('job_detail', id=self.jobid)
@@ -282,10 +287,7 @@ class Job(ModelMixin, Base):
             return self.client.render_name(request)
 
     def render_volume_name(self, request):
-        if self.jobmedias:
-            return (jobmedia.medias.render_volumename(request) for jobmedia in self.jobmedias)
-        else:
-            return []
+        return self.medias
 
     def render_pool_name(self, request):
         if self.pool:
@@ -306,6 +308,34 @@ class Job(ModelMixin, Base):
 
     def render_starttime(self, request):
         return self.render_distance_of_time_in_words(self.starttime)
+
+
+class JobMedia(ModelMixin, Base):
+    """
+       Column   |  Type   |                           Modifiers
+    ------------+---------+---------------------------------------------------------------
+     jobmediaid | integer | not null default nextval('jobmedia_jobmediaid_seq'::regclass)
+     jobid      | integer | not null
+     mediaid    | integer | not null
+     firstindex | integer | default 0
+     lastindex  | integer | default 0
+     startfile  | integer | default 0
+     endfile    | integer | default 0
+     startblock | bigint  | default 0
+     endblock   | bigint  | default 0
+     volindex   | integer | default 0
+
+    Indexes:
+        "jobmedia_pkey" PRIMARY KEY, btree (jobmediaid)
+        "job_media_job_id_media_id_idx" btree (jobid, mediaid)
+    """
+
+    medias = relationship(
+        "Media",
+        primaryjoin="JobMedia.mediaid==Media.mediaid",
+        foreign_keys="JobMedia.mediaid",
+        backref="jobmedias",
+    )
 
 
 class Media(ModelMixin, Base):
@@ -367,9 +397,17 @@ class Media(ModelMixin, Base):
     labeldate = Column('labeldate', BaculaDateTime())
     initialwrite = Column('initialwrite', BaculaDateTime())
 
+    jobs = relationship(
+        "Job",
+        foreign_keys="[JobMedia.mediaid, JobMedia.jobid]",
+        primaryjoin="JobMedia.mediaid==Media.mediaid",
+        secondaryjoin="JobMedia.jobid==Job.jobid",
+        secondary=JobMedia.__table__,
+        backref="medias",
+    )
+
     storage = relationship(
         "Storage",
-        lazy="joined",
         primaryjoin="Media.storageid==Storage.storageid",
         foreign_keys="Media.storageid",
         backref="medias",
@@ -377,7 +415,6 @@ class Media(ModelMixin, Base):
 
     pool = relationship(
         "Pool",
-        lazy="joined",
         primaryjoin="Media.poolid==Pool.poolid",
         foreign_keys="Media.poolid",
         backref="medias",
@@ -386,6 +423,21 @@ class Media(ModelMixin, Base):
     # we don't use mediatype table yet,
     # because it only provides readonly information
     # for mediatype
+
+    @classmethod
+    def objects_list(cls):
+        d = super(Media, cls).objects_list()
+        d['objects'] = d['objects'].options(joinedload(cls.pool), joinedload(cls.storage))
+        return d
+
+    @classmethod
+    def object_detail(cls, id_):
+        query = cls.query.options(joinedload(cls.pool),
+                                  joinedload(cls.storage),
+                                  joinedload_all('jobs.status'),
+                                  joinedload_all('jobs.client'),
+                                  ).get(int(id_))
+        return super(Media, cls).object_detail(query=query)
 
     def url(self, request):
         return request.route_url('volume_detail', id=self.mediaid)
@@ -428,35 +480,6 @@ class Media(ModelMixin, Base):
             return {'text': self.firstwritten + datetime.timedelta(seconds=self.volretention)}
 
 
-class JobMedia(ModelMixin, Base):
-    """
-       Column   |  Type   |                           Modifiers
-    ------------+---------+---------------------------------------------------------------
-     jobmediaid | integer | not null default nextval('jobmedia_jobmediaid_seq'::regclass)
-     jobid      | integer | not null
-     mediaid    | integer | not null
-     firstindex | integer | default 0
-     lastindex  | integer | default 0
-     startfile  | integer | default 0
-     endfile    | integer | default 0
-     startblock | bigint  | default 0
-     endblock   | bigint  | default 0
-     volindex   | integer | default 0
-
-    Indexes:
-        "jobmedia_pkey" PRIMARY KEY, btree (jobmediaid)
-        "job_media_job_id_media_id_idx" btree (jobid, mediaid)
-    """
-
-    medias = relationship(
-        "Media",
-        lazy="joined",
-        primaryjoin="JobMedia.mediaid==Media.mediaid",
-        foreign_keys="JobMedia.mediaid",
-        backref="jobmedias",
-    )
-
-
 class Storage(ModelMixin, Base):
     """
        Column    |  Type   |                          Modifiers
@@ -468,6 +491,11 @@ class Storage(ModelMixin, Base):
     Indexes:
         "storage_pkey" PRIMARY KEY, btree (storageid)
     """
+
+    @classmethod
+    def object_detail(cls, id_):
+        query = cls.query.options(joinedload_all('medias.pool')).get(int(id_))
+        return super(Storage, cls).object_detail(query=query)
 
     @classmethod
     def objects_list(cls):
@@ -513,7 +541,7 @@ class Log(ModelMixin, Base):
         # sanitize logs
         log = self.logtext.strip('\\').strip().strip('\n')
         d['text'] = Markup(nl2br(log))
-        if 'ERR' in self.logtext or 'Fatal error' in self.logtext:
+        if 'ERR' in self.logtext or 'Fatal error' in self.logtext or 'Backup Error' in self.logtext:
             d['cssclass'] = 'error'
         return d
 
@@ -554,6 +582,12 @@ class Pool(ModelMixin, Base):
     Check constraints:
         "pool_pooltype_check" CHECK (pooltype = ANY (ARRAY['Backup'::text, 'Copy'::text, 'Cloned'::text, 'Archive'::text, 'Migration'::text, 'Scratch'::text]))
     """
+
+    @classmethod
+    def object_detail(cls, id_):
+        query = cls.query.options(joinedload_all('medias.storage'),
+                                  ).get(int(id_))
+        return super(Pool, cls).object_detail(query=query)
 
     def url(self, request):
         return request.route_url('pool_detail', id=self.poolid)
@@ -643,14 +677,12 @@ class File(ModelMixin, Base):
 
     filename = relationship(
         "Filename",
-        lazy="joined",
         primaryjoin="File.filenameid==Filename.filenameid",
         foreign_keys="File.filenameid",
         innerjoin=True,
     )
     path = relationship(
         "Path",
-        lazy="joined",
         primaryjoin="File.pathid==Path.pathid",
         foreign_keys="File.pathid",
         innerjoin=True,
