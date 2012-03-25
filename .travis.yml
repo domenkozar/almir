@@ -2,6 +2,10 @@ language: python
 python:
   - 2.6
   - 2.7
+env:
+  - DATABASE="mysql"
+  - DATABASE="sqlite"
+  - DATABASE="postgresql"
 install:
 # we don't need bacula console for now
 #  - sudo apt-get install git gcc python-dev sendmail bacula-console
