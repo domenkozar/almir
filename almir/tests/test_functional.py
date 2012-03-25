@@ -140,4 +140,4 @@ class FunctionalTests(AlmirTestCase):
 
 if os.environ.get('ALL_DATABASES', ''):
     MySQLFunctionalTests = type('MySQLFunctionalTests', (FunctionalTests,), {'database': 'mysql'})
-    PGFunctionalTests = type('MySQLFunctionalTests', (FunctionalTests,), {'database': 'postgresql'})
+    PGFunctionalTests = type('PGFunctionalTests', (FunctionalTests,), {'database': 'postgresql'})
