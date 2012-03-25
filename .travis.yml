@@ -27,7 +27,7 @@ before_script:
   - pg_restore -O -U postgres -d bacula almir/tests/fixtures/postgresql.sql
 
 script:
-  - ALL_DATABASES=1 bin/nosetests -v -s
+  - bin/nosetests -v -s
   - ./.travis_qunit_tests.sh
 
 notifications:
