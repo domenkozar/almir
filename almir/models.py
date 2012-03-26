@@ -105,7 +105,7 @@ class Client(ModelMixin, Base):
             .outerjoin(Job, Client.clientid == Job.clientid)\
             .outerjoin(sum_stmt, sum_stmt.c.clientid == Client.clientid)\
             .outerjoin(last_stmt, last_stmt.c.clientid == Client.clientid)\
-            .group_by(cls)\
+            .group_by(cls, 'job_sumvolbytes', 'job_maxschedtime')\
             .all()
 
         # ugly hack since sqlite returns strings for job_maxschedtime
