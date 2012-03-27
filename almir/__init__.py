@@ -45,6 +45,7 @@ def main(global_config, **settings):
 
     config = Configurator(settings=settings)
     config.include('pyramid_jinja2')
+    config.include('pyramid_tm')
 
     # events
     config.add_subscriber(navigation_tree, BeforeRender)

@@ -8,7 +8,6 @@ pyramid.debug_templates = true
 pyramid.default_locale_name = en
 pyramid.includes =
     pyramid_debugtoolbar
-    pyramid_tm
 sqlalchemy.url = ${almir:sqla_engine_url}
 timezone = ${almir:timezone}
 
