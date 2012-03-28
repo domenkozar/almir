@@ -83,7 +83,7 @@ class FunctionalTests(AlmirTestCase):
         res = self.testapp.get('/about', status=302)
         res.follow(status=200)
 
-    @assert_num_of_queries(1)
+    @assert_num_of_queries(2)
     def test_jobs(self):
         res = self.testapp.get('/job/', status=200)
         self.failUnless('Jobs' in res.body)
@@ -117,7 +117,7 @@ class FunctionalTests(AlmirTestCase):
         res = self.testapp.get('/storage/1/', status=200)
         self.failUnless('Storage' in res.body)
 
-    @assert_num_of_queries(1)
+    @assert_num_of_queries(3)
     def test_volumes(self):
         res = self.testapp.get('/volume/', status=200)
         self.failUnless('Volumes' in res.body)

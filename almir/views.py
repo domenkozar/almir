@@ -1,16 +1,16 @@
 import collections
-import os
 
-from deform import Form
+from deform import Form, ValidationFailure
 from sqlalchemy.sql.expression import desc
 from sqlalchemy.sql.functions import sum, count
+from sqlalchemy.orm import joinedload
 
 from almir.meta import DBSession, get_database_size
-from almir.models import Job, Client, Log, Media, Storage, Pool
-from almir.forms import *
+from almir.models import Job, Client, Log, Media, Storage, Pool, Status
+from almir.forms import JobSchema, MediaSchema, LogSchema
 from almir.lib.console_commands import CONSOLE_COMMANDS
 from almir.lib.bconsole import BConsole
-from almir.lib.utils import render_rst_section, nl2br
+from almir.lib.utils import render_rst_section
 
 
 def dashboard(request):
@@ -42,76 +42,107 @@ def console(request):
     return locals()
 
 
-def log(request):
-    dbsession = DBSession()
-    logs = dbsession.query(Log).order_by(desc(Log.time)).limit(50)
-    form = Form(
-        LogFilterSchema(),
-        buttons=[],
-        use_ajax=True,
-        ajax_options="""
-        {success:
-            function (rtext, stext, xhr, form) {
-                console.log(rtext);
-            }
-        }
-        """,
-    )
-    # TODO: ajaxify results
-    # TODO: remember form value (validate)
-    # form.render(form.validate(request.POST.items()))
-    # TODO: job id should be clickable
-    # TODO: strip message begining
-    # TODO: display daemon name column
-    return locals()
-
-
 # restful generic view
 class MixinView(object):
     model = None
-    form = None
+    schema = None
 
     def __init__(self, request):
         self.request = request
+        self.context = {
+                        'appstruct': {},
+        }
+
+    def get_form(self):
+        """Deals everything regarding forms for a request."""
+        if not self.schema:
+            return
+
+        schema = self.schema()
+
+        form = Form(schema.bind(**self.context),
+                    buttons=[],
+                    bootstrap_form_style='form-vertical')
+
+        if self.request.query_string:
+            controls = self.request.GET.items()
+
+            try:
+                self.context['appstruct'] = form.validate(controls)
+                self.request.session[self.schema.__name__] = self.context['appstruct']
+                self.request.session.save()
+            except ValidationFailure, e:
+                return e
+
+        appstruct = self.request.session.get(self.schema.__name__, None)
+        if appstruct:
+            return form.render(appstruct)
+        else:
+            return form.render()
 
     def list(self):
-        d = self.model.objects_list()
-        if self.form:
-            d.update({'form': Form(self.form(), buttons=[])})
-        return d
+        self.context['form'] = self.get_form()
+        self.context['objects'] = self.model.get_list(appstruct=self.context['appstruct'])
+        return self.context
 
     def detail(self):
         id_ = self.request.matchdict['id']
-        return self.model.object_detail(id_)
+        self.context['object'] = self.model.get_one(id_)
+        return self.context
 
 
 class JobView(MixinView):
     model = Job
-    form = LogJobSchema
+    schema = JobSchema
+
+    def list(self):
+        # TODO: cache this
+        self.context['status_values'] = [('', '---')] + Status.get_values()
+        return super(JobView, self).list()
 
 
 class ClientView(MixinView):
     model = Client
-    form = LogClientSchema
+
+    def detail(self):
+        # TODO: get jobs as join/subquery on client
+        super(ClientView, self).detail()
+        id_ = self.request.matchdict['id']
+        jobs = Job.query.filter(Job.clientid == int(id_))
+        self.context['jobs'] = jobs.options(joinedload(Job.status)).order_by(desc(Job.schedtime)).limit(50)
+        self.context['job_statistics'] = jobs.with_entities(count().label('num_jobs'), sum(Job.jobbytes).label('total_size_backups')).first(),
+        self.context['last_successful_job'] = jobs.filter(Job.jobstatus == 'T').order_by(desc(Job.starttime)).first(),
+        return self.context
 
 
 class StorageView(MixinView):
     model = Storage
-    form = LogStorageSchema
 
 
 class VolumeView(MixinView):
     model = Media
-    form = LogVolumeSchema
+    schema = MediaSchema
+
+    def list(self):
+        # UPSTREAM: we need to convert id to string, look at https://github.com/Pylons/deform/issues/81
+        # TODO: cache
+        self.context['storage_values'] = [('', '---')] + map(lambda x: (str(x[0]), x[1]), Storage.get_values())
+        self.context['pool_values'] = [('', '---')] + map(lambda x: (str(x[0]), x[1]), Pool.get_values())
+        return super(VolumeView, self).list()
 
 
 class PoolView(MixinView):
     model = Pool
-    form = LogPoolSchema
+
+
+class LogView(MixinView):
+    model = Log
+    schema = LogSchema
 
 
 bconsole_session = None
 command_cache = collections.deque(maxlen=10)
+
 
 def ajax_console_input(request):
     global bconsole_session

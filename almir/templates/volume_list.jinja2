@@ -4,8 +4,3 @@
     <h1 class="view">Volumes <small>list</small></h1>
     {{ macros.volumes_table(request, objects) }}
 {% endblock %}
-
-{% block sidebar %}
-    <h1 class="view">Filter</h1>
-    {{  form.render()|safe }}
-{% endblock %}

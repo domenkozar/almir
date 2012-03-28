@@ -28,10 +28,15 @@
   <script src="{{ request.static_url('deform:static/scripts/deform.js') }}"></script>
   <script src="{{ request.static_url('deform:static/scripts/jquery.form.js') }}"></script>
 
+  <!-- deform_bootstrap -->
+  <script src="{{ request.static_url('deform_bootstrap:static/bootstrap-datepicker.js') }}"></script>
+  <link href="{{ request.static_url('deform_bootstrap:static/bootstrap-datepicker.css') }}" rel="stylesheet" type="text/css" />
+  <script src="{{ request.static_url('deform_bootstrap:static/jquery_chosen/chosen.jquery.js') }}"></script>
+  <link href="{{ request.static_url('deform_bootstrap:static/jquery_chosen/chosen.css') }}" rel="stylesheet" type="text/css" />
+
   <!-- init for main -->
   <script type="text/javascript">
-   var submit_delay_miliseconds = 2000,
-       tabletools_swf = "{{ request.static_url('almir:static/datatables/copy_cvs_xls_pdf.swf') }}";
+   var tabletools_swf = "{{ request.static_url('almir:static/datatables/copy_cvs_xls_pdf.swf') }}";
   </script>
 
   <!-- main -->
@@ -68,6 +73,8 @@
     <div class="span3">
      <div class="well">
       {% block sidebar %}
+        <h1 class="datatables-filter">Filter by</h1>
+        {{ form|safe }}
       {% endblock  %}
      </div>
     </div>

@@ -2,10 +2,9 @@
 
 {% block content %}
     <h1 class="view">Job <small>list</small></h1>
-    {{ macros.jobs_table(request, objects) }}
-{% endblock %}
-
-{% block sidebar %}
-    <h1>Filter</h1>
-    {{ form.render()|safe }}
+    {% if appstruct.state == 'scheduled' %}
+        {{ macros.upcoming_jobs_table(request, objects) }}
+    {% else %}
+        {{ macros.jobs_table(request, objects) }}
+    {% endif %}
 {% endblock %}

@@ -79,7 +79,8 @@ def main(global_config, **settings):
                     route_name='about',
                     renderer='templates/about.jinja2')
     config.add_route('log', '/log/')
-    config.add_view('almir.views.log',
+    config.add_view('almir.views.LogView',
+                    attr="list",
                     route_name='log',
                     renderer='templates/log.jinja2')
     config.add_route('console', '/console/')

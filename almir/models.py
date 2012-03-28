@@ -54,6 +54,10 @@ class Status(ModelMixin, Base):
 
     """
 
+    @classmethod
+    def get_values(cls):
+        return cls.query.with_entities(cls.jobstatus, cls.jobstatuslong).all()
+
 
 class Client(ModelMixin, Base):
     """
@@ -73,25 +77,12 @@ class Client(ModelMixin, Base):
     """
 
     @classmethod
-    def object_detail(cls, id_):
-        d = super(Client, cls).object_detail(id_)
-        jobs = Job.query.filter(Job.clientid == int(id_))
-        # TODO: get jobs as join on client
-        d.update({
-            'jobs': jobs.options(joinedload(Job.status)).order_by(desc(Job.schedtime)).limit(50),
-            'job_statistics': jobs.with_entities(func.count().label('num_jobs'), func.sum(Job.jobbytes).label('total_size_backups')).first(),
-            'last_successful_job': jobs.filter(Job.jobstatus == 'T').order_by(desc(Job.starttime)).first(),
-        })
-        return d
-
-    @classmethod
-    def objects_list(cls):
+    def get_list(cls, **kw):
         # SELECT client.clientid, job_bytes, max_job FROM client
         # LEFT JOIN (SELECT job.clientid, SUM(job.jobbytes) AS job_bytes FROM job
         # GROUP BY job.clientid) AS vsota ON vsota.clientid = client.clientid
         # LEFT JOIN (SELECT job.clientid, MAX(job.schedtime) AS max_job FROM job
         # GROUP BY job.clientid) AS last_job ON last_job.clientid = client.clientid;
-        # TODO: breaks on postgresql
         sum_stmt = Job.query\
             .with_entities(Job.clientid, func.sum(Job.jobbytes).label('job_sumvolbytes'))\
             .group_by(Job.clientid)\
@@ -100,8 +91,7 @@ class Client(ModelMixin, Base):
             .with_entities(Job.clientid, func.max(Job.starttime).label('job_maxschedtime')).filter(Job.jobstatus == 'T')\
             .group_by(Job.clientid)\
             .subquery('stmt_max')
-        d = {}
-        d['objects'] = cls.query.with_entities(Client, 'job_sumvolbytes', 'job_maxschedtime', func.count(Job.jobid).label('num_jobs'))\
+        objects = cls.query.with_entities(Client, 'job_sumvolbytes', 'job_maxschedtime', func.count(Job.jobid).label('num_jobs'))\
             .outerjoin(Job, Client.clientid == Job.clientid)\
             .outerjoin(sum_stmt, sum_stmt.c.clientid == Client.clientid)\
             .outerjoin(last_stmt, last_stmt.c.clientid == Client.clientid)\
@@ -115,8 +105,8 @@ class Client(ModelMixin, Base):
                 if l.job_maxschedtime:
                     l.job_maxschedtime = datetime.datetime.strptime(l.job_maxschedtime, '%Y-%m-%d %H:%M:%S')
                 return l
-            d['objects'] = map(convert_datetime, d['objects'])
-        return d
+            objects = map(convert_datetime, objects)
+        return objects
 
     def url(self, request):
         return request.route_url('client_detail', id=self.clientid)
@@ -214,13 +204,22 @@ class Job(ModelMixin, Base):
     )
 
     @classmethod
-    def objects_list(cls):
-        d = super(Job, cls).objects_list()
-        d['objects'] = d['objects'].options(joinedload(cls.status), joinedload(cls.client)).order_by(desc(Job.starttime)).limit(50)
-        return d
+    def get_list(cls, **kw):
+        appstruct = kw.get('appstruct', {})
+        if appstruct and appstruct['state'] == 'scheduled':
+            return BConsole().get_upcoming_jobs()
+
+        query = cls.query.options(joinedload(cls.status), joinedload(cls.client))\
+                        .order_by(desc(Job.starttime))
+        if appstruct:
+            if appstruct['status']:
+                query = query.filter(cls.jobstatus == appstruct['status'])
+            if appstruct['type']:
+                query = query.filter(cls.type == appstruct['type'])
+        return query.limit(50)
 
     @classmethod
-    def object_detail(cls, id_):
+    def get_one(cls, id_):
         query = cls.query.options(joinedload(cls.status),
                                   joinedload(cls.client),
                                   joinedload(cls.logs),
@@ -229,7 +228,23 @@ class Job(ModelMixin, Base):
                                   joinedload_all("files.path"),
                                   joinedload_all("files.filename"),
                                   ).get(int(id_))
-        return super(Job, cls).object_detail(query=query)
+        return super(Job, cls).get_one(query=query)
+
+    @classmethod
+    def get_running(cls):
+        return super(Job, cls).get_list().options(joinedload(cls.status), joinedload(cls.client))\
+                                         .join('status')\
+                                         .filter(Status.severity == 15)\
+                                         .order_by(desc(Job.starttime))\
+                                         .limit(50)
+
+    @classmethod
+    def get_last(cls):
+        return super(Job, cls).get_list().options(joinedload(cls.status), joinedload(cls.client))\
+                                         .join('status')\
+                                         .filter(Status.severity != 15)\
+                                         .order_by(desc(Job.schedtime))\
+                                         .limit(5)
 
     # TODO: convert those to render_*
     @property
@@ -257,24 +272,6 @@ class Job(ModelMixin, Base):
     @classmethod
     def get_upcoming(cls):
         return BConsole().get_upcoming_jobs()
-
-    @classmethod
-    def get_running(cls):
-        d = super(Job, cls).objects_list()
-        return d['objects'].options(joinedload(cls.status), joinedload(cls.client))\
-                           .join('status')\
-                           .filter(Status.severity == 15)\
-                           .order_by(desc(Job.starttime))\
-                           .limit(50)
-
-    @classmethod
-    def get_last(cls):
-        d = super(Job, cls).objects_list()
-        return d['objects'].options(joinedload(cls.status), joinedload(cls.client))\
-                           .join('status')\
-                           .filter(Status.severity != 15)\
-                           .order_by(desc(Job.schedtime))\
-                           .limit(5)
 
     def url(self, request):
         return request.route_url('job_detail', id=self.jobid)
@@ -425,19 +422,27 @@ class Media(ModelMixin, Base):
     # for mediatype
 
     @classmethod
-    def objects_list(cls):
-        d = super(Media, cls).objects_list()
-        d['objects'] = d['objects'].options(joinedload(cls.pool), joinedload(cls.storage))
-        return d
+    def get_list(cls, **kw):
+        appstruct = kw.get('appstruct', {})
+        query = super(Media, cls).get_list(**kw).options(joinedload(cls.pool), joinedload(cls.storage))
+
+        if appstruct:
+            if appstruct['status']:
+                query = query.filter(cls.volstatus == appstruct['status'])
+            if appstruct['storage']:
+                query = query.filter(cls.storageid == int(appstruct['storage']))
+            if appstruct['pool']:
+                query = query.filter(cls.poolid == int(appstruct['pool']))
+        return query
 
     @classmethod
-    def object_detail(cls, id_):
+    def get_one(cls, id_):
         query = cls.query.options(joinedload(cls.pool),
                                   joinedload(cls.storage),
                                   joinedload_all('jobs.status'),
                                   joinedload_all('jobs.client'),
                                   ).get(int(id_))
-        return super(Media, cls).object_detail(query=query)
+        return super(Media, cls).get_one(query=query)
 
     def url(self, request):
         return request.route_url('volume_detail', id=self.mediaid)
@@ -493,22 +498,24 @@ class Storage(ModelMixin, Base):
     """
 
     @classmethod
-    def object_detail(cls, id_):
+    def get_one(cls, id_):
         query = cls.query.options(joinedload_all('medias.pool')).get(int(id_))
-        return super(Storage, cls).object_detail(query=query)
+        return super(Storage, cls).get_one(query=query)
 
     @classmethod
-    def objects_list(cls):
-        d = super(Storage, cls).objects_list()
-        d['objects'] = cls.query.with_entities(Storage,
-                                               func.count(Media.mediaid).label('num_volumes'),
-                                               #func.count(Job.jobid).label('num_jobs'),
-                                               #func.count(Client.clientid).label('num_clients'),
-                                               func.sum(Media.volbytes).label('total_backup_size'))\
+    def get_list(cls, **kw):
+        return cls.query.with_entities(Storage,
+                                       func.count(Media.mediaid).label('num_volumes'),
+                                       #func.count(Job.jobid).label('num_jobs'),
+                                       #func.count(Client.clientid).label('num_clients'),
+                                       func.sum(Media.volbytes).label('total_backup_size'))\
                                 .outerjoin('medias')\
                                 .group_by(cls)
                                 #.outerjoin('medias', 'jobmedias', 'jobs')\
-        return d
+
+    @classmethod
+    def get_values(cls):
+        return cls.query.with_entities(cls.storageid, cls.name).all()
 
     def url(self, request):
         return request.route_url('storage_detail', id=self.storageid)
@@ -535,6 +542,20 @@ class Log(ModelMixin, Base):
 
     """
     time = Column('time', BaculaDateTime())
+
+    @classmethod
+    def get_list(cls, **kw):
+        appstruct = kw['appstruct']
+        query = super(Log, cls).get_list(**kw)
+
+        if appstruct:
+            if appstruct['from_time']:
+                query = query.filter(cls.time >= appstruct['from_time'])
+
+            if appstruct['to_time']:
+                query = query.filter(cls.time <= appstruct['to_time'])
+
+        return query.order_by(desc(Log.time)).limit(50)
 
     def render_logtext(self, request):
         d = {}
@@ -584,10 +605,13 @@ class Pool(ModelMixin, Base):
     """
 
     @classmethod
-    def object_detail(cls, id_):
-        query = cls.query.options(joinedload_all('medias.storage'),
-                                  ).get(int(id_))
-        return super(Pool, cls).object_detail(query=query)
+    def get_one(cls, id_):
+        query = cls.query.options(joinedload_all('medias.storage')).get(int(id_))
+        return super(Pool, cls).get_one(query=query)
+
+    @classmethod
+    def get_values(cls):
+        return cls.query.with_entities(cls.poolid, cls.name).all()
 
     def url(self, request):
         return request.route_url('pool_detail', id=self.poolid)

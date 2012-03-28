@@ -17,6 +17,7 @@ requires = [
     'pyramid_beaker',
     'colander',
     'deform',
+    'deform_bootstrap',
     'WebHelpers',
     'transaction',
     'SQLAlchemy',

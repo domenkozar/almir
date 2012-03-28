@@ -21,7 +21,7 @@
            <tr>
                <td>Last successful backup:</td>
                {% if last_successful_job %}
-                   <td>{{ macros.link(last_successful_job.render_starttime(request)) }}</td>
+                   <td>{{ macros.link(last_successful_job[0].render_starttime(request)) }}</td>
                {% else %}
                    <td></td>
                {% endif %}

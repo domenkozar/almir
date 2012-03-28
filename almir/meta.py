@@ -37,18 +37,18 @@ class ModelMixin(object):
             return cls.__name__
 
     @classmethod
-    def objects_list(cls):
-        return {'objects': cls.query}
+    def get_list(cls, **kw):
+        return cls.query
 
     @classmethod
-    def object_detail(cls, id_=None, query=None):
+    def get_one(cls, id_=None, query=None):
         if id_ is not None:
             query = cls.query.get(int(id_))
 
         if query == None:
             raise exception_response(404)
         else:
-            return {'object': query}
+            return query
 
     @staticmethod
     def format_byte_size(size):

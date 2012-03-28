@@ -65,7 +65,7 @@ $(function () {
        window.location = $(e.target).parents('tr').data('link');
     });
 
-    $('.datatables').each(function () {
+    var setup_datatables = function () {
         var $this = $(this),
             /* datatables initialisation: http://datatables.net/usage/options */
             options = {
@@ -78,7 +78,8 @@ $(function () {
                   sSwfPath: tabletools_swf,
                   aButtons: ["copy", "xls", "pdf", "print"]
               },
-              "iDisplayLength": 50
+              "iDisplayLength": 50,
+              "bDestroy": true
            };
 
         if ($.inArray($this.prevAll('h2').attr('id'), ['last_jobs', 'upcoming_jobs', 'running_jobs']) !== -1) {
@@ -99,7 +100,8 @@ $(function () {
         }); 
 
         $this.dataTable(options);
-    });
+    };
+    $('.datatables').each(setup_datatables);
     // apply twitter.bootstrap markup on tabletools
     $('.DTTT_button').addClass('btn');
 
@@ -157,19 +159,38 @@ $(function () {
         send_command({which: 1}, true);
     }
 
-   // TODO: forms
+   // don't focus the form since we dont want
+   // datetimewidget to open on page load
+   deform.focusFirstInput = $.noop
+
+   // load deform javascript
+   deform.load();
+
+   // filter forms for datatables
    function submitForm () {
-    console.log('submitted form');
-    $('form').submit();
+       var dt = $('.datatables');
+
+       $('.datatables').each(function () {$(this).dataTable().fnDestroy(true)});
+       $('.view').after('<div></div>').next().load(document.URL + " .datatables", $('form').serialize(), function () {
+       $('.datatables').each(setup_datatables);
+       });
    }
 
-   $(function () {
-     deform.load();
-     $('form')
+   // setup events for filter forms
+   $('form')
        .data('timeout', null)
-       .keyup(function(){
+       .change(submitForm)  // if we chose a value from dropdown, submit instantly
+       .keypress(function (event) {
+          var keycode = (event.keyCode ? event.keyCode : event.which);
+          if (keycode === 13) {
+             // on enter, also submit instantly
+             submitForm();
+             event.preventDefault();
+          }
+       })
+       // when typing, wait for 0.8s pause and submit form
+       .bind('keyup', function(){
          clearTimeout($(this).data('timeout'));
-         jQuery(this).data('timeout', setTimeout(submitForm, submit_delay_miliseconds));
+         jQuery(this).data('timeout', setTimeout(submitForm, 800));
        });
-     });
 });
