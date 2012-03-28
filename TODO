@@ -2,17 +2,13 @@ v0.1
 ----
 
 BUG: timezone offset bug still present.
-BUG: postgres+pg8000 have problems with unicode (database has encoding SQL_ASCII)
-BUG: postgres: clients view
-FEATURE: tests for sqlite, postgresql, mysql
-FEATURE: get forms working
 BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
     FEATUER: for job, log and file list
-    FEATURE: implement configurable limit of elements in table 
 BUG: 100% test coverage
 BUG: memory leaks?
 FEATURE: log issues to github tracker and get rid of this TODO
 FEATURE: donate button+flattr
+FEATURE: mailinglist for announcements
 RELEASE: pypi, bacula users list, almir list, blog post, demo
 
 
@@ -22,6 +18,7 @@ ROADMAP: V0.2
 FEATURE: move db to tests/fixtures
 FEATURE: number of jobs on volume list
 FEATURE: inline documentation for data from database
+FEATURE: support on mysql: SHOW VARIABLES LIKE '%lower_case_table_%';
 FEATURE: use https://github.com/mozilla-services/cornice
 FEATURE: director actions through dropdown menu
 FEATURE: clickable headings (anchors)
@@ -31,6 +28,7 @@ FEATURE: autochanger/devices
 FEATURE: counter
 FEATURE: filesets representations
 IDEA: http://siliconforks.com/jscoverage/ 
+IDEA: SQL regression testing: build on top of most primivite .sql fixtures?
 IDEA: CSRF?
 
 
@@ -43,7 +41,8 @@ FEATURE: browse cataloged files
 FEATURE: responsive design
 FEATURE: configurable datetime formatting (watch out for sorting)
 FEATURE: configurable rss
-FEATURE: ACL would allow users to restire their own files and have access to one client
+FEATURE: ACL would allow users to restore their own files and have access to one client
+FEATURE: free space on storage (implement though status command on storage): .status storage freespace
 IDEA: ship with bacula to kill administrators burdon?
 IDEA: add icons from twitter.bootstrap http://twitter.github.com/bootstrap/base-css.html#icons
 IDEA: testing configuration http://www.bacula.org/manuals/en/install/install/Getting_Started_with_Bacula.html#SECTION00234000000000000000
