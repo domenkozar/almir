@@ -67,7 +67,7 @@ class ModelMixin(object):
             dt_from = convert_timezone(dt_from)
 
         if dt_to is None:
-            return {'text': distance_of_time_in_words(dt_from, convert_timezone(datetime.now())), 'data_numeric': dt_from.strftime('%s')}
+            return {'text': distance_of_time_in_words(dt_from, convert_timezone(datetime.now())) + ' ago', 'data_numeric': dt_from.strftime('%s')}
         else:
             if dt_to.tzinfo is None:
                 dt_to = convert_timezone(dt_to)

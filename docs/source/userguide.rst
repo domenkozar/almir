@@ -48,7 +48,7 @@ Install prerequesities (Debian based)::
 Install almir (recommended: under same user as bacula)::
 
     $ cd /some/directory/to/install/almir/
-    $ sh -c "$(wget -O - https://raw.github.com/iElectric/almir/master/install_production.sh)"
+    $ sh -xc "$(wget -O - https://raw.github.com/iElectric/almir/master/install_production.sh)"
 
 You can continue with configuring :ref:`nginx`.
 

@@ -1,6 +1,6 @@
 import os
 import random
-import sha
+import hashlib
 
 from pyramid_beaker import BeakerSessionFactoryConfig
 from pyramid.config import Configurator
@@ -58,7 +58,7 @@ def main(global_config, **settings):
     beaker_dict = dict(
                    type="memory",
                    lock_dir=os.path.join(global_config.get('here', '.'), 'session_lock'),
-                   secret=sha.sha(str(random.getrandbits(100))).hexdigest(),
+                   secret=hashlib.sha1(str(random.getrandbits(100))).hexdigest(),
                    )
     config.set_session_factory(BeakerSessionFactoryConfig(**beaker_dict))
 

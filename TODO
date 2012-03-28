@@ -1,11 +1,9 @@
 v0.1
 ----
 
-BUG: timezone offset bug still present.
 BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
     FEATUER: for job, log and file list
 BUG: 100% test coverage
-BUG: memory leaks?
 FEATURE: log issues to github tracker and get rid of this TODO
 FEATURE: donate button+flattr
 FEATURE: mailinglist for announcements
@@ -27,6 +25,7 @@ FEATURE: caching for most obvious things
 FEATURE: autochanger/devices
 FEATURE: counter
 FEATURE: filesets representations
+IDEA: move sidebar to right side?
 IDEA: http://siliconforks.com/jscoverage/ 
 IDEA: SQL regression testing: build on top of most primivite .sql fixtures?
 IDEA: CSRF?
