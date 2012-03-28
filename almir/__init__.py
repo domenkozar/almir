@@ -1,3 +1,8 @@
+import os
+import random
+import sha
+
+from pyramid_beaker import BeakerSessionFactoryConfig
 from pyramid.config import Configurator
 from pyramid.events import BeforeRender
 from pyramid.httpexceptions import HTTPError
@@ -46,6 +51,16 @@ def main(global_config, **settings):
     config = Configurator(settings=settings)
     config.include('pyramid_jinja2')
     config.include('pyramid_tm')
+    config.include('pyramid_beaker')
+    config.include('deform_bootstrap')
+
+    # setup beaker
+    beaker_dict = dict(
+                   type="memory",
+                   lock_dir=os.path.join(global_config.get('here', '.'), 'session_lock'),
+                   secret=sha.sha(str(random.getrandbits(100))).hexdigest(),
+                   )
+    config.set_session_factory(BeakerSessionFactoryConfig(**beaker_dict))
 
     # events
     config.add_subscriber(navigation_tree, BeforeRender)
