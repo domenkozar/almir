@@ -29,12 +29,17 @@ Almir will install everything inside one directory, which must be empty. Applica
 meaning no additional administrator is needed besides upgrading to a newer version. Almir should
 be always installed on a system together with bacula-director.
 
-Note that currently python2.6 and python2.7 are supported.
+Prerequisities
+**************
 
-If you are using postresql, make sure `postgresql.conf` includes a line `client_encoding = utf8`
+* bacula is installed and bacula-director is running
+* installed python2.6 or python2.7
+* using postgresql: make sure `postgresql.conf` includes a line `client_encoding = utf8`
+
 
 Installer (interactive)
 ***********************
+
 
 Install prerequesities (Debian based)::
 
@@ -46,6 +51,10 @@ Install almir (recommended: under same user as bacula)::
     $ sh -c "$(wget -O - https://raw.github.com/iElectric/almir/master/install_production.sh)"
 
 You can continue with configuring :ref:`nginx`.
+
+.. note::
+
+    Installer will ask you few questions about SQL database and configuration for bconsole.
 
 Manual (not recommended)
 ************************
@@ -87,11 +96,11 @@ Then run::
 
 Now try to access http://almir.mywebsite.com/
 
+
 Upgrading to a newer release
 ----------------------------
 
-TODO ;)
-
+Currently it's best to just reinstall. In future, this will be easy as running a command.
 Filesystem structure
 --------------------
 

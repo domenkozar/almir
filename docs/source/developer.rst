@@ -23,6 +23,14 @@ Easy as::
 
     $ bin/nosetests
 
+By default it will run against sqlite fixture, you can also tell nosetests to use mysql fixture (you need to import sql manually for now)::
+
+    $ DATABASE="mysql" bin/nosetests
+
+Or just specify sqlalchemy engine::
+
+    $ ENGINE="sqlite:////var/lib/bacula/bacula.db" bin/nosetests
+
 
 Running Javascript tests
 ------------------------
