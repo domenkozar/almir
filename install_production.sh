@@ -1,7 +1,7 @@
 #!/bin/sh -x
 
 git clone https://github.com/iElectric/almir.git -b latests .
-echo -e '[buildout]\nextends = buildout.d/production.cfg' > buildout.cfg
+$(which echo) -e '[buildout]\nextends = buildout.d/production.cfg' > buildout.cfg
 python bootstrap.py
 bin/buildout
 bin/python almir/scripts/configure_deploy.py
