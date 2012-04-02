@@ -1,9 +1,6 @@
 v0.1
 ----
 
-BUG: if job has 80k files, job view fails to display. Use: datatables+ajax+offset?
-    FEATUER: for job, log and file list
-BUG: 100% test coverage
 FEATURE: log issues to github tracker and get rid of this TODO
 FEATURE: donate button+flattr
 FEATURE: mailinglist for announcements
@@ -19,8 +16,10 @@ FEATURE: inline documentation for data from database
 FEATURE: support on mysql: SHOW VARIABLES LIKE '%lower_case_table_%';
 FEATURE: use https://github.com/mozilla-services/cornice
 FEATURE: director actions through dropdown menu
+FEATURE: ALL_DATABASES=1 support, maybe metadata.clear() will help
 FEATURE: clickable headings (anchors)
 FEATURE: quickstart landing page
+FEATURE: javascript integration tests
 FEATURE: caching for most obvious things
 FEATURE: autochanger/devices
 FEATURE: counter
@@ -40,6 +39,7 @@ FEATURE: browse cataloged files
 FEATURE: responsive design
 FEATURE: configurable datetime formatting (watch out for sorting)
 FEATURE: configurable rss
+FEATURE: syntax highlighting support: pygments lexer for bacula console
 FEATURE: ACL would allow users to restore their own files and have access to one client
 FEATURE: free space on storage (implement though status command on storage): .status storage freespace
 IDEA: ship with bacula to kill administrators burdon?
