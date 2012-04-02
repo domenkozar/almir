@@ -387,7 +387,6 @@ class FunctionalTests(AlmirTestCase):
 
         d = json.loads(res.body)
         self.assertEqual(d['sEcho'], 1)
-        self.assertNotEqual(d['iTotalDisplayRecords'], d['iTotalRecords'])
         self.assertEqual(d['iTotalDisplayRecords'], len(d['aaData']))
         self.assertEqual(len(d['aaData']), 0)
 
@@ -398,11 +397,11 @@ class FunctionalTests(AlmirTestCase):
             "iColumns": "3",
             "sColumns": "",
             "iDisplayStart": "0",
-            "iDisplayLength": "10",
+            "iDisplayLength": "2",
             "mDataProp_0": "jobid",
             "mDataProp_1": "time",
             "mDataProp_2": "logtext",
-            "sSearch": "Build OS",
+            "sSearch": "Found to prune",
             "bRegex": "false",
             "sSearch_0": "",
             "bRegex_0": "false",
