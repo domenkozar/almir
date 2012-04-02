@@ -400,7 +400,7 @@ class FunctionalTests(AlmirTestCase):
             "iColumns": "3",
             "sColumns": "",
             "iDisplayStart": "0",
-            "iDisplayLength": "2",
+            "iDisplayLength": "1",
             "mDataProp_0": "jobid",
             "mDataProp_1": "time",
             "mDataProp_2": "logtext",
