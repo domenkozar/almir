@@ -45,16 +45,17 @@ Install prerequesities (Debian based)::
 
     $ sudo apt-get install git bacula-console
 
-Install almir (recommended: under same user as bacula)::
-
-    $ cd /some/directory/to/install/almir/
-    $ sh -xc "$(wget -O - https://raw.github.com/iElectric/almir/master/install_production.sh)"
-
-You can continue with configuring :ref:`nginx`.
-
 .. note::
 
     Installer will ask you few questions about SQL database and configuration for bconsole.
+
+Install almir (recommended: under same user as bacula)::
+
+    $ cd /some/empty/directory/to/install/almir/
+    $ sh -xec "$(wget -O - https://raw.github.com/iElectric/almir/master/install_production.sh)"
+
+You can continue with configuring :ref:`nginx`.
+
 
 Manual (not recommended)
 ************************

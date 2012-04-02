@@ -24,7 +24,7 @@ class AlmirTestCase(unittest2.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        testing.setUp()
+        cls.config = testing.setUp()
 
         # prepare query counting
         cls.num_of_sql_queries = 0

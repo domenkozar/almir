@@ -64,6 +64,7 @@ director_password = 123123
             'localhost\n',  # host
             'asd\n',  # port
             '99999\n',  # port
+            '80\n',  # port
             '45001\n',  # port
             '\n',  # sqla
             'sqlite:///bacula.db\n',  # sqla
@@ -75,7 +76,7 @@ director_password = 123123
             '666\n',  # dir password
         ]
         engine = mock_create_engine.return_value
-        engine.table_names.return_value  = ['Client', 'Job', 'Media']
+        engine.table_names.return_value = ['Client', 'Job', 'Media']
         mock_getpass.return_value = '666'
         mock_is_running.return_value = True
         mock_open.return_value = MagicMock(spec=file)
