@@ -61,12 +61,12 @@
         </thead>
         <tbody>
             {% for job in jobs %}
-                <tr class="clickable-row {{ job.status_color }}" data-link="{{ request.route_url('job_detail', id=job.jobid) }}">
+                <tr class="clickable-row {{ job.render_status_color(request) }}" data-link="{{ request.route_url('job_detail', id=job.jobid) }}">
                     <td>{{ link(job.render_name(request)) }}</td>
-                    <td>{{ job.status_name }}</td>
-                    <td>{{ job.type_name }}</td>
-                    <td>{{ job.level_name }}</td>
-                    <td>{{ job.jobfiles }}</td>
+                    <td>{{ link(job.render_status(request)) }}</td>
+                    <td>{{ link(job.render_type(request)) }}</td>
+                    <td>{{ link(job.render_level(request)) }}</td>
+                    <td>{{ link(job.render_jobfiles(request)) }}</td>
                     <td>{{ link(job.render_jobbytes(request)) }}</td>
                     <td>{{ link(job.render_client_name(request)) }}</td>
                     <td>{{ link(job.render_starttime(request)) }}</td>

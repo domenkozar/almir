@@ -36,7 +36,8 @@
 
   <!-- init for main -->
   <script type="text/javascript">
-   var tabletools_swf = "{{ request.static_url('almir:static/datatables/copy_cvs_xls_pdf.swf') }}";
+   var tabletools_swf = "{{ request.static_url('almir:static/datatables/copy_cvs_xls_pdf.swf') }}",
+       datatables_route = "{{ request.route_url('datatables') }}";
   </script>
 
   <!-- main -->

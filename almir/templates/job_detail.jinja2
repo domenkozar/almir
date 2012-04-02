@@ -4,28 +4,7 @@
     <h1 class="view">Job <small>{{ object.name }}</small></h1>
 
     <h2 class="view">Files <small>{{ object.jobfiles }} total</small></h2>
-    <table class="table table-striped table-bordered datatables">
-        <thead>
-            <tr>
-                <th>Filename</th>
-                <th>Size</th>
-                <th>Mode</th>
-                <th>UID</th>
-                <th>GID</th>
-        </tr>
-        </thead>
-        <tbody>
-            {% for file in object.files %}
-                <tr>
-                    <td>{{ file.path.path }}{{ file.filename.name }}</td>
-                    <td>{{ macros.link(file.render_size(request)) }}</td>
-                    <td>{{ macros.link(file.render_mode(request)) }}</td>
-                    <td>{{ macros.link(file.render_uid(request)) }}</td>
-                    <td>{{ macros.link(file.render_gid(request)) }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <table id="job_files" class="table table-striped table-bordered datatables"></table>
 
     <h2 class="view">Log</h2>
     {{ macros.logs_table(request, object.logs, show_jobid=False) }}
@@ -49,15 +28,15 @@
        </tr>
        <tr>
            <td>Status:</td>
-           <td class="{{ object.status_color }}">{{ object.status_name }}</td>
+           <td class="{{ object.render_status_color(request) }}">{{ macros.link(object.render_status(request)) }}</td>
        </tr>
        <tr>
            <td>Type:</td>
-           <td>{{ object.type_name }}</td>
+           <td>{{ macros.link(object.render_type(request)) }}</td>
        </tr>
        <tr>
            <td>Level:</td>
-           <td>{{ object.level_name }}</td>
+           <td>{{ macros.link(object.render_level(request)) }}</td>
        </tr>
        <tr>
            <td>Size:</td>
@@ -65,7 +44,7 @@
        </tr>
        <tr>
            <td>Number of files:</td>
-           <td>{{ object.jobfiles }}</td>
+           <td>{{ macros.link(object.render_jobfiles(request)) }}</td>
        </tr>
        <tr>
            <td>Scheduled:</td>

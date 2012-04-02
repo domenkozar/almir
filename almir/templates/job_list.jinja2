@@ -5,6 +5,7 @@
     {% if appstruct.state == 'scheduled' %}
         {{ macros.upcoming_jobs_table(request, objects) }}
     {% else %}
-        {{ macros.jobs_table(request, objects) }}
+        <table id="list_jobs" class="table table-bordered datatables">
+        </table>
     {% endif %}
 {% endblock %}

@@ -1,16 +1,24 @@
+import logging
 import collections
 
 from deform import Form, ValidationFailure
-from sqlalchemy.sql.expression import desc
+from pyramid.interfaces import IRoutesMapper
+from pyramid.settings import asbool
+from sqlalchemy import String
+from sqlalchemy.sql.expression import desc, or_
 from sqlalchemy.sql.functions import sum, count
 from sqlalchemy.orm import joinedload
+from sqlalchemy.orm.attributes import InstrumentedAttribute
 
 from almir.meta import DBSession, get_database_size
-from almir.models import Job, Client, Log, Media, Storage, Pool, Status
+from almir.models import Job, Client, Log, Media, Storage, Pool, Status, File, Path, Filename
 from almir.forms import JobSchema, MediaSchema, LogSchema
 from almir.lib.console_commands import CONSOLE_COMMANDS
 from almir.lib.bconsole import BConsole
-from almir.lib.utils import render_rst_section
+from almir.lib.utils import render_rst_section, get_jinja_macro
+
+
+log = logging.getLogger(__name__)
 
 
 def dashboard(request):
@@ -100,6 +108,12 @@ class JobView(MixinView):
         self.context['status_values'] = [('', '---')] + Status.get_values()
         return super(JobView, self).list()
 
+    def detail(self):
+        id_ = self.request.matchdict['id']
+        self.context['files'] = File.query.filter(File.jobid == id_)\
+                                          .options(joinedload('path'), joinedload('filename'))\
+                                          .join('path').join('filename')
+        return super(JobView, self).detail()
 
 class ClientView(MixinView):
     model = Client
@@ -171,21 +185,108 @@ def httpexception(context, request):
 
 
 def datatables(request):
+    """Implements server side interface for datatables.
+
+    For field reference look at http://www.datatables.net/usage/server-side
+
+    """
+    link = get_jinja_macro('link')
+
     q = request.GET
-    iDisplayStart = q.get('iDisplayStart')
-    iDisplayLength = q.get('iDisplayLength')
-    iColumns = q.get('iColumns')
+    iDisplayStart = int(q.get('iDisplayStart'))
+    iDisplayLength = int(q.get('iDisplayLength'))
+    iColumns = int(q.get('iColumns'))
+    sColumns = q.get('sColumns').split(',')
     sSearch = q.get('sSearch')
     bRegex = q.get('bRegex')
-    bSearchable_ = q.get('bSearchable_')
-    sSearch_ = q.get('sSearch_')
-    bSortable_ = q.get('bSortable_')
-    iSortingCols = q.get('iSortingCols')
-    iSortCol_ = q.get('iSortCol_')
-    sSortDir_ = q.get('sSortDir_')
-    mDataProp_ = q.get('mDataProp_')
-    sEcho = q.get('sEcho')
+    iSortingCols = int(q.get('iSortingCols'))
+    sEcho = int(q.get('sEcho'))
+
+    # get view from referrer url
+    for route in request.registry.getUtility(IRoutesMapper).routelist:
+        match = route.match(q.get('referrer'))
+        if match is not None:
+            break
+
+    for intro in request.registry.introspector.get_category('views'):
+        if intro['introspectable']['route_name'] == route.name:
+            break
+
+    view = intro['introspectable']['callable'](request)
+    # TODO: views will do form filtering, meaning total_records will give false information
+    if intro['introspectable']['attr'] == 'list':
+        query = view.list()[q.get('context', 'objects')]
+    else:
+        request.matchdict = match
+        query = view.detail()[q.get('context', 'object')]
+
+    # get model from query entity
+    model = query._entities[0].mapper.class_
+
+    total_records = query.count()
+    search_filter = []
+
+    for i in range(iColumns):
+        mDataProp = q.get('mDataProp_%d' % i)
+        try:
+            field = sColumns[i] or mDataProp
+        except IndexError:
+            # no information about columns
+            field = mDataProp
+
+        # handle search
+        bSearchable = asbool(q.get('bSearchable_%d' % i))
+        if bSearchable:
+            # TODO: handle regex
+            # TODO: column specific search: col_sSearch = q.get('sSearch_%d' % i)
+            # TODO refactor to models to provide generic search and edge cases for specific models
+            if sSearch:
+                if field == 'path.path;filename.name':
+                    search_filter.append((Path.path + Filename.name).ilike('%' + sSearch + '%'))
+                else:
+                    column = getattr(model, field)
+                    if isinstance(column.property.columns[0].type, String):
+                        search_filter.append(column.ilike('%' + sSearch + '%'))
+                    # TODO: support more type searches
+
+        # handle sorting
+        iSortCol = q.get('iSortCol_%d' % i)
+        bSortable = asbool(q.get('bSortable_%d' % i))
+        if iSortCol and bSortable:
+            # TODO refactor to models to provide generic ordering and edge cases for specific models
+            for prop in field.split(';'):
+                # get colum for sorting
+                order_column = model
+                for attr in prop.split('.'):
+                    if isinstance(order_column, InstrumentedAttribute):
+                        # handle relations
+                        order_column = order_column.property.mapper.class_
+                    order_column = getattr(order_column, attr)
+
+                # sort
+                if q.get('sSortDir_%d' % i) == 'desc':
+                    query = query.order_by(desc(order_column))
+                else:
+                    query = query.order_by(order_column)
+
+    query = query.filter(or_(*search_filter))
+    total_display_records = query.count()
+
+    aaData = []
+
+    for result in query[iDisplayStart:iDisplayStart + iDisplayLength]:
+        obj = {}
+        for i in range(iColumns):
+            mDataProp = q.get('mDataProp_%d' % i)
+            options = getattr(result, 'render_%s' % mDataProp)(request) or {}
+            obj[mDataProp] = link(options)
+            if options.get('cssclass'):
+                obj['DT_RowClass'] = options['cssclass']
+        aaData.append(obj)
 
     return {
-            'sEcho': str(int(sEcho)),  # to be sure it's an integer
+            'sEcho': sEcho,
+            'iTotalDisplayRecords': total_display_records,
+            'iTotalRecords': total_records,
+            'aaData': aaData,
     }

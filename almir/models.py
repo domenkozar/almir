@@ -209,14 +209,13 @@ class Job(ModelMixin, Base):
         if appstruct and appstruct['state'] == 'scheduled':
             return BConsole().get_upcoming_jobs()
 
-        query = cls.query.options(joinedload(cls.status), joinedload(cls.client))\
-                        .order_by(desc(Job.starttime))
+        query = cls.query.options(joinedload(cls.status), joinedload(cls.client))
         if appstruct:
             if appstruct['status']:
                 query = query.filter(cls.jobstatus == appstruct['status'])
             if appstruct['type']:
                 query = query.filter(cls.type == appstruct['type'])
-        return query.limit(50)
+        return query
 
     @classmethod
     def get_one(cls, id_):
@@ -225,8 +224,6 @@ class Job(ModelMixin, Base):
                                   joinedload(cls.logs),
                                   joinedload(cls.pool),
                                   joinedload(cls.medias),
-                                  joinedload_all("files.path"),
-                                  joinedload_all("files.filename"),
                                   ).get(int(id_))
         return super(Job, cls).get_one(query=query)
 
@@ -235,8 +232,7 @@ class Job(ModelMixin, Base):
         return super(Job, cls).get_list().options(joinedload(cls.status), joinedload(cls.client))\
                                          .join('status')\
                                          .filter(Status.severity == 15)\
-                                         .order_by(desc(Job.starttime))\
-                                         .limit(50)
+                                         .order_by(desc(Job.starttime))
 
     @classmethod
     def get_last(cls):
@@ -246,21 +242,16 @@ class Job(ModelMixin, Base):
                                          .order_by(desc(Job.schedtime))\
                                          .limit(5)
 
-    # TODO: convert those to render_*
-    @property
-    def level_name(self):
-        return LEVELS[self.level]
+    def render_level(self, request):
+        return {'text': LEVELS[self.level]}
 
-    @property
-    def type_name(self):
-        return TYPES[self.type]
+    def render_type(self, request):
+        return {'text': TYPES[self.type]}
 
-    @property
-    def status_name(self):
-        return self.status.jobstatuslong
+    def render_status(self, request):
+        return {'text': self.status.jobstatuslong, 'cssclass': self.render_status_color(request)}
 
-    @property
-    def status_color(self):
+    def render_status_color(self, request):
         """Color of the job depending on status"""
         if self.status.severity < 15:
             return "ok"
@@ -300,11 +291,14 @@ class Job(ModelMixin, Base):
     def render_joberrors(self, request):
         d = {'text': self.joberrors}
         if self.joberrors:
-            d['cssclass'] = 'error'
+            d['cssclass'] = 'yellow'
         return d
 
     def render_starttime(self, request):
         return self.render_distance_of_time_in_words(self.starttime)
+
+    def render_jobfiles(self, request):
+        return {'text': self.jobfiles}
 
 
 class JobMedia(ModelMixin, Base):
@@ -545,8 +539,8 @@ class Log(ModelMixin, Base):
 
     @classmethod
     def get_list(cls, **kw):
-        appstruct = kw['appstruct']
-        query = super(Log, cls).get_list(**kw)
+        appstruct = kw.get('appstruct', {})
+        query = super(Log, cls).get_list(**kw).options(joinedload('job'))
 
         if appstruct:
             if appstruct['from_time']:
@@ -555,7 +549,13 @@ class Log(ModelMixin, Base):
             if appstruct['to_time']:
                 query = query.filter(cls.time <= appstruct['to_time'])
 
-        return query.order_by(desc(Log.time)).limit(50)
+        return query
+
+    def render_jobid(self, request):
+        return {'text': self.jobid, 'href': self.job.url(request)}
+
+    def render_time(self, request):
+        return {'text': self.time}
 
     def render_logtext(self, request):
         d = {}
@@ -723,6 +723,9 @@ class File(ModelMixin, Base):
             return self.lstat_raw
         else:
             return data
+
+    def render_filename(self, request):
+        return {'text': self.path.path + self.filename.name}
 
     def render_size(self, request):
         return {'text': self.format_byte_size(self.get_stat_data()[7])}
