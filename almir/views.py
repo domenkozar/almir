@@ -4,7 +4,7 @@ import collections
 from deform import Form, ValidationFailure
 from pyramid.interfaces import IRoutesMapper
 from pyramid.settings import asbool
-from sqlalchemy import String
+from sqlalchemy import String, LargeBinary
 from sqlalchemy.sql.expression import desc, or_
 from sqlalchemy.sql.functions import sum, count
 from sqlalchemy.orm import joinedload
@@ -245,7 +245,7 @@ def datatables(request):
                     search_filter.append((Path.path + Filename.name).ilike('%' + sSearch + '%'))
                 else:
                     column = getattr(model, field)
-                    if isinstance(column.property.columns[0].type, String):
+                    if isinstance(column.property.columns[0].type, (String, LargeBinary)):
                         search_filter.append(column.ilike('%' + sSearch + '%'))
                     # TODO: support more type searches
 
