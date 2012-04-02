@@ -4,6 +4,7 @@ from docutils.core import publish_parts
 
 import pytz
 from pyramid.threadlocal import get_current_registry
+from pyramid.config import Configurator
 
 
 def convert_timezone(datetime):
@@ -45,3 +46,10 @@ def yesno(text):
 
 def nl2br(text):
     return text.replace('\n', '<br />')
+
+
+def get_jinja_macro(macro):
+    """Return actual function from a jinja2 template"""
+    config = Configurator(get_current_registry())
+    template = config.get_jinja2_environment().get_template('templates/macros.jinja2')
+    return getattr(template.module, macro)
