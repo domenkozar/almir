@@ -110,7 +110,7 @@ class JobView(MixinView):
 
     def detail(self):
         id_ = self.request.matchdict['id']
-        self.context['files'] = File.query.filter(File.jobid == id_)\
+        self.context['files'] = File.query.filter(File.jobid == int(id_))\
                                           .options(joinedload('path'), joinedload('filename'))\
                                           .join('path').join('filename')
         return super(JobView, self).detail()

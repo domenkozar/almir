@@ -1,6 +1,7 @@
 import os
 import urlparse
 import json
+import logging.config
 from subprocess import Popen, PIPE
 
 from mock import patch
@@ -16,7 +17,8 @@ here = os.path.dirname(__file__)
 
 class FunctionalTests(AlmirTestCase):
     """Runs tests under multiple datasets"""
-    settings = appconfig('config:' + os.path.join(here, '../../', 'development.ini'))
+    config_file = os.path.join(here, '../../', 'development.ini')
+    settings = appconfig('config:' + config_file)
     db_conns = {
         'sqlite': 'sqlite:///bacula_kaki.db',
         'mysql': 'mysql+mysqlconnector://root@localhost/bacula',
@@ -37,6 +39,7 @@ class FunctionalTests(AlmirTestCase):
 
         cls.app = main({}, **cls.settings)
         cls.testapp = TestApp(cls.app)
+        logging.config.fileConfig(cls.config_file)
 
     @assert_num_of_queries(8, mysql=7, postgresql=7)
     @patch('almir.lib.bconsole.BConsole.start_process')
