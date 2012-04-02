@@ -3,6 +3,7 @@
 import os
 import getpass
 import socket
+import subprocess
 
 import pytz
 import sqlalchemy
@@ -74,14 +75,18 @@ def validate_int(v):
 
 def validate_engine(v):
     print 'Connecting to catalog database to verify configuration ...'
-    engine = sqlalchemy.create_engine(v)
-    if 'client' not in map(lambda e: e.lower(), engine.table_names()):
+    try:
+        engine = sqlalchemy.create_engine(v)
+        if 'client' not in map(lambda e: e.lower(), engine.table_names()):
+            raise ValueError('Connection string has wrong parameters (could not connect to catalog database)')  # PRAGMA: no cover
+    except:
         if engine.dialect.name == 'sqlite':  # PRAGMA: no cover
             print
             print 'WARNING: Using sqlite, database needs to be readable by bacula user. Fix is usually:'
             print 'sudo gpassword -a %s bacula' % getpass.getuser()
             print
-        raise ValueError('Connection string has wrong parameters (could not connect to catalog database)')  # PRAGMA: no cover
+            # TODO: display file permissions
+        raise
     print 'OK!'
 
 
@@ -138,6 +143,14 @@ def main():
     print 'Almost finished, we just need bconsole parameters to connect to director!'
     print
 
+    try:
+        output = subprocess.Popen(['which', 'bconsole'], stdout=subprocess.PIPE).communicate()[0].strip()
+    except subprocess.CalledProcessError:
+        print 'WARNING: bconsole command is not executable from current user!'
+    else:
+        if not os.access(output, os.X_OK):
+            print 'WARNING: bconsole command is not executable from current user!'
+
     bconsole_running = False
     while not bconsole_running:
         options['director_name'] = ask_question('Name of director to connect to (default: localhost-dir): ', default='localhost-dir')
@@ -167,3 +180,4 @@ def main():
 
 if __name__ == '__main__':
     main()  # PRAGMA: no cover
+    # TODO: add notes how to proceed if we get an exception

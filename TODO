@@ -10,6 +10,7 @@ RELEASE: pypi, bacula users list, almir list, blog post, demo
 ROADMAP: V0.2
 -------------
 
+BUG: copy,excel,pdf buttons do not fade out, while print does
 FEATURE: move db to tests/fixtures
 FEATURE: number of jobs on volume list
 FEATURE: inline documentation for data from database

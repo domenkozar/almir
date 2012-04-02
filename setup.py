@@ -1,5 +1,4 @@
 import os
-import sys
 
 from setuptools import setup, find_packages
 
@@ -31,7 +30,10 @@ requires = [
     'pytz',
 ]
 
-if sys.version_info[:3] < (2, 5, 0):
+try:
+    import sqlite3
+    sqlite3  # pyflakes
+except ImportError:
     requires.append('pysqlite')
 
 setup(name='almir',

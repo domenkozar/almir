@@ -43,7 +43,7 @@ Installer (interactive)
 
 Install prerequesities (Debian based)::
 
-    $ sudo apt-get install git bacula-console
+    $ sudo apt-get install git bacula-console python-distribute
 
 .. note::
 
@@ -102,6 +102,7 @@ Upgrading to a newer release
 ----------------------------
 
 Currently it's best to just reinstall. In future, this will be easy as running a command.
+
 Filesystem structure
 --------------------
 

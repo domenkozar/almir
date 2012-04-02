@@ -16,7 +16,7 @@ Welcome to almir's documentation!
 
 .. sidebar:: Features
 
-    - supports bacula-director version 5.0.x
+    - supports bacula-director version 5.x.x
     - supports sqlite, postgresql, mysql databases
     - complete read-only interface for bacula-director
     - interactive web console frontend to bconsole
