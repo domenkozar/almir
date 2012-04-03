@@ -123,7 +123,9 @@ class ClientView(MixinView):
         super(ClientView, self).detail()
         id_ = self.request.matchdict['id']
         jobs = Job.query.filter(Job.clientid == int(id_))
-        self.context['jobs'] = jobs.options(joinedload(Job.status)).order_by(desc(Job.schedtime)).limit(50)
+        self.context['jobs'] = jobs.options(joinedload(Job.status))\
+                                   .order_by(desc(Job.schedtime))\
+                                   .limit(50)  # TODO: dynamic datatables
         self.context['job_statistics'] = jobs.with_entities(count().label('num_jobs'), sum(Job.jobbytes).label('total_size_backups')).first(),
         self.context['last_successful_job'] = jobs.filter(Job.jobstatus == 'T').order_by(desc(Job.starttime)).first(),
         return self.context
