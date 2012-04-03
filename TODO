@@ -2,7 +2,6 @@ v0.1
 ----
 
 FEATURE: log issues to github tracker and get rid of this TODO
-FEATURE: donate button+flattr
 FEATURE: mailinglist for announcements
 RELEASE: pypi, bacula users list, almir list, blog post, demo
 
