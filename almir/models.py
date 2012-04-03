@@ -16,15 +16,33 @@ from almir.lib.sqlalchemy_custom_types import BaculaDateTime
 from almir.lib.utils import nl2br, yesno
 
 
-# defined in bacula/src/plugins/fd/fd_common.h
+# defined in http://www.bacula.org/git/cgit.cgi/bacula/tree/bacula/src/jcr.h
 LEVELS = {
     'F': 'Full',
     'I': 'Incremental',  # since last backup
     'D': 'Differential',  # since last full backup
+    'S': 'Since',
+    'C': 'Verify from catalog',
+    'V': 'Verify safe from DB',
+    'O': 'Verify Volume to catalog',
+    'd': 'Verify Disk to catalog',
+    'A': 'Verify data on volume',
+    'B': 'Base level job',
+    ' ': 'Restore/Admin',
+    'f': 'Virtual full',
 }
 TYPES = {
     'B': 'Backup',
+    'M': 'Migrated',
+    'V': 'Verify',
     'R': 'Restore',
+    'U': 'Console',
+    'D': 'Admin',
+    'A': 'Archive',
+    'C': 'Copy of a Job',
+    'c': 'Copy',
+    'g': 'Migration',
+    'S': 'Scan',
 }
 # TODO: parse from bacula/bacula/src/lib/util.c
 VOLUME_STATUS_SEVERITY = {
