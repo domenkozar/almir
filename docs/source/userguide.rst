@@ -103,6 +103,13 @@ Upgrading to a newer release
 
 Currently it's best to just reinstall. In future, this will be easy as running a command.
 
+Reporting bugs
+--------------
+
+* include bacula-director version, operating system and browser version
+* include screenshot if it provides any information
+* pastebin $ALMIR_ROOT/var/logs/almir-stderr*
+
 Filesystem structure
 --------------------
 
