@@ -13,7 +13,7 @@
         <tbody>
             {% for pool in objects %}
                 <tr class="clickable-row" data-link="{{ request.route_url('pool_detail', id=pool.poolid) }}">
-                   <td>{{ pool.name }}</td>
+                   <td>{{ macros.link(pool.render_name(request)) }}</td>
                    <td>{{ pool.pooltype }}</td>
                    <td>{{ pool.numvols }}</td>
                 </tr>
