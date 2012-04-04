@@ -3,3 +3,5 @@ development.ini
 buildout.cfg
 bconsole.conf
 docs/build/
+var/
+src/
