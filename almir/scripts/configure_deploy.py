@@ -4,6 +4,8 @@ import os
 import getpass
 import socket
 import subprocess
+import readline
+readline  # pyflakes: we import readline and raw_input has history!
 
 import pytz
 import sqlalchemy
