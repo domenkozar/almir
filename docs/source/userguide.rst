@@ -4,11 +4,10 @@ User guide
 ==========
 
 
-Screenshots
------------
+Demo
+----
 
-TODO ;)
-
+http://almir-demo.domenkozar.com/
 
 Design goals
 ------------
