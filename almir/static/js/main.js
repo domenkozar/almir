@@ -166,7 +166,7 @@ $(function () {
         }
 
         // console
-        if ($this.prevAll('h2').attr('id') === "command_help") {
+        if ($this.attr('id') === "command_help") {
            options.sDom = "<'row-fluid'<'span12'f>r>t<'row-fluid'>";
            options.iDisplayLength = 200;
         }

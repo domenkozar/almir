@@ -63,7 +63,7 @@ Releasing :mod:`almir`
 ::
 
     $ vim almir/__init__.py  # bump __version__
-    $ bin/mkrelease -d pypi
-    $ git tag <version>
+    $ vim docs/source/changelog.rst
+    $ bin/mkrelease -S
     $ git checkout latests
     $ git merge master
