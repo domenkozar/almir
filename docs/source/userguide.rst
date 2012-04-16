@@ -100,7 +100,16 @@ Now try to access http://almir.mywebsite.com/ (if you have an error, follow inst
 Upgrading to a newer release
 ----------------------------
 
-Currently it's best to just reinstall. In future, this will be easy as running a command.
+Run::
+
+    $ cd almir_install_directory
+    almir $ git pull
+    almir $ bin/buildout
+    almir $ bin/supervisorctl restart all
+
+You can also put that in crontab to auto upgrade on new version, if you are crazy enough. Then there should be extra check if upgrade is needed, something like running following and checking for any output::
+
+    $ git log latests..origin/latests
 
 .. _reporting-bugs:
 
