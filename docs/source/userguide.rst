@@ -31,7 +31,7 @@ be always installed on a system together with bacula-director.
 Prerequisities
 **************
 
-* bacula is installed and bacula-director is running
+* Bacula 5.x.x is installed and bacula-director is running
 * installed python2.6 or python2.7
 * using postgresql: make sure `postgresql.conf` includes a line `client_encoding = utf8`
 
@@ -84,8 +84,8 @@ You would normally put this in /etc/nginx/sites-enabled/
 
                 # optional authentication - recommended
                 auth_basic "Restricted";
-                # how to place and write htpasswd: http://wiki.nginx.org/HttpAuthBasicModule#auth_basic_user_file
-                auth_basic_user_file htpasswd;
+                # how to correctly write htpasswd: http://wiki.nginx.org/HttpAuthBasicModule#auth_basic_user_file
+                auth_basic_user_file /some/directory/to/install/almir/.htpasswd;
 
         }
     }
@@ -94,7 +94,7 @@ Then run::
 
     $ /etc/init.d/nginx reload
 
-Now try to access http://almir.mywebsite.com/
+Now try to access http://almir.mywebsite.com/ (if you have an error, follow instructions at :ref:`reporting-bugs`)
 
 
 Upgrading to a newer release
@@ -102,12 +102,19 @@ Upgrading to a newer release
 
 Currently it's best to just reinstall. In future, this will be easy as running a command.
 
+.. _reporting-bugs:
+
 Reporting bugs
 --------------
 
-* include bacula-director version, operating system and browser version
-* include screenshot if it provides any information
-* pastebin $ALMIR_ROOT/var/logs/almir-stderr*
+Check if an issue already exists at https://github.com/iElectric/almir/issues,
+otherwise add new one with following information: 
+
+* bacula-director version, operating system and browser version
+* include screenshot if it provides any useful information
+* pastebin (http://paste2.org) output of $ cat ALMIR_ROOT/var/logs/almir-stderr*
+* pastebin ALMIR_ROOT/buildout.cfg, but be careful to *remove any sensitive data*
+
 
 Filesystem structure
 --------------------
