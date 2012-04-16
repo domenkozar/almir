@@ -5,6 +5,7 @@ import getpass
 import socket
 import subprocess
 import readline
+import time
 readline  # pyflakes: we import readline and raw_input has history!
 
 import pytz
@@ -139,7 +140,12 @@ def main():
     print '    Europe/Ljubljana'
     print '    CET'
     print
-    options['timezone'] = ask_question('Timezone (defaults to system timezone): ', default='', validator=validate_timezone)
+
+    try:
+        default_timezone = " (default: %s)" % pytz.timezone(time.tzname[0])
+    except:
+        default_timezone = ''
+    options['timezone'] = ask_question('Timezone%s' % default_timezone, default='', validator=validate_timezone)
 
     # TODO: in future we may extract this from bconsole config file?
     print 'Almost finished, we just need bconsole parameters to connect to director!'
