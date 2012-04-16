@@ -103,11 +103,11 @@ Upgrading to a newer release
 Run::
 
     $ cd almir_install_directory
-    almir $ git pull
-    almir $ bin/buildout
-    almir $ bin/supervisorctl restart all
+    $ git pull
+    $ bin/buildout
+    $ bin/supervisorctl restart all
 
-You can also put that in crontab to auto upgrade on new version, if you are crazy enough. Then there should be extra check if upgrade is needed, something like running following and checking for any output::
+You can also use that in crontab to auto upgrade on new releases, if you are crazy enough. You would probably extra check if upgrade is needed, something like running following and checking for any output::
 
     $ git log latests..origin/latests
 
