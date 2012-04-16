@@ -66,7 +66,7 @@ setup(name='almir',
       """,
       paster_plugins=['pyramid'],
       extras_require={
-          'test': ['webtest', 'nose', 'coverage', 'unittest2', 'mock'],
+          'test': ['webtest', 'nose', 'coverage', 'unittest2', 'mock', 'tissue'],
           'develop': ['bpython', 'z3c.checkversions [buildout]', 'jarn.mkrelease'],
       },
 )
