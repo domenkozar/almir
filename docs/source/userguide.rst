@@ -105,7 +105,8 @@ Run::
     $ cd almir_install_directory
     $ git pull
     $ bin/buildout
-    $ bin/supervisorctl restart all
+    $ bin/supervisorctl shutdown
+    $ bin/supervisord
 
 You can also use that in crontab to auto upgrade on new releases, if you are crazy enough. You would probably extra check if upgrade is needed, something like running following and checking for any output::
 
