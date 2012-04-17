@@ -89,7 +89,7 @@ class BConsole(object):
 
         # send bconsole command
         if command:
-            process.stdin.write(command.strip() + '\n')
+            process.stdin.write(command.strip() + u'\n')
 
         # make stdout fileobject nonblockable
         fp = process.stdout.fileno()

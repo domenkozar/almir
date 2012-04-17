@@ -7,20 +7,23 @@ Changelog
 ------------------
 
 - [bug] fix support for postgresql 9.1
-  [iElectric]
+  [Domen Kožar]
 
 - [feature] add reboot crontab for almir daemon
-  [iElectric]
+  [Domen Kožar]
 
 - [bug] MySQL database size calculation was wrong, sometimes crashing the dashboard
-  [iElectric]
+  [Domen Kožar]
 
 - [bug] console command list was not ordered and search box was not shown
-  [iElectric]
+  [Domen Kožar]
+
+- [bug] bconsole did not accept non-asci input
+  [Domen Kožar]
 
 
 0.1 (2012/04/06)
 ----------------
 
 - Initial version
-  [iElectric]
+  [Domen Kožar]
