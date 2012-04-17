@@ -37,7 +37,7 @@ except ImportError:
     requires.append('pysqlite')
 
 setup(name='almir',
-      version='0.1',
+      version='0.1.1',
       description='almir',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
@@ -66,7 +66,7 @@ setup(name='almir',
       """,
       paster_plugins=['pyramid'],
       extras_require={
-          'test': ['webtest', 'nose', 'coverage', 'unittest2', 'mock'],
+          'test': ['webtest', 'nose', 'coverage', 'unittest2', 'mock', 'tissue'],
           'develop': ['bpython', 'z3c.checkversions [buildout]', 'jarn.mkrelease'],
       },
 )

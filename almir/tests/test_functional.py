@@ -20,7 +20,7 @@ class FunctionalTests(AlmirTestCase):
     config_file = os.path.join(here, '../../', 'development.ini')
     settings = appconfig('config:' + config_file)
     db_conns = {
-        'sqlite': 'sqlite:///bacula_kaki.db',
+        'sqlite': 'sqlite:///%s' % os.path.join(here, 'fixtures', 'sqlite.db'),
         'mysql': 'mysql+mysqlconnector://root@localhost/bacula',
         'postgresql': 'postgresql+pg8000://postgres@localhost/bacula',
     }

@@ -5,6 +5,7 @@ import getpass
 import socket
 import subprocess
 import readline
+import time
 readline  # pyflakes: we import readline and raw_input has history!
 
 import pytz
@@ -84,8 +85,9 @@ def validate_engine(v):
     except:
         if engine.dialect.name == 'sqlite':  # PRAGMA: no cover
             print
-            print 'WARNING: Using sqlite, database needs to be readable by bacula user. Fix is usually:'
-            print 'sudo gpassword -a %s bacula' % getpass.getuser()
+            print 'WARNING: Using sqlite, database needs to be readable by %s. Fix is usually:' % getpass.getuser()
+            print '$ sudo gpassword -a %s bacula' % getpass.getuser()
+            print 'You will need to relogin and restart install procedure, since permission are not updated on the fly'
             print
             # TODO: display file permissions
         raise
@@ -139,10 +141,16 @@ def main():
     print '    Europe/Ljubljana'
     print '    CET'
     print
-    options['timezone'] = ask_question('Timezone (defaults to system timezone): ', default='', validator=validate_timezone)
+
+    try:
+        default_timezone = " (default: %s)" % pytz.timezone(time.tzname[0])
+    except:
+        default_timezone = ''
+    options['timezone'] = ask_question('Timezone%s' % default_timezone, default='', validator=validate_timezone)
 
     # TODO: in future we may extract this from bconsole config file?
     print 'Almost finished, we just need bconsole parameters to connect to director!'
+    print 'Normally you will find needed information in /etc/bacula/bconsole.conf'
     print
 
     try:

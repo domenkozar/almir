@@ -84,7 +84,7 @@ def get_database_size(engine):
     if engine.name == 'sqlite':
         size_bytes = engine.execute('PRAGMA page_count;').scalar() * engine.execute('PRAGMA page_size;').scalar()
     elif engine.name == 'mysql':
-        size_bytes = engine.execute('SELECT sum(ROUND((DATA_LENGTH + INDEX_LENGTH - DATA_FREE),2)) AS Size '
+        size_bytes = engine.execute('SELECT sum(ROUND((DATA_LENGTH + INDEX_LENGTH),2)) AS Size '
                                     'FROM INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA like "%s";' % engine.url.database).scalar()
     elif engine.name == 'postgresql':
         size_bytes = engine.execute('SELECT pg_database_size(\'%s\');' % engine.url.database).scalar()

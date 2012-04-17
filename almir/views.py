@@ -200,8 +200,8 @@ def datatables(request):
     iColumns = int(q.get('iColumns'))
     sColumns = q.get('sColumns').split(',')
     sSearch = q.get('sSearch')
-    bRegex = q.get('bRegex')
-    iSortingCols = int(q.get('iSortingCols'))
+    #bRegex = q.get('bRegex')
+    #iSortingCols = int(q.get('iSortingCols'))
     sEcho = int(q.get('sEcho'))
 
     # get view from referrer url

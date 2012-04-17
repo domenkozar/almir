@@ -267,10 +267,14 @@ class Job(ModelMixin, Base):
         return {'text': TYPES[self.type]}
 
     def render_status(self, request):
-        return {'text': self.status.jobstatuslong, 'cssclass': self.render_status_color(request)}
+        if self.status:
+            return {'text': self.status.jobstatuslong, 'cssclass': self.render_status_color(request)}
 
     def render_status_color(self, request):
         """Color of the job depending on status"""
+        if not self.status:
+            return ""
+
         if self.status.severity < 15:
             return "ok"
         elif self.status.severity > 15:
