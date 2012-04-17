@@ -3,7 +3,7 @@ Changelog
 
 \
 
-0.1.1 (2012/04/16)
+0.1.1 (2012/04/18)
 ------------------
 
 - [bug] fix support for postgresql 9.1
