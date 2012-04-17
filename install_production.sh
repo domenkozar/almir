@@ -6,7 +6,7 @@ $(which echo) -e '[buildout]\nextends = buildout.d/production.cfg' > buildout.cf
 python bootstrap.py
 bin/buildout
 bin/python almir/scripts/configure_deploy.py
-bin/buildout -O
+bin/buildout -o
 bin/supervisord
 set +xe
 echo
