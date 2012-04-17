@@ -63,6 +63,7 @@ Releasing :mod:`almir`
 ::
 
     $ vim almir/__init__.py  # bump __version__
+    $ vim setup.py # bump __version__
     $ vim docs/source/changelog.rst
     $ bin/mkrelease -S
     $ git checkout latests
