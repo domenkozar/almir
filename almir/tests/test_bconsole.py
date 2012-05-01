@@ -52,26 +52,34 @@ Director {
 Scheduled Jobs:
 Level          Type     Pri  Scheduled          Name               Volume
 ===================================================================================
+               Admin      8  18-Apr-12 20:30    UpdateSlots
 Differential   Backup    10  18-Mar-12 23:05    BackupClient1      *unknown*
 Full           Backup    11  18-Mar-12 23:10    BackupCatalog      *unknown*
 ====
 """, '')
 
             jobs = b.get_upcoming_jobs()
-            self.assertEqual(jobs, [{'date': '18-Mar-12',
-                                  'level': 'Differential',
-                                  'name': 'BackupClient1',
-                                  'priority': '10',
-                                  'time': '23:05',
-                                  'type': 'Backup',
-                                  'volume': '*unknown*'},
-                                 {'date': '18-Mar-12',
-                                  'level': 'Full',
-                                  'name': 'BackupCatalog',
-                                  'priority': '11',
-                                  'time': '23:10',
-                                  'type': 'Backup',
-                                  'volume': '*unknown*'}])
+            self.assertEqual(jobs, [{'date': '18-Apr-12',
+                                     'level': '',
+                                     'name': 'UpdateSlots',
+                                     'time': '20:30',
+                                     'priority': '8',
+                                     'type': 'Admin',
+                                     'volume': ''},
+                                    {'date': '18-Mar-12',
+                                     'level': 'Differential',
+                                     'name': 'BackupClient1',
+                                     'priority': '10',
+                                     'time': '23:05',
+                                     'type': 'Backup',
+                                     'volume': '*unknown*'},
+                                    {'date': '18-Mar-12',
+                                     'level': 'Full',
+                                     'name': 'BackupCatalog',
+                                     'priority': '11',
+                                     'time': '23:10',
+                                     'type': 'Backup',
+                                     'volume': '*unknown*'}])
 
     def test_send_command_by_polling(self):
         b = BConsole()

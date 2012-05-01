@@ -1,4 +1,3 @@
-import re
 import fcntl
 import select
 import os
@@ -11,18 +10,6 @@ from almir.lib.utils import nl2br
 
 
 CURRENT_DIRECTORY = os.path.dirname(os.path.abspath(__file__))
-
-
-# Full           Backup    10  04-Mar-12 23:05    BackupClient1      *unknown*
-UPCOMING_JOB_REGEX = re.compile(r"""
-    \s*(?P<level>\S+)\s+
-    (?P<type>\S+)\s+
-    (?P<priority>\d+)\s+
-    (?P<date>\S+)\s+
-    (?P<time>\d+:\d+)\s+
-    (?P<name>\S+)\s+
-    (?P<volume>\S+)\s*
-""", re.X)
 
 
 class BConsole(object):
@@ -68,8 +55,25 @@ class BConsole(object):
         stdout, stderr = p.communicate('.status dir scheduled\n')
         #if stderr.strip():
         #    pass  # TODO: display flash?
-        for jobmatch in UPCOMING_JOB_REGEX.finditer(stdout):
-            jobs.append(jobmatch.groupdict())
+
+        try:
+            unparsed_jobs = stdout.split('===================================================================================\n')[1].split('====\n')[0]
+        except IndexError:
+            return []
+
+        for line in unparsed_jobs.split('\n'):
+            if not line.strip():
+                continue
+
+            jobs.append({
+                         'level': line[:14].strip(),
+                         'type': line[14:23].strip(),
+                         'priority': line[23:28].strip(),
+                         'date': line[28:38].strip(),
+                         'time': line[38:44].strip(),
+                         'name': line[47:67].strip(),
+                         'volume': line[67:].strip(),
+            })
 
         return jobs
 
