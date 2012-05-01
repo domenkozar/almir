@@ -3,6 +3,16 @@ Changelog
 
 \
 
+0.1.2 (2012/xx/xx)
+------------------
+
+- [bug] #4: client detail page did not render if client had no successful backup
+
+- [bug] #5: correctly parse scheduled jobs (choked on Admin job)
+
+- [feature] use python2.7 or python2.6, otherwise abort installation
+
+
 0.1.1 (2012/04/18)
 ------------------
 
