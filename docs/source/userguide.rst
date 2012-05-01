@@ -32,7 +32,7 @@ Prerequisities
 **************
 
 * Bacula 5.x.x is installed and bacula-director is running
-* installed python2.6 or python2.7
+* installed python2.6 or python2.7 (compiled with sqlite support)
 * using postgresql: make sure `postgresql.conf` includes a line `client_encoding = utf8`
 
 
