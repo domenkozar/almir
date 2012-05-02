@@ -6,6 +6,8 @@ Changelog
 0.1.2 (2012/xx/xx)
 ------------------
 
+- [bug]: #7: don't word wrap size columns
+
 - [feature] add manual install steps
 
 - [bug] #4: client detail page did not render if client had no successful backup

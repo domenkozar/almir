@@ -308,7 +308,7 @@ class Job(ModelMixin, Base):
             return self.render_distance_of_time_in_words(self.starttime, self.endtime)
 
     def render_jobbytes(self, request):
-        return {'text': self.format_byte_size(self.jobbytes)}
+        return {'text': self.format_byte_size(self.jobbytes), 'cssclass': 'nowrap'}
 
     def render_joberrors(self, request):
         d = {'text': self.joberrors}
@@ -467,13 +467,13 @@ class Media(ModelMixin, Base):
         return {'text': self.volumename, 'href': self.url(request)}
 
     def render_volcapacitybytes(self, request):
-        return {'text': self.format_byte_size(self.volcapacitybytes)}
+        return {'text': self.format_byte_size(self.volcapacitybytes), 'cssclass': 'nowrap'}
 
     def render_volbytes(self, request):
-        return {'text': self.format_byte_size(self.volbytes)}
+        return {'text': self.format_byte_size(self.volbytes), 'cssclass': 'nowrap'}
 
     def render_maxvolbytes(self, request):
-        return {'text': self.format_byte_size(self.maxvolbytes)}
+        return {'text': self.format_byte_size(self.maxvolbytes), 'cssclass': 'nowrap'}
 
     def render_volretention(self, request):
         # volretention is integer of seconds
@@ -750,7 +750,7 @@ class File(ModelMixin, Base):
         return {'text': self.path.path + self.filename.name}
 
     def render_size(self, request):
-        return {'text': self.format_byte_size(self.get_stat_data()[7])}
+        return {'text': self.format_byte_size(self.get_stat_data()[7]), 'cssclass': 'nowrap'}
 
     def render_uid(self, request):
         return {'text': self.get_stat_data()[4]}
