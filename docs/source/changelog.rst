@@ -6,6 +6,8 @@ Changelog
 0.1.2 (2012/xx/xx)
 ------------------
 
+- [feature] add manual install steps
+
 - [bug] #4: client detail page did not render if client had no successful backup
 
 - [bug] #5: correctly parse scheduled jobs (choked on Admin job)
