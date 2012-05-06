@@ -6,6 +6,8 @@ Changelog
 0.1.2 (2012/xx/xx)
 ------------------
 
+- [bug] interactive installer would swallow error message when SQL connection string was not formatted correctly
+
 - [bug]: #7: don't word wrap size columns
 
 - [feature] add manual install steps

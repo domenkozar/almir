@@ -79,11 +79,12 @@ def validate_int(v):
 def validate_engine(v):
     print 'Connecting to catalog database to verify configuration ...'
     try:
+        engine = None
         engine = sqlalchemy.create_engine(v)
         if 'client' not in map(lambda e: e.lower(), engine.table_names()):
             raise ValueError('Connection string has wrong parameters (could not connect to catalog database)')  # PRAGMA: no cover
     except:
-        if engine.dialect.name == 'sqlite':  # PRAGMA: no cover
+        if engine and engine.dialect.name == 'sqlite':  # PRAGMA: no cover
             print
             print 'WARNING: Using sqlite, database needs to be readable by %s. Fix is usually:' % getpass.getuser()
             print '$ sudo gpassword -a %s bacula' % getpass.getuser()
