@@ -12,7 +12,7 @@ from sqlalchemy.types import INTEGER
 from almir.meta import initialize_sql
 
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 
 
 def navigation_tree(event):

@@ -86,7 +86,9 @@ Happy? Let's see until first upgrade.
 Configuring Nginx as frontend
 *****************************
 
-You would normally put this in /etc/nginx/sites-enabled/
+It is wise to use frontend HTTP server and proxy HTTP requests to python web server. Following is an example for nginx, you could also use apapache2 or lighthttpd. 
+
+You would normally put this in /etc/nginx/sites-enabled/almir.mywebsite.com.conf
 
 .. code-block:: nginx 
 

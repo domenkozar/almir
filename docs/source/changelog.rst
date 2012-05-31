@@ -3,7 +3,7 @@ Changelog
 
 \
 
-0.1.2 (2012/xx/xx)
+0.1.2 (2012/05/31)
 ------------------
 
 - [bug] interactive installer would swallow error message when SQL connection string was not formatted correctly

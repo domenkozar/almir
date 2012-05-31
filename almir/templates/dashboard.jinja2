@@ -1,7 +1,7 @@
 {% extends "templates/base.jinja2" %}
 
 {% block content %}
-    <h1 class="view">Dashboard <small>Overview</small></h1>
+    <h1 class="view">Dashboard {{ director_version|safe }}</h1>
 
     <h2 id="upcoming_jobs">Upcoming Jobs (next 24h)</h2>
     {{ macros.upcoming_jobs_table(request, upcoming_jobs) }}
