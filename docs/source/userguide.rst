@@ -32,7 +32,7 @@ Prerequisities
 **************
 
 * Bacula 5.x.x is installed and bacula-director is running
-* installed python2.6 or python2.7
+* installed python2.6 or python2.7 (compiled with sqlite support)
 * using postgresql: make sure `postgresql.conf` includes a line `client_encoding = utf8`
 
 
@@ -59,14 +59,36 @@ You can continue with configuring :ref:`nginx`.
 Manual (not recommended)
 ************************
 
-TODO ;)
+For security and \*unix freaks, here is a step by step description what interactive install does behind the scene. Taking manual steps to install will ensure you are missing lovely time with your beloved one this weekend and replacing that with mild headache (specially if you are not familiar with python deployment quirks).
+
+Interactive install also handles upgrades transparently. Almir is developed with agile workflow with small incremental versions of new changes. You will have to dig in yourself how to upgrade environment upon a new release. Still stubborn? Let's go!
+
+- Download latests release from github (as tarball or git clone) from *latests* branch (install_production.sh takes care of that otherwise)
+
+- unpack into empty directory
+
+- Make sure you use python2.7 or python2.6, since other versions are not supported
+
+- Populate *production.ini* file for daemon configuration, taken from *buildout.d/templates/production.ini.in* (*almir/scripts/configure_deploy.py* takes care of that interactively, then runs buildout to output configuration file from the template)
+
+- Install all python dependencies from *setup.py* file, preferably within virtualenv (buildout takes care of that and pins them down to known workable set of versions, found in *buildout.d/versions.cfg*)
+
+- Once you have installed dependencies (with `python setup.py install`) inside virtualenv or system python (REALLY not recommended), you should have *pserve* binary installed in bin/ directory
+
+- run it like so: `bin/pserve production.ini`
+
+- make sure daemon runs at reboot, configure log rotation
+
+Happy? Let's see until first upgrade.
 
 .. _nginx:
 
 Configuring Nginx as frontend
 *****************************
 
-You would normally put this in /etc/nginx/sites-enabled/
+It is wise to use frontend HTTP server and proxy HTTP requests to python web server. Following is an example for nginx, you could also use apapache2 or lighthttpd. 
+
+You would normally put this in /etc/nginx/sites-enabled/almir.mywebsite.com.conf
 
 .. code-block:: nginx 
 

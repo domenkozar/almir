@@ -14,7 +14,7 @@ from almir.meta import DBSession, get_database_size
 from almir.models import Job, Client, Log, Media, Storage, Pool, Status, File, Path, Filename
 from almir.forms import JobSchema, MediaSchema, LogSchema
 from almir.lib.console_commands import CONSOLE_COMMANDS
-from almir.lib.bconsole import BConsole
+from almir.lib.bconsole import BConsole, DirectorNotRunning
 from almir.lib.utils import render_rst_section, get_jinja_macro
 
 
@@ -27,6 +27,10 @@ def dashboard(request):
     jobs = Job.get_last()
     running_jobs = Job.get_running()
     upcoming_jobs = Job.get_upcoming()
+    try:
+        director_version = '<span title="Connected to" class="label label-success">%s</span>' % BConsole().get_version()
+    except DirectorNotRunning:
+        director_version = '<span class="label label-important">Director not running!</span>'
 
     # statistics
     num_clients = dbsession.query(count(Client.clientid)).scalar()

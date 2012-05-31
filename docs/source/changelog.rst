@@ -3,6 +3,22 @@ Changelog
 
 \
 
+0.1.2 (2012/05/31)
+------------------
+
+- [bug] interactive installer would swallow error message when SQL connection string was not formatted correctly
+
+- [bug]: #7: don't word wrap size columns
+
+- [feature] add manual install steps
+
+- [bug] #4: client detail page did not render if client had no successful backup
+
+- [bug] #5: correctly parse scheduled jobs (choked on Admin job)
+
+- [feature] use python2.7 or python2.6, otherwise abort installation
+
+
 0.1.1 (2012/04/18)
 ------------------
 

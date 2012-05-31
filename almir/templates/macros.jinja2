@@ -67,7 +67,7 @@
                     <td>{{ link(job.render_type(request)) }}</td>
                     <td>{{ link(job.render_level(request)) }}</td>
                     <td>{{ link(job.render_jobfiles(request)) }}</td>
-                    <td>{{ link(job.render_jobbytes(request)) }}</td>
+                    {{ td_link(job.render_jobbytes(request)) }}
                     <td>{{ link(job.render_client_name(request)) }}</td>
                     <td>{{ link(job.render_starttime(request)) }}</td>
                     <td>{{ link(job.render_duration(request)) }}</td>
@@ -96,7 +96,7 @@
                 <tr class="clickable-row" data-link="{{ request.route_url('volume_detail', id=volume.mediaid) }}">
                     <td>{{ link(volume.render_volumename(request)) }}</td>
                     {{ td_link(volume.render_volstatus(request)) }}
-                    <td>{{ link(volume.render_volbytes(request)) }}</td>
+                    {{ td_link(volume.render_volbytes(request)) }}
                     <td>{{ volume.lastwritten }}</td>
                     <td>{{ link(volume.render_expires(request)) }}</td>
                     <td>{{ link(volume.render_storage_name(request)) }}</td>
