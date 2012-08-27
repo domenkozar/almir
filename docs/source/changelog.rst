@@ -3,6 +3,18 @@ Changelog
 
 \
 
+0.1.3 (2012/08/27)
+------------------
+
+- [bug] upgraded doctutils as it was failing buildout
+  [Domen Kožar]
+
+- removed some dependencies on prodcution, upgraded zc.buildout to 1.6.3 for faster installation
+  [Domen Kožar]
+
+- determine version from distribution metadata
+  [Domen Kožar]
+
 0.1.2 (2012/05/31)
 ------------------
 

@@ -34,7 +34,7 @@ except ImportError:
     requires.append('pysqlite')
 
 setup(name='almir',
-      version='0.1.2',
+      version='0.1.3',
       description='almir',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
