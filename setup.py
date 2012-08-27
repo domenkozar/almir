@@ -10,7 +10,6 @@ CHANGES = open(os.path.join(here, 'docs', 'source', 'changelog.rst')).read()
 requires = [
     'pyramid',
     'pyramid_tm',
-    'pyramid_debugtoolbar',
     'pyramid_jinja2',
     'pyramid_exclog',
     'pyramid_beaker',
@@ -21,12 +20,10 @@ requires = [
     'transaction',
     'SQLAlchemy',
     'zope.sqlalchemy',
-    'gunicorn',
     'waitress',
+    'docutils',
     'pg8000',  # postgres
     'mysql-connector-repackaged',  # original one does not install with buildout
-    'docutils',
-    'Sphinx',
     'pytz',
 ]
 
@@ -37,7 +34,7 @@ except ImportError:
     requires.append('pysqlite')
 
 setup(name='almir',
-      version='0.1.2',
+      version='0.1.3',
       description='almir',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
@@ -66,7 +63,22 @@ setup(name='almir',
       """,
       paster_plugins=['pyramid'],
       extras_require={
-          'test': ['webtest', 'nose', 'coverage', 'unittest2', 'mock', 'tissue'],
-          'develop': ['bpython', 'z3c.checkversions [buildout]', 'jarn.mkrelease'],
+          'test': [
+              'webtest',
+              'nose',
+              'coverage',
+              'unittest2',
+              'mock',
+              'tissue',
+          ],
+          'develop': [
+              'bpython',
+              'z3c.checkversions [buildout]',
+              'jarn.mkrelease',
+              'waitress',
+              'pyramid_debugtoolbar',
+              'Sphinx',
+              'docutils',
+          ],
       },
 )

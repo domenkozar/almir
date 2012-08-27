@@ -1,6 +1,7 @@
 import os
 import random
 import hashlib
+import pkg_resources
 
 from pyramid_beaker import BeakerSessionFactoryConfig
 from pyramid.config import Configurator
@@ -12,7 +13,10 @@ from sqlalchemy.types import INTEGER
 from almir.meta import initialize_sql
 
 
-__version__ = '0.1.2'
+try:
+    __version__ = pkg_resources.get_distribution("almir").version
+except:
+    __version__ = ''
 
 
 def navigation_tree(event):
