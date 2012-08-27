@@ -126,6 +126,7 @@ Run::
 
     $ cd almir_install_directory
     $ git pull
+    $ python bootstrap.py
     $ bin/buildout
     $ bin/supervisorctl shutdown
     $ bin/supervisord
