@@ -44,8 +44,8 @@ class BConsole(object):
     def __init__(self, bconsole_command='bconsole -n -c %s', config_file=None):
         default_config_file = os.path.realpath(os.path.join(CURRENT_DIRECTORY, '..', '..', 'bconsole.conf'))
         registry = get_current_registry()
-        self.config_file = registry.settings('bconsole_config',
-                                             config_file or default_config_file)
+        self.config_file = registry.settings.get('bconsole_config',
+                                                 config_file or default_config_file)
         self.bconsole_command = bconsole_command % self.config_file
 
     @classmethod
