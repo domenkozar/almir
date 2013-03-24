@@ -42,7 +42,7 @@ Installer (interactive)
 
 Install prerequesities (Debian based)::
 
-    $ sudo apt-get install git bacula-console python-distribute
+    $ sudo apt-get install git bacula-console python-distribute gcc python-dev wget 
 
 .. note::
 
