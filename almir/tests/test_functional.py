@@ -17,7 +17,7 @@ here = os.path.dirname(__file__)
 
 class FunctionalTests(AlmirTestCase):
     """Runs tests under multiple datasets"""
-    config_file = os.path.join(here, '../../', 'development.ini')
+    config_file = os.path.join(here, '../../', 'testing.ini')
     settings = appconfig('config:' + config_file)
     db_conns = {
         'sqlite': 'sqlite:///%s' % os.path.join(here, 'fixtures', 'sqlite.db'),
