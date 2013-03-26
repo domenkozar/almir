@@ -1,11 +1,19 @@
 import unittest2
 
+from pyramid import testing
 from mock import patch, MagicMock
 
 from almir.scripts.configure_deploy import main
 
 
 class TestConfigureDeploy(unittest2.TestCase):
+
+    def setUp(self):
+        request = testing.DummyRequest()
+        self.config = testing.setUp(request=request)
+
+    def tearDown(self):
+        testing.tearDown()
 
     @patch('almir.scripts.configure_deploy.open', create=True)
     @patch('almir.lib.bconsole.BConsole.is_running')

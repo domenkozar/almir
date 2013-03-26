@@ -2,12 +2,20 @@ import time
 import unittest2
 from subprocess import Popen, PIPE
 
+from pyramid import testing
 from mock import patch
 
 from almir.lib.bconsole import BConsole
 
 
 class TestBConsole(unittest2.TestCase):
+
+    def setUp(self):
+        request = testing.DummyRequest()
+        self.config = testing.setUp(request=request)
+
+    def tearDown(self):
+        testing.tearDown()
 
     def test_is_running(self):
         b = BConsole()
