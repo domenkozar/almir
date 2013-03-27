@@ -4,7 +4,8 @@ Changelog
 0.1.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- [bug] Add also LICENSE to MANIFEST.in
+  [Domen Kožar]
 
 
 0.1.6 (2013-03-27)
