@@ -74,7 +74,7 @@ setup(name='almir',
           'develop': [
               'bpython',
               'z3c.checkversions [buildout]',
-              'jarn.mkrelease',
+              'zest.releaser',
               'waitress',
               'pyramid_debugtoolbar',
               'Sphinx',

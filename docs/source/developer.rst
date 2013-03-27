@@ -62,12 +62,9 @@ Releasing :mod:`almir`
 
 ::
 
-    $ vim setup.py # bump __version__
-    $ vim docs/source/changelog.rst
-    $ bin/mkrelease -S
+    $ bin/fullrelease
     $ git checkout latests
     $ git merge master
     $ git push --tags
     $ git push 
     # update http://readthedocs.org/dashboard/almir/versions/
-    # release to pypi
