@@ -34,7 +34,7 @@ except ImportError:
     requires.append('pysqlite')
 
 setup(name='almir',
-      version='0.1.7',
+      version='0.1.8.dev0',
       description='Almir is a Bacula (backup solution) web interface written in Python.',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
