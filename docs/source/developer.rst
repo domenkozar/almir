@@ -65,6 +65,5 @@ Releasing :mod:`almir`
     $ bin/fullrelease
     $ git checkout latests
     $ git merge master
-    $ git push --tags
     $ git push 
     # update http://readthedocs.org/dashboard/almir/versions/

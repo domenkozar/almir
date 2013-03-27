@@ -1,10 +1,17 @@
 Changelog
 =========
 
-0.1.6 (unreleased)
+0.1.7 (unreleased)
 ------------------
 
 - Nothing changed yet.
+
+
+0.1.6 (2013-03-27)
+------------------
+
+- [bug] Add .ini to MANIFEST.in
+  [Domen Kožar]
 
 
 0.1.5 (2013-03-27)
