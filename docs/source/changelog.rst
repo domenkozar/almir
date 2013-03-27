@@ -1,10 +1,17 @@
 Changelog
 =========
 
-0.1.7 (unreleased)
+0.1.8 (unreleased)
 ------------------
 
 - Nothing changed yet.
+
+
+0.1.7 (2013-03-27)
+------------------
+
+- [bug] Add also LICENSE to MANIFEST.in
+  [Domen Kožar]
 
 
 0.1.6 (2013-03-27)
