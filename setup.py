@@ -61,7 +61,7 @@ setup(name='almir',
       [console_scripts]
       almir_parse_console_commands = almir.scripts.parse_console_commands:main
       """,
-      paster_plugins=['pyramid'],
+      #paster_plugins=['pyramid'],
       extras_require={
           'test': [
               'webtest',
