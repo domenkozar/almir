@@ -70,3 +70,4 @@ Releasing :mod:`almir`
     $ git push --tags
     $ git push 
     # update http://readthedocs.org/dashboard/almir/versions/
+    # release to pypi
