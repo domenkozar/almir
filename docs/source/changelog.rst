@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1.5 (unreleased)
+0.1.5 (2013-03-27)
 ------------------
 
 - [feature] Refactor the package a bit, so it's easier to package it for Linux distributions
