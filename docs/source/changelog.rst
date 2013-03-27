@@ -4,7 +4,8 @@ Changelog
 0.1.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- [bug] Add .ini to MANIFEST.in
+  [Domen Kožar]
 
 
 0.1.5 (2013-03-27)
