@@ -2,6 +2,7 @@ import time
 import unittest2
 from subprocess import Popen, PIPE
 
+from pyramid import testing
 from mock import patch
 
 from almir.lib.bconsole import BConsole
@@ -9,11 +10,18 @@ from almir.lib.bconsole import BConsole
 
 class TestBConsole(unittest2.TestCase):
 
+    def setUp(self):
+        request = testing.DummyRequest()
+        self.config = testing.setUp(request=request)
+
+    def tearDown(self):
+        testing.tearDown()
+
     def test_is_running(self):
         b = BConsole()
         with patch.object(b, 'start_process') as mock_method:
             start_process = mock_method.return_value
-            start_process.communicate.return_value = ('version', '')
+            start_process.communicate.return_value = ('Version', '')
             self.assertTrue(b.is_running())
 
         with patch.object(b, 'start_process') as mock_method:
@@ -42,7 +50,8 @@ Director {
             password='qweqwe'
         ) as b:
             expected = open(b.config_file).read()
-            self.assertEqual(expected.replace(' ', ''), output.replace(' ', ''))
+            self.assertEqual(expected.replace(' ', '').replace('\r', ''),
+                             output.replace(' ', '').replace('\r', ''))
 
     def test_get_upcoming_jobs(self):
         b = BConsole()

@@ -1,7 +1,31 @@
 Changelog
 =========
 
-\
+0.1.6 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
+0.1.5 (2013-03-27)
+------------------
+
+- [feature] Refactor the package a bit, so it's easier to package it for Linux distributions
+  [Domen Kožar]
+
+- [bug] Update MANIFEST.in so all files are included in release
+  [Domen Kožar]
+
+- [bug] Add new bootstrap.py and pin down zc.buildout version to avoid upgrading zc.buildout to 2.0
+  [Domen Kožar]
+
+- [feature] Add apache2 configuration example
+  [Iban]
+
+0.1.4 (2013/03/23)
+------------------
+
+- brownbag release
 
 0.1.3 (2012/08/27)
 ------------------
@@ -9,7 +33,7 @@ Changelog
 - [bug] upgraded doctutils as it was failing buildout
   [Domen Kožar]
 
-- removed some dependencies on prodcution, upgraded zc.buildout to 1.6.3 for faster installation
+- removed some dependencies on production, upgraded zc.buildout to 1.6.3 for faster installation
   [Domen Kožar]
 
 - determine version from distribution metadata

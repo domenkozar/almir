@@ -6,6 +6,7 @@ import shlex
 import tempfile
 from contextlib import contextmanager
 from subprocess import Popen, PIPE
+from pyramid.threadlocal import get_current_registry
 
 from almir.lib.utils import nl2br
 
@@ -42,7 +43,9 @@ class BConsole(object):
 
     def __init__(self, bconsole_command='bconsole -n -c %s', config_file=None):
         default_config_file = os.path.realpath(os.path.join(CURRENT_DIRECTORY, '..', '..', 'bconsole.conf'))
-        self.config_file = config_file or default_config_file
+        registry = get_current_registry()
+        self.config_file = registry.settings.get('bconsole_config',
+                                                 config_file or default_config_file)
         self.bconsole_command = bconsole_command % self.config_file
 
     @classmethod

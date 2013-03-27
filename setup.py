@@ -34,8 +34,8 @@ except ImportError:
     requires.append('pysqlite')
 
 setup(name='almir',
-      version='0.1.3',
-      description='almir',
+      version='0.1.6.dev0',
+      description='Almir is a Bacula (backup solution) web interface written in Python.',
       long_description=README + '\n\n' + CHANGES,
       classifiers=[
           "Programming Language :: Python",
@@ -61,7 +61,7 @@ setup(name='almir',
       [console_scripts]
       almir_parse_console_commands = almir.scripts.parse_console_commands:main
       """,
-      paster_plugins=['pyramid'],
+      #paster_plugins=['pyramid'],
       extras_require={
           'test': [
               'webtest',
@@ -74,7 +74,7 @@ setup(name='almir',
           'develop': [
               'bpython',
               'z3c.checkversions [buildout]',
-              'jarn.mkrelease',
+              'zest.releaser',
               'waitress',
               'pyramid_debugtoolbar',
               'Sphinx',

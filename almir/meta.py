@@ -31,7 +31,7 @@ class ModelMixin(object):
 
     @declared_attr
     def __tablename__(cls):
-        if cls.metadata.bind.dialect.name == 'postgresql':  # PRAGMA: no cover
+        if cls.metadata.bind and cls.metadata.bind.dialect.name == 'postgresql':  # PRAGMA: no cover
             return cls.__name__.lower()
         else:
             return cls.__name__

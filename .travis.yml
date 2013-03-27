@@ -7,9 +7,6 @@ env:
   - DATABASE="sqlite"
   - DATABASE="postgresql"
 install:
-# we don't need bacula console for now
-#  - sudo apt-get install git gcc python-dev sendmail bacula-console
-  - sudo apt-get install git gcc python-dev
   - cp buildout.d/templates/buildout.cfg.in buildout.cfg
 #  - sed -i 's/bacula.db/almir/tests/fixtures/sqlite3.db/' buildout.cfg
 #  - director_password=$(sudo grep 'Password' /etc/bacula/bconsole.conf | sed 's/.*Password\s*=\s*"\(.\+\)"/\1/')

@@ -1,2 +1,3 @@
 include *.cfg *.rst *.in
 graft almir
+graft docs

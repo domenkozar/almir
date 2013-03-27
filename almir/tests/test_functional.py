@@ -17,7 +17,7 @@ here = os.path.dirname(__file__)
 
 class FunctionalTests(AlmirTestCase):
     """Runs tests under multiple datasets"""
-    config_file = os.path.join(here, '../../', 'development.ini')
+    config_file = os.path.join(here, '../../', 'testing.ini')
     settings = appconfig('config:' + config_file)
     db_conns = {
         'sqlite': 'sqlite:///%s' % os.path.join(here, 'fixtures', 'sqlite.db'),
@@ -43,7 +43,8 @@ class FunctionalTests(AlmirTestCase):
 
     @assert_num_of_queries(8, mysql=7, postgresql=7)
     @patch('almir.lib.bconsole.BConsole.start_process')
-    def test_root(self, mock_process):
+    @patch('almir.lib.bconsole.BConsole.get_version')
+    def test_root(self, mock_get_version, mock_process):
         mock_process.return_value = Popen(['cat'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
 
         res = self.testapp.get('/', status=200)

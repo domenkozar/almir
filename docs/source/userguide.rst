@@ -42,7 +42,7 @@ Installer (interactive)
 
 Install prerequesities (Debian based)::
 
-    $ sudo apt-get install git bacula-console python-distribute
+    $ sudo apt-get install git bacula-console python-distribute gcc python-dev wget 
 
 .. note::
 
@@ -83,10 +83,10 @@ Happy? Let's see until first upgrade.
 
 .. _nginx:
 
-Configuring Nginx as frontend
-*****************************
+Configuring Nginx as a frontend
+*******************************
 
-It is wise to use frontend HTTP server and proxy HTTP requests to python web server. Following is an example for nginx, you could also use apapache2 or lighthttpd. 
+It is wise to use frontend HTTP server and proxy HTTP requests to python web server. Following is an example for nginx, you could also use papache2 or lighthttpd. 
 
 You would normally put this in /etc/nginx/sites-enabled/almir.mywebsite.com.conf
 
@@ -119,6 +119,30 @@ Then run::
 Now try to access http://almir.mywebsite.com/ (if you have an error, follow instructions at :ref:`reporting-bugs`)
 
 
+Configuring Apache2 as a frontend
+*********************************
+
+.. code-block:: apache
+
+    <VirtualHost *:80>
+
+    ServerName almir.mydomain.com
+    DocumentRoot "/var/www/almir.mydomain.com"
+
+    ProxyPreserveHost On
+
+    <Location />
+    ProxyPass  http://almir.mydomain.com:2500/
+    ProxyPassReverse http://almir.mydomain.com:2500/ 
+    </Location>
+
+    ErrorLog /var/log/httpd/almir.mydomain.com-error.log
+    CustomLog /var/log/httpd/almir.mydomain.com-access.log combined
+
+    </VirtualHost>
+
+Do not forget to restrict access to almir, either by IP or by username/password.
+
 Upgrading to a newer release
 ----------------------------
 
@@ -126,6 +150,7 @@ Run::
 
     $ cd almir_install_directory
     $ git pull
+    $ python bootstrap.py
     $ bin/buildout
     $ bin/supervisorctl shutdown
     $ bin/supervisord
