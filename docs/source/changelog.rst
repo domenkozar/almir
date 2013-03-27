@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1.6 (unreleased)
+0.1.6 (2013-03-27)
 ------------------
 
 - [bug] Add .ini to MANIFEST.in
