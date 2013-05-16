@@ -4,7 +4,8 @@ Changelog
 0.1.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- fix bug introduced in 0.1.5 that crashed almir while doing configuration
+  [Domen Kožar]
 
 
 0.1.7 (2013-03-27)
