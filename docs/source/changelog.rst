@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.1.8 (unreleased)
+0.1.8 (2013-05-16)
 ------------------
 
 - fix bug introduced in 0.1.5 that crashed almir while doing configuration
